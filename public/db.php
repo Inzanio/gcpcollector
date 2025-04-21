@@ -2,7 +2,7 @@
 require __DIR__ . '/vendor/autoload.php';
 use Kreait\Firebase\Factory;
 
-$GOOGLE_APPLICATION_CREDENTIALS = "../application_default_credentials.json";
+$GOOGLE_APPLICATION_CREDENTIALS = "./application_default_credentials.json";
 
 $factory = (new Factory())
      ->withServiceAccount($GOOGLE_APPLICATION_CREDENTIALS);
@@ -15,5 +15,5 @@ $factory = (new Factory())
 // $cloudStorage = $factory->createStorage(); 
 $firestore = $factory->createFirestore();
 $database = $firestore->database();
-echo "Hellow world";
+
 ?>
