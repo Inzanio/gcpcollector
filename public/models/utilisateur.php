@@ -1,6 +1,6 @@
 <?php 
+
 require_once "personne.php";
-require_once "../db.php";
 require_once "traits.php";
 
 /**
@@ -135,10 +135,10 @@ class Utilisateur extends Personne
     /**
      * Insert les données de l'utilisateur dans la base de données comme une nouvelle ligne
      */
-    public function create () : string 
-    {
-        return Database::createDocument(self::$collection_name,$this->matricule,$this->toArray());
-    }
+    // public function create () : string 
+    // {
+    //     return Database::createDocument(self::$collection_name,$this->matricule,$this->toArray());
+    // }
     /**
      * Cherche le login avec le mot de passe donné et retourne les utilisateurs y correspondant
      * @param string login - le login de l'utilisateur
@@ -147,14 +147,25 @@ class Utilisateur extends Personne
      */
     public static function login($login,$password)
     {
-        $query = Database::getCollectionRef(self::$collection_name)->where("login","=",$login)->where("password","=",$password);
-        $result = $query->documents();
-        if ($result->isEmpty()){
-            echo "utilisateur non Trouvé";
-            return;
-        }
-        return $result->rows();
+        $queryBuilder = Database::queryBuilder('utilisateurs');
+        $queryBuilder->where('login', 'EQUAL', 'edouard237');
+        $queryBuilder->where('password', 'EQUAL', 'edouard.noa@237');
+        $query = $queryBuilder->build();
 
+        $result = Database::query($query);
+        if (count($result) > 0) {
+            if (count($result) > 1) {
+                // Plus d'un utilisateur trouvé, vous pouvez gérer cela comme vous le souhaitez
+                echo "Plus d'un utilisateur trouvé avec ce login et mot de passe.";
+            } else {
+                // Un seul utilisateur trouvé, vous pouvez le retourner ou faire ce que vous voulez avec
+                $user = $result[0];
+                return $user;
+            }
+        } else {
+            // Aucune correspondance trouvée, vous pouvez gérer cela comme vous le souhaitez
+            echo "Aucun utilisateur trouvé avec ce login et mot de passe.";
+        }
     }
 }
 ?>
