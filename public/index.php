@@ -1,18 +1,18 @@
 <?php
-    $route = $_GET['route'];
+$url = $_SERVER['REQUEST_URI'];
 
-    switch ($route) {
-        case '':
-            require_once 'dashboard.php';
-            break;
-        case 'login':
-            require_once 'login.php';
-            break;
-        // case 'contact':
-        //     include 'contact.php';
-        //     break;
-        default:
-            require_once '404.php';
-            break;
-    }
+switch ($url) {
+    case '/':
+        include 'index.php';
+        break;
+    // case '/about':
+    //     include 'about.php';
+    //     break;
+    // case '/contact':
+    //     include 'contact.php';
+    //     break;
+    default:
+        include '404.php';
+        break;
+}
 ?>
