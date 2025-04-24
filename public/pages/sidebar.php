@@ -3,7 +3,7 @@
 
         <!-- Tableau de bord -->
         <li class="nav-item">
-            <a class="nav-link active" href="dashboardAgent.php">
+            <a class="nav-link active" href="">
                 <i class="bi bi-speedometer2"></i>
                 <span>Tableau de bord </span>
             </a>
@@ -11,7 +11,7 @@
 
         <!-- Prospects -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="prospects.php">
+            <a class="nav-link collapsed" href="">
                 <i class="bi bi-people-fill"></i>
                 <span>Gestion des prospects</span>
             </a>
@@ -19,7 +19,7 @@
 
         <!-- Performances -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="performances.php">
+            <a class="nav-link collapsed" href="">
                 <i class="bi bi-graph-up"></i>
                 <span>Mes performances</span>
             </a>
