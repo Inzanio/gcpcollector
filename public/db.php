@@ -125,29 +125,62 @@ class Database
         $response = curl_exec($ch);
         curl_close($ch);
 
-        return self::toDocument($response);
+        return self::toArrayDocument($response);
     }
 
     public static function queryBuilder($collectionName)
     {
         return new FirestoreQueryBuilder($collectionName);
     }
+
+    /**
+     * Convertit la réponse de Firestore en tableau d'objets
+     * @param string $response La réponse de Firestore au format JSON
+     * @return \MrShan0\PHPFirestore\FireStoreDocument Un tableau d'objets représentant les documents
+     */
+    public static function toDocument($object)
+    {
+            return new FireStoreDocument($object);
+    }
+    // /**
+    //  * Convertit un objet en tableau associatif
+    //  * @param object $object L'objet à convertir
+    //  * @return \MrShan0\PHPFirestore\Fields\FireStoreObject Le tableau associatif représentant l'objet
+    //  */
+    // public static function toFireStoreObject($object)
+    // {
+    //     return self::toDocument($object)->getObject($object);
+    // }
+
+    /**
+     * Convertit la réponse de Firestore en tableau d'objets
+     * @param string $response La réponse de Firestore au format JSON
+     * @return MrShan0\PHPFirestore\FireStoreDocument[]
+     */
     public static function firestoreResponseToObject($response)
     {
+        $response = json_decode($response, true);
+        
         $result = [];
-        foreach ($response as $doc) {
-            if (isset($doc['document'])) {
-                $document = $doc['document'];
-                $name = explode('/', $document['name']);
-                $documentId = end($name);
-                $fields = isset($document['fields']) ? $document['fields'] : [];
-                $data = self::firestoreFieldsToArray($fields);
-                $result[] = (object) [
-                    'id' => $documentId,
-                    'data' => $data,
-                    'createTime' => $document['createTime'],
-                    'updateTime' => $document['updateTime'],
-                ];
+        foreach ($response as $object) {
+            // var_dump($object);
+            // var_dump(FireStoreDocument::isValidDocument($object));
+            
+            if (isset($object['document'])) {
+                $document = $object['document'];
+                if ( FireStoreDocument::isValidDocument($document) ) {
+                    $result[] = self::toDocument($document);
+                }
+                // $name = explode('/', $document['name']);
+                // $documentId = end($name);
+                // $fields = isset($document['fields']) ? $document['fields'] : [];
+                // $data = self::firestoreFieldsToArray($fields);
+                // $result[] = (object) [
+                //     'id' => $documentId,
+                //     'data' => $data,
+                //     'createTime' => $document['createTime'],
+                //     'updateTime' => $document['updateTime'],
+                // ];
             }
         }
         return $result;
@@ -196,15 +229,21 @@ class Database
     //     return FireStoreHelper::decode($response);
     // }
 
-    public static function toDocument($response)
-    {
-        $object = FireStoreHelper::decode($response);
-        return $object;
+    /**
+     * Convertit la réponse de Firestore en tableau associatif
+     * @param string $response La réponse de Firestore au format JSON
+     * @return MrShan0\PHPFirestore\FireStoreDocument[]
+     */
+    public static function toArrayDocument($response)
+    {   
+        //var_dump($response);
+        $docs = self::firestoreResponseToObject($response);
+        
         // if ( FireStoreDocument::isValidDocument($object) ) {
         //     return new FireStoreDocument($object);
-        // } else {
-        //     throw new \Exception('Document does not exist.', FireStoreErrorCodes::DOCUMENT_NOT_FOUND);
-        // }
+        // };
+        // return null;
+        return $docs;
     }
    
 }

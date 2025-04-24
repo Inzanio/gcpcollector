@@ -1,24 +1,29 @@
 <?php
-  require_once("db.php");
-  require_once("models/utilisateur.php");
+require_once("db.php");
+require_once("models/utilisateur.php");
 
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $login = $_POST["login"];
-    $password = $_POST["password"];
-    // N'oubliez pas de sécuriser les données en utilisant des méthodes telles que
-    // htmlspecialchars() ou filter_var() pour éviter les attaques XSS
-    $login = htmlspecialchars($login);
-    $password = htmlspecialchars($password);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $login = $_POST["login"];
+  $password = $_POST["password"];
+  // N'oubliez pas de sécuriser les données en utilisant des méthodes telles que
+  // htmlspecialchars() ou filter_var() pour éviter les attaques XSS
+  $login = htmlspecialchars($login);
+  $password = htmlspecialchars($password);
 
-    // Vous pouvez ensuite utiliser ces variables pour authentifier l'utilisateur
-    // par exemple, en les comparant à des valeurs stockées dans une base de données
-    $result = Utilisateur::login($login,$password);
+  // Vous pouvez ensuite utiliser ces variables pour authentifier l'utilisateur
+  // par exemple, en les comparant à des valeurs stockées dans une base de données
+  $login_result = Utilisateur::login($login, $password);
+  //var_dump($login_result);
+  if ($login_result != false) {
+    //var_dump($login_result);
     session_start();
     #$_SESSION['nom'] = 'Jean';
     header('Location: pages/index.php');
+  }
 
-    // Authentification de l'utilisateur
-    // ...
+
+  // Authentification de l'utilisateur
+  // ...
 }
 ?>
 
@@ -86,6 +91,7 @@
                   <div class="pt-4 pb-2">
                     <h5 class="card-title text-center pb-0 fs-4">Connectez-vous</h5>
                     <p class="text-center small">Entrez votre login et votre mot de passe.</p>
+                    
                   </div>
 
                   <form method="POST" class="row g-3 needs-validation" novalidate>
@@ -102,6 +108,15 @@
                       <label for="yourPassword" class="form-label">Mot de passe</label>
                       <input type="password" name="password" class="form-control" id="yourPassword" required>
                       <div class="invalid-feedback">Entrez votre mot de passe!</div>
+                      <?php 
+                        
+                        if (isset($login_result) && $login_result == false) {
+                          //var_dump($login_result);
+                            ?>
+                              <p class="text-center small text-danger">Login ou mot de passe incorrect.</p>
+                            <?php
+                        } 
+                      ?>
                     </div>
 
                     <div class="col-12">
@@ -123,9 +138,9 @@
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-    <?php
-        require_once("pages/footer.php");
-      ?>
+  <?php
+  require_once("pages/footer.php");
+  ?>
 
 </body>
 
