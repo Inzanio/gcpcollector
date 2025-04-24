@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($login_result != false) {
     //var_dump($login_result);
     session_start();
-    #$_SESSION['nom'] = 'Jean';
+    $_SESSION['user_role'] = $login_result->getRole();
     header('Location: pages/index.php');
   }
 
