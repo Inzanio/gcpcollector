@@ -4,6 +4,7 @@
     $routes = [
         '/' => 'dashboard.php',
         '/login' => 'login.php',
+        '/dashboard' => 'dashboard.php',
     ];
 
     if (isset($routes[$url])) {
