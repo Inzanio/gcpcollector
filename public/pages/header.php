@@ -180,9 +180,9 @@
             <img src="assets/img/profile-img.png" alt="Profile" class="rounded-circle">
             <?php 
               if ($_SESSION["user_role"]=="agent") {
-                echo '<span class="d-none d-md-block ps-2">' .htmlspecialchars($_SESSION['user_role']).'</span>';
+                echo '<span class="d-none d-md-block ps-2">' .htmlspecialchars($_SESSION['user_prenom']) .' '. htmlspecialchars($_SESSION['user_nom']) .'</span>';
               }else {
-                echo '<span class="d-none d-md-block dropdown-toggle ps-2" href=#>' .htmlspecialchars($_SESSION['user_role']).'</span>';
+                echo '<span class="d-none d-md-block dropdown-toggle ps-2" href=#>' .htmlspecialchars($_SESSION['user_prenom']) .' '. htmlspecialchars($_SESSION['user_nom'])  .'</span>';
               }
               
             ?>
@@ -191,7 +191,7 @@
 
           <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"> -->
             <!-- <li class="dropdown-header">
-              <h6><?= htmlspecialchars($_SESSION['user_role']); ?></h6>
+              <h6><?= htmlspecialchars($_SESSION['user_login']); ?></h6>
               <span><?= htmlspecialchars($_SESSION['user_role']); ?></span>
             </li> -->
             <!-- <li>

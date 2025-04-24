@@ -1,4 +1,5 @@
 <?php
+//require_once("routes.php");
 require_once("db.php");
 require_once("models/utilisateur.php");
 
@@ -18,7 +19,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //var_dump($login_result);
     session_start();
     $_SESSION['user_role'] = $login_result->getRole();
-    var_dump($_SESSION['user_role']);
+    $_SESSION['user_matricule'] = $login_result->getMatricule();
+    $_SESSION['user_login'] = $login_result->getLogin();
+    //$_SESSION['user_id'] = $login_result->getId();
+    $_SESSION['user_nom'] = $login_result->getNom();
+    $_SESSION['user_prenom'] = $login_result->getPrenom();
+    //$_SESSION['user_date_naissance'] = $login_result->getDateNaissance()->format('Y-m-d');
+    //var_dump($_SESSION['user_role']);
     header('Location: index.php');
   }
 
