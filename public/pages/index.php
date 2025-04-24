@@ -1,5 +1,7 @@
 <?php
-  if (!isset($_SESSION['user_role']) ) header('Location: ../login.php'); 
+  session_start();
+  var_dump($_SESSION['user_role']);
+  //if (!isset($_SESSION['user_role']) ) header('Location: ../login.php'); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
