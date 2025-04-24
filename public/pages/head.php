@@ -1,11 +1,3 @@
-<?php
-  session_start();
-  var_dump($_SESSION['user_role']);
-  //if (!isset($_SESSION['user_role']) ) header('Location: ../login.php'); 
-?>
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -42,41 +34,3 @@
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
 </head>
-
-<body>
-
-
-  <!-- ======= Header ======= -->
-      <?php
-        require_once("header.php");
-      ?>
-  <!-- End Header -->
-
-  <!-- ======= Sidebar ======= -->
-      <?php
-        
-        require_once("sidebar.php");
-      ?>
-  <!-- End Sidebar-->
-
-  <!-- ======= Main ======= -->
-  <main id="main" class="main">
-      <?php
-      if  ( isset($_SESSION['user_role']) && $_SESSION['user_role'] == "agent"){
-        require_once("contentAgent.php");
-      }
-      //elseif($_SESSION['user_role'])
-        
-      ?>
-  </main>
-  <!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-      <?php
-        require_once("footer.php");
-      ?>
-  <!-- End Footer -->
-
-</body>
-
-</html>
