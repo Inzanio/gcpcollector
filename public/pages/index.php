@@ -1,3 +1,6 @@
+<?php
+  if (!isset($_SESSION['user_role']) ) header('Location: ../login.php'); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,6 +43,7 @@
 
 <body>
 
+
   <!-- ======= Header ======= -->
       <?php
         require_once("header.php");
@@ -48,6 +52,7 @@
 
   <!-- ======= Sidebar ======= -->
       <?php
+        
         require_once("sidebar.php");
       ?>
   <!-- End Sidebar-->
@@ -55,7 +60,11 @@
   <!-- ======= Main ======= -->
   <main id="main" class="main">
       <?php
-        require_once("content.php");
+      if  ( isset($_SESSION['user_role']) && $_SESSION['user_role'] == "agent"){
+        require_once("contentAgent.php");
+      }
+      //elseif($_SESSION['user_role'])
+        
       ?>
   </main>
   <!-- End #main -->
