@@ -10,6 +10,6 @@
     //         $params["secure"], $params["httponly"]
     //     );
     // }
-    header('Location: login.php');
+    header('Location: /login');
     exit();
 ?>

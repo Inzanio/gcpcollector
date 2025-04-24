@@ -1,18 +1,14 @@
 <?php
-$url = $_SERVER['REQUEST_URI'];
+    $url = $_SERVER['REQUEST_URI'];
 
-switch ($url) {
-    case '/':
-        include 'index.php';
-        break;
-    // case '/about':
-    //     include 'about.php';
-    //     break;
-    // case '/contact':
-    //     include 'contact.php';
-    //     break;
-    default:
+    $routes = [
+        '/' => 'dashboard.php',
+        '/login' => 'login.php',
+    ];
+
+    if (isset($routes[$url])) {
+        include $routes[$url];
+    } else {
         include '404.php';
-        break;
-}
+    }
 ?>
