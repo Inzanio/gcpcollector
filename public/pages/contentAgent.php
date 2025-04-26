@@ -157,6 +157,14 @@
         </div>
       </div><!-- End Goals -->
 
+      
+      <div class="text-center mt-4  ">
+            <a href="ajouter-prospect.php" class="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2" style="border-radius: 10px; padding: 15px 25px; font-size: 18px;">
+              <img src="assets/img/add-user.png" alt="Ajouter" width="24" height="24">
+              Ajouter Prospect
+            </a>
+      </div>
+
     </div><!-- End Right column -->
 
   </div>
