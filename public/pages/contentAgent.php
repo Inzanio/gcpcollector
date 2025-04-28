@@ -158,9 +158,9 @@
       </div><!-- End Goals -->
 
       
-      <div id="btn-ajouter-prospect" class="position-fixed" style="bottom: 100px; right: 60px; z-index: 1;" >
+      <div id="btn-ajouter-prospect" class="position-fixed" style="bottom: 100px; right: 50px; z-index: 1;" >
         <a href="./forms/ajouter-prospect.php" class="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2 shadow" 
-          style="border-radius: 15px; padding: 15px 25px;">
+          style="border-radius: 15px; padding: 15px 25px; background-color: #4154f1; border-color: #4154f1; color: white;"">
             <i class="bi bi-plus"></i>
             Ajouter Prospect
         </a>
