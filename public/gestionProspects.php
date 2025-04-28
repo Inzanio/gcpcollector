@@ -39,7 +39,7 @@ require_once("pages/head.php");
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Liste des Prospects</h5>
-                            <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable. Check for <a href="https://fiduswriter.github.io/simple-datatables/demos/" target="_blank">more examples</a>.</p>
+                            <p></p>
 
                             <!-- Table with stripped rows -->
                             <div class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
@@ -64,104 +64,95 @@ require_once("pages/head.php");
                                     <table class="table datatable datatable-table">
                                         <thead>
                                             <tr>
-                                                <th data-sortable="true" style="width: 20.825852782764812%;"><button class="datatable-sorter">
-                                                        <b>N</b>ame
-                                                    </button></th>
-                                                <th data-sortable="true" style="width: 11.131059245960502%;"><button class="datatable-sorter">Ext.</button></th>
-                                                <th data-sortable="true" style="width: 26.750448833034113%;"><button class="datatable-sorter">City</button></th>
-                                                <th data-format="YYYY/DD/MM" data-sortable="true" data-type="date" style="width: 18.850987432675044%;"><button class="datatable-sorter">Start Date</button></th>
-                                                <th data-sortable="true" class="red" style="width: 22.44165170556553%;"><button class="datatable-sorter">Completion</button></th>
+                                                <?php
+                                                $columns = [
+                                                    ['label' => '<b>N</b>ame', 'sortable' => true, 'style' => 'width: 20.825852782764812%;'],
+                                                    ['label' => 'Ext.', 'sortable' => true, 'style' => 'width: 11.131059245960502%;'],
+                                                    ['label' => 'City', 'sortable' => true, 'style' => 'width: 26.750448833034113%;'],
+                                                    ['label' => 'Start Date', 'sortable' => true, 'style' => 'width: 18.850987432675044%;', 'format' => 'YYYY/DD/MM', 'type' => 'date'],
+                                                    ['label' => 'Completion', 'sortable' => true, 'style' => 'width: 22.44165170556553%;', 'class' => 'red']
+                                                ];
+
+                                                foreach ($columns as $column) {
+                                                    $sortable = $column['sortable'] ? 'data-sortable="true"' : '';
+                                                    $style = isset($column['style']) ? "style=\"{$column['style']}\"" : '';
+                                                    $format = isset($column['format']) ? "data-format=\"{$column['format']}\"" : '';
+                                                    $type = isset($column['type']) ? "data-type=\"{$column['type']}\"" : '';
+                                                    $class = isset($column['class']) ? "class=\"{$column['class']}\"" : '';
+
+                                                    echo "<th $sortable $style $format $type $class>
+                                                            <button class=\"datatable-sorter\">{$column['label']}</button>
+                                                          </th>";
+                                                }
+                                                ?>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr data-index="0">
-                                                <td>Unity Pugh</td>
-                                                <td>9958</td>
-                                                <td>Curicó</td>
-                                                <td>2005/02/11</td>
-                                                <td class="green">37%</td>
-                                            </tr>
-                                            <tr data-index="1">
-                                                <td>Theodore Duran</td>
-                                                <td>8971</td>
-                                                <td>Dhanbad</td>
-                                                <td>1999/04/07</td>
-                                                <td class="green">97%</td>
-                                            </tr>
-                                            <tr data-index="2">
-                                                <td>Kylie Bishop</td>
-                                                <td>3147</td>
-                                                <td>Norman</td>
-                                                <td>2005/09/08</td>
-                                                <td class="green">63%</td>
-                                            </tr>
-                                            <tr data-index="3">
-                                                <td>Willow Gilliam</td>
-                                                <td>3497</td>
-                                                <td>Amqui</td>
-                                                <td>2009/29/11</td>
-                                                <td class="green">30%</td>
-                                            </tr>
-                                            <tr data-index="4">
-                                                <td>Blossom Dickerson</td>
-                                                <td>5018</td>
-                                                <td>Kempten</td>
-                                                <td>2006/11/09</td>
-                                                <td class="green">17%</td>
-                                            </tr>
-                                            <tr data-index="5">
-                                                <td>Elliott Snyder</td>
-                                                <td>3925</td>
-                                                <td>Enines</td>
-                                                <td>2006/03/08</td>
-                                                <td class="green">57%</td>
-                                            </tr>
-                                            <tr data-index="6">
-                                                <td>Castor Pugh</td>
-                                                <td>9488</td>
-                                                <td>Neath</td>
-                                                <td>2014/23/12</td>
-                                                <td class="green">93%</td>
-                                            </tr>
-                                            <tr data-index="7">
-                                                <td>Pearl Carlson</td>
-                                                <td>6231</td>
-                                                <td>Cobourg</td>
-                                                <td>2014/31/08</td>
-                                                <td class="green">100%</td>
-                                            </tr>
-                                            <tr data-index="8">
-                                                <td>Deirdre Bridges</td>
-                                                <td>1579</td>
-                                                <td>Eberswalde-Finow</td>
-                                                <td>2014/26/08</td>
-                                                <td class="green">44%</td>
-                                            </tr>
-                                            <tr data-index="9">
-                                                <td>Daniel Baldwin</td>
-                                                <td>6095</td>
-                                                <td>Moircy</td>
-                                                <td>2000/11/01</td>
-                                                <td class="green">33%</td>
-                                            </tr>
+                                            <?php
+                                            $prospects = [
+                                                ['name' => 'Unity Pugh', 'ext' => '9958', 'city' => 'Curicó', 'start_date' => '2005/02/11', 'completion' => '37%'],
+                                                ['name' => 'Theodore Duran', 'ext' => '8971', 'city' => 'Dhanbad', 'start_date' => '1999/04/07', 'completion' => '97%'],
+                                                ['name' => 'Kylie Bishop', 'ext' => '3147', 'city' => 'Norman', 'start_date' => '2005/09/08', 'completion' => '63%'],
+                                                ['name' => 'Willow Gilliam', 'ext' => '3497', 'city' => 'Amqui', 'start_date' => '2009/29/11', 'completion' => '30%'],
+                                                ['name' => 'Blossom Dickerson', 'ext' => '5018', 'city' => 'Kempten', 'start_date' => '2006/11/09', 'completion' => '17%'],
+                                                ['name' => 'Elliott Snyder', 'ext' => '3925', 'city' => 'Enines', 'start_date' => '2006/03/08', 'completion' => '57%'],
+                                                ['name' => 'Castor Pugh', 'ext' => '9488', 'city' => 'Neath', 'start_date' => '2014/23/12', 'completion' => '93%'],
+                                                ['name' => 'Pearl Carlson', 'ext' => '6231', 'city' => 'Cobourg', 'start_date' => '2014/31/08', 'completion' => '100%'],
+                                                ['name' => 'Deirdre Bridges', 'ext' => '1579', 'city' => 'Eberswalde-Finow', 'start_date' => '2014/26/08', 'completion' => '44%'],
+                                                ['name' => 'Daniel Baldwin', 'ext' => '6095', 'city' => 'Moircy', 'start_date' => '2000/11/01', 'completion' => '33%'],
+                                            ];
+
+                                            foreach ($prospects as $index => $prospect) {
+                                                echo "<tr data-index=\"$index\">
+                                                        <td>{$prospect['name']}</td>
+                                                        <td>{$prospect['ext']}</td>
+                                                        <td>{$prospect['city']}</td>
+                                                        <td>{$prospect['start_date']}</td>
+                                                        <td class=\"green\">{$prospect['completion']}</td>
+                                                      </tr>";
+                                            }
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="datatable-bottom">
-                                    <div class="datatable-info">Showing 1 to 10 of 100 entries</div>
+                                    <div class="datatable-info">
+                                        <?php
+                                        $currentPage = 1;
+                                        $perPage = 10;
+                                        $totalEntries = 100;
+                                        $startEntry = ($currentPage - 1) * $perPage + 1;
+                                        $endEntry = min($startEntry + $perPage - 1, $totalEntries);
+                                        echo "Showing $startEntry to $endEntry of $totalEntries entries";
+                                        ?>
+                                    </div>
                                     <nav class="datatable-pagination">
                                         <ul class="datatable-pagination-list">
-                                            <li class="datatable-pagination-list-item datatable-hidden datatable-disabled"><button data-page="1" class="datatable-pagination-list-item-link" aria-label="Page 1">‹</button></li>
-                                            <li class="datatable-pagination-list-item datatable-active"><button data-page="1" class="datatable-pagination-list-item-link" aria-label="Page 1">1</button></li>
-                                            <li class="datatable-pagination-list-item"><button data-page="2" class="datatable-pagination-list-item-link" aria-label="Page 2">2</button></li>
-                                            <li class="datatable-pagination-list-item"><button data-page="3" class="datatable-pagination-list-item-link" aria-label="Page 3">3</button></li>
-                                            <li class="datatable-pagination-list-item"><button data-page="4" class="datatable-pagination-list-item-link" aria-label="Page 4">4</button></li>
-                                            <li class="datatable-pagination-list-item"><button data-page="5" class="datatable-pagination-list-item-link" aria-label="Page 5">5</button></li>
-                                            <li class="datatable-pagination-list-item"><button data-page="6" class="datatable-pagination-list-item-link" aria-label="Page 6">6</button></li>
-                                            <li class="datatable-pagination-list-item"><button data-page="7" class="datatable-pagination-list-item-link" aria-label="Page 7">7</button></li>
-                                            <li class="datatable-pagination-list-item datatable-ellipsis datatable-disabled"><button class="datatable-pagination-list-item-link">…</button></li>
-                                            <li class="datatable-pagination-list-item"><button data-page="10" class="datatable-pagination-list-item-link" aria-label="Page 10">10</button></li>
-                                            <li class="datatable-pagination-list-item"><button data-page="2" class="datatable-pagination-list-item-link" aria-label="Page 2">›</button></li>
+                                            <?php
+                                            $totalPages = ceil($totalEntries / $perPage);
+                                            $prevPage = max(1, $currentPage - 1);
+                                            $nextPage = min($totalPages, $currentPage + 1);
+
+                                            // Previous button
+                                            $prevDisabled = $currentPage == 1 ? 'datatable-disabled' : '';
+                                            echo "<li class=\"datatable-pagination-list-item $prevDisabled\">
+                                                    <button data-page=\"$prevPage\" class=\"datatable-pagination-list-item-link\" aria-label=\"Page $prevPage\">‹</button>
+                                                  </li>";
+
+                                            // Page numbers
+                                            for ($page = 1; $page <= $totalPages; $page++) {
+                                                $activeClass = $page == $currentPage ? 'datatable-active' : '';
+                                                echo "<li class=\"datatable-pagination-list-item $activeClass\">
+                                                        <button data-page=\"$page\" class=\"datatable-pagination-list-item-link\" aria-label=\"Page $page\">$page</button>
+                                                      </li>";
+                                            }
+
+                                            // Next button
+                                            $nextDisabled = $currentPage == $totalPages ? 'datatable-disabled' : '';
+                                            echo "<li class=\"datatable-pagination-list-item $nextDisabled\">
+                                                    <button data-page=\"$nextPage\" class=\"datatable-pagination-list-item-link\" aria-label=\"Page $nextPage\">›</button>
+                                                  </li>";
+                                            ?>
                                         </ul>
                                     </nav>
                                 </div>

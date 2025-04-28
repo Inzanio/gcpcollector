@@ -37,7 +37,7 @@
             <div class="col-md-12">
                 <div class="form-floating">
                 <input type="text" class="form-control" id="floatingName" placeholder="Your Name">
-                <label for="floatingName">Your Name</label>
+                <label for="floatingName">Nom du propsect</label>
                 </div>
             </div>
             <div class="col-md-6">
@@ -86,7 +86,8 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <button type="reset" class="btn btn-secondary">Reset</button>
             </div>
-            </form><!-- End floating Labels Form -->
+            </form>
+            <!-- End floating Labels Form -->
         </div>
     </div>
   </main>

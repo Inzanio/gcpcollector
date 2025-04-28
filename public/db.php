@@ -3,8 +3,7 @@
 require __DIR__ . '/vendor/autoload.php';
 use \MrShan0\PHPFirestore\FireStoreApiClient;
 use \MrShan0\PHPFirestore\FireStoreDocument;
-use \MrShan0\PHPFirestore\FireStoreErrorCodes;
-use \MrShan0\PHPFirestore\Helpers\FireStoreHelper;
+
 
 /**
  * Classe qui gère les interactions avec la base de données Firestore via l'API REST
@@ -349,5 +348,6 @@ class FirestoreQueryBuilder
         return $query;
     }
 }
+# initialisation de l'API Firestore
 Database::getFirestore();
 ?>

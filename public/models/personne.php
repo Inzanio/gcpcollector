@@ -35,20 +35,36 @@ class Personne
     private string $adresse;
 
     /**
+     * Genre de la personne
+     * @var string
+     */
+    private string $genre;
+
+    /**
+     * Email de la personne
+     * @var string
+     */
+    private string $email;
+
+    /**
      * Constructeur de la classe Personne
      * @param string $nom Nom de la personne
      * @param string $prenom Prénom de la personne
      * @param DateTime $dateNaissance Date de naissance de la personne
      * @param string[] $telephone Liste des numéros de téléphone de la personne (optionnel)
      * @param string $adresse Adresse de la personne (optionnel)
+     * @param string $genre Genre de la personne (optionnel)
+     * @param string $email Email de la personne (optionnel)
      */
-    public function __construct(string $nom, string $prenom, DateTime $dateNaissance, array $telephone = [], string $adresse = "")
+    public function __construct(string $nom, string $prenom, DateTime $dateNaissance, array $telephone = [], string $adresse = "", string $genre = "", string $email = "")
     {
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->dateNaissance = $dateNaissance;
         $this->telephone = $telephone;
         $this->adresse = $adresse;
+        $this->genre = $genre;
+        $this->email = $email;
     }
 
     /**
@@ -150,6 +166,42 @@ class Personne
     public function setAdresse(string $adresse): void
     {
         $this->adresse = $adresse;
+    }
+
+    /**
+     * Récupère le genre de la personne
+     * @return string
+     */
+    public function getGenre(): string
+    {
+        return $this->genre;
+    }
+
+    /**
+     * Modifie le genre de la personne
+     * @param string $genre Nouveau genre
+     */
+    public function setGenre(string $genre): void
+    {
+        $this->genre = $genre;
+    }
+
+    /**
+     * Récupère l'email de la personne
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * Modifie l'email de la personne
+     * @param string $email Nouvel email
+     */
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
     }
 }
 ?>
