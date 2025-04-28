@@ -136,7 +136,7 @@
       </div><!-- End Agenda -->
 
       <!-- Objectifs -->
-      <div class="card">
+      <div class="card" style=" z-index: 2;">
         <div class="card-body">
           <h5 class="card-title">Mes objectifs</h5>
           <div class="progress mb-3">
@@ -156,6 +156,15 @@
           </div>
         </div>
       </div><!-- End Goals -->
+
+      
+      <div id="btn-ajouter-prospect" class="position-fixed" style="bottom: 100px; right: 50px; z-index: 1;" >
+        <a href="./forms/ajouter-prospect.php" class="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2 shadow" 
+          style="border-radius: 15px; padding: 15px 25px; background-color: #4154f1; border-color: #4154f1; color: white;"">
+            <i class="bi bi-plus"></i>
+            Ajouter Prospect
+        </a>
+      </div>
 
     </div><!-- End Right column -->
 
