@@ -284,7 +284,7 @@ class ProspectService
         $data = [
             ["path" => "nom", "value" => $prospect->getNom()],
             ["path" => "prenom", "value" => $prospect->getPrenom()],
-            ["path" => "dateNaissance", "value" => $prospect->getDateNaissance()->format("Y-m-d")],
+            ["path" => "dateNaissance", "value" => $prospect->getDateNaissance()],
             ["path" => "telephone", "value" => $prospect->getTelephone()],
             ["path" => "adresse", "value" => $prospect->getAdresse()],
             ["path" => "profession", "value" => $prospect->getProfession()],
