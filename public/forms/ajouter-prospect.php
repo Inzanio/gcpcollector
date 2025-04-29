@@ -47,10 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!$result) {
         $error_message = "Erreur lors de l'enregistrement du prospect.";
     } else {
+
         $error_message = "Prospect enregistré avec succès.";
         // Redirection ou autre action après l'enregistrement réussi
-        // header("Location: /success.php"); // Exemple de redirection
-        // exit();
+        header("Location: /gestionProspects.php"); // redirection vers la liste des prospects
+        exit();
     } 
 }
 ?>
@@ -117,7 +118,7 @@ require_once("../pages/head.php");
                     <div class="col-md-6">
                         <div class="form-floating">
                             <select name="genre" class="form-select" id="floatingGenre" required>
-                                <option value="">Sélectionner le genre</option>
+                                <option value="" disabled selected>Sélectionner le genre</option>
                                 <option value="Homme">Homme</option>
                                 <option value="Femme">Femme</option>
                             </select>
@@ -138,7 +139,7 @@ require_once("../pages/head.php");
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <select name="profession" class="form-select" id="profession" required>
-                                <option selected="">Sélectionner une profession</option>
+                                <option value="" disabled selected>Sélectionner une profession</option>
                                 <?php foreach ($options as $value => $text) : ?>
                                     <option value="<?php echo $value; ?>"><?php echo $text; ?></option>
                                 <?php endforeach; ?>

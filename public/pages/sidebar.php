@@ -1,7 +1,8 @@
 <?php
     $currentUri = $_SERVER['REQUEST_URI'];
     $dashboardActivity = ($currentUri === '/') ? 'active' : 'collapsed';
-    $gestProspectActivity = (strpos($currentUri, "rospect")) ? 'active' : 'collapsed';
+    $gestProspectActivity = (strpos(strtolower($currentUri), "prospect")) ? 'active' : 'collapsed';
+    //$gestProspectActivity = (strpos($currentUri, "rospect")) ? 'active' : 'collapsed';
     $performancesActivity = ($currentUri === '/performances.php') ? 'active' : 'collapsed';
 ?>
 <aside id="sidebar" class="sidebar">
