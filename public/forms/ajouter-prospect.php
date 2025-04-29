@@ -8,16 +8,16 @@ if (!isset($_SESSION['user_id'])) header('Location: /login');
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupération des données du formulaire
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    $dateNaissance = new DateTime($_POST['dateNaissance']);
-    $telephone = $_POST['telephone'];
-    $profession = $_POST['profession'];
+    $nom = trim(htmlspecialchars($_POST['nom'] ?? ''));
+    $prenom = trim(htmlspecialchars($_POST['prenom'] ?? ''));
+    $dateNaissance = !empty($_POST['dateNaissance']) ? new DateTime($_POST['dateNaissance']) : null;
+    $telephone = trim(htmlspecialchars($_POST['telephone'] ?? ''));
+    $profession = trim(htmlspecialchars($_POST['profession'] ?? ''));
     $connaissanceBanque = isset($_POST['connaissanceBanque']) ? true : false;
-    $produitsInteresse = $_POST['produitsInteresse'];
-    $email = $_POST['email'];
-    $commentaire = $_POST['commentaire'];
-    $genre = $_POST['genre'];
+    $produitsInteresse = $_POST['produitsInteresse'] ?? [];
+    $email = trim(htmlspecialchars($_POST['email'] ?? ''));
+    $commentaire = trim(htmlspecialchars($_POST['commentaire'] ?? ''));
+    $genre = trim(htmlspecialchars($_POST['genre'] ?? ''));
 
     // Création d'un objet Prospect
     require_once("../models/Prospect.php");
