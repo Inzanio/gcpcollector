@@ -107,11 +107,11 @@ class Personne
 
     /**
      * Récupère la date de naissance de la personne
-     * @return DateTime
+     * @return string
      */
-    public function getDateNaissance(): DateTime
+    public function getDateNaissance(): string
     {
-        return $this->dateNaissance;
+        return $this->dateNaissance->format("Y-m-d");
     }
 
     /**

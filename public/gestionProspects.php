@@ -8,13 +8,11 @@ if (!isset($_SESSION['user_role'])) header('Location: /login');
 //       exit();
 //   }
 
-
+//require_once ("./models/prospect.php");
 // Fonction pour récupérer les prospects depuis Firebase
-function getProspectsFromFirebase() {
-    // À implémenter selon votre SDK Firebase
-    // Retourne un tableau de prospects ou un tableau vide pour l'exemple
-    return [];
-}
+
+// $prospects_ = ProspectService::getAllProspects();
+// var_dump($prospects_);
 
 
 $prospects = [
@@ -91,7 +89,7 @@ require_once("pages/head.php");
                                                         <td><?= htmlspecialchars($prospect['profession']) ?></td>
                                                         <td><?= htmlspecialchars($prospect['telephone']) ?></td>
                                                         <td>
-                                                            <a href="/forms/ajouter-prospect.php?id=<?= urlencode($prospect['id'] ?? '') ?>" 
+                                                            <a href="/forms/modifier-prospect.php?id=<?= urlencode($prospect['id'] ?? '') ?>" 
                                                             class="btn btn-outline-warning">
                                                                 <i class="bi bi-pencil me-2"></i>Modifier
                                                             </a>

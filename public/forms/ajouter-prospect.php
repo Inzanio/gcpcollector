@@ -41,9 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Enregistrement du prospect
     // var_dump($prospect);
 
-    // var_dump($prospect->toArray());
+    //var_dump($prospect->toArray());
     $result = ProspectService::createProspect($prospect);
-    // var_dump($result);
     // Traitement du résultat
     if (!$result) {
         $error_message = "Erreur lors de l'enregistrement du prospect.";

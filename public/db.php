@@ -157,7 +157,7 @@ class Database
      * @param string $response La réponse de Firestore au format JSON
      * @return MrShan0\PHPFirestore\FireStoreDocument[]
      */
-    public static function firestoreResponseToObject($response)
+    public static function firestoreQueryResponseToObject($response)
     {
         $response = json_decode($response, true);
         
@@ -237,7 +237,7 @@ class Database
     public static function toArrayDocument($response)
     {   
         //var_dump($response);
-        $docs = self::firestoreResponseToObject($response);
+        $docs = self::firestoreQueryResponseToObject($response);
         
         // if ( FireStoreDocument::isValidDocument($object) ) {
         //     return new FireStoreDocument($object);

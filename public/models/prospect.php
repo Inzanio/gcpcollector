@@ -1,6 +1,6 @@
 <?php
 
-require_once "../models/personne.php";
+require_once "personne.php";
 
 class Prospect extends Personne
 {
@@ -61,6 +61,11 @@ class Prospect extends Personne
 
 
     /**
+     * id prospect
+     */
+    private string $docId;
+
+    /**
      * 
      */
     private string $idAgence;
@@ -92,6 +97,9 @@ class Prospect extends Personne
         $this->setproduitsInteresse($produitsInteresse);
         $this->connaissanceBanque = $connaissanceBanque;
         $this->idAgentProspecteur = $idAgentProspecteur;
+        $this->commentaire = "";
+        $this->docId = "";
+        $this->idAgence = "";
     }
 
     /**
@@ -209,6 +217,23 @@ class Prospect extends Personne
     {
         $this->idAgence = $idAgence;
     }
+    /**
+     * Récupère l'ID du prospect
+     * @return string
+     */
+    public function getDocId(): string
+    {
+        return $this->docId;
+    }
+
+    /**
+     * Modifie l'ID du prospect
+     * @param string $id Nouvel ID du prospect
+     */
+    public function setDocId(string $getDocId): void
+    {
+        $this->docId = $getDocId;
+    }
 }
 
 require_once "../db.php";
@@ -230,18 +255,7 @@ class ProspectService
      */
     public static function createProspect(Prospect $prospect)
     {
-        // Préparation des données pour la création
-        // $data = [
-        //     "nom" => $prospect->getNom(),
-        //     "prenom" => $prospect->getPrenom(),
-        //     "dateNaissance" => $prospect->getDateNaissance()->format("Y-m-d"),
-        //     "telephone" => $prospect->getTelephone(),
-        //     "adresse" => $prospect->getAdresse(),
-        //     "profession" => $prospect->getProfession(),
-        //     "produitsInteresse" => $prospect->getproduitsInteresse(),
-        //     "connaissanceBanque" => $prospect->getConnaissanceBanque(),
-        //     "idAgentProspecteur" => $prospect->getIdAgentProspecteur()
-        // ];
+        
         if (self::prospectExist($prospect)) {
             return false;
         }
@@ -250,6 +264,11 @@ class ProspectService
 
         // Appel de la méthode de création de document dans la classe Database
         $result = Database::createDocument(self::$collectionName, $documentId, $prospect->toArray());
+        $error = json_decode($result, true);
+        if (isset($error["error"])) {
+            var_dump($error["error"]);
+            return false;
+        }
         return $result;
     }
 
@@ -323,6 +342,11 @@ class ProspectService
         if (isset($data['idAgence'])) {
             $prospect->setIdAgence($data['idAgence']);
         }
+        // Récupération de l'ID du document Firestore
+        $id = Database::getDocumentIdFromName($doc->getName());
+
+        // Définition de l'ID du prospect
+        $prospect->getDocId($id);
         return $prospect;
     }
     /**
@@ -356,6 +380,12 @@ class ProspectService
         //     }
 
     }
+    /**
+     * * Récupère tous les prospects
+     * @param string|null $idAgentProspecteur - l'ID de l'agent prospecteur (optionnel)
+     * @param string|null $idAgence - l'ID de l'agence (optionnel)
+     * @return Prospect[] - la liste des prospects
+     */
     public static function getAllProspects($idAgentProspecteur = null, $idAgence = null)
     {
         // Appel de la méthode de récupération de tous les documents dans la classe Database
@@ -366,10 +396,14 @@ class ProspectService
         if ($idAgence != null) {
             $queryBuilder->where('idAgence', 'EQUAL', $idAgence);
         }
-        
+
         $query = $queryBuilder->build();
         $result = Database::query($query);
-        return $result;
+        // Transformation des documents Firestore en objets Prospect
+        $prospects = array_map(function ($doc) {
+            return self::fromFirestoreDocument($doc);
+        }, $result);
+        return $prospects;
     }
     /**
      * * Récupère un prospect par son ID
@@ -382,5 +416,4 @@ class ProspectService
         $result = Database::getDocument(self::$collectionName, $prospectId);
         return self::fromFirestoreDocument($result);
     }
-
 }
