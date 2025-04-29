@@ -1,5 +1,4 @@
 <div class="pagetitle">
-  <h1>Tableau de Bord</h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="">Accueil</a></li>
@@ -15,11 +14,11 @@
     <div class="col-lg-8">
       <div class="row">
 
-        <!-- Carte Prospects -->
+        <!-- Carte Prospects Personnels -->
         <div class="col-md-6">
           <div class="card info-card prospects-card">
             <div class="card-body">
-              <h5 class="card-title">Prospects <span>| Ce mois</span></h5>
+              <h5 class="card-title">Prospects enregistrés <span>| Ce mois</span></h5>
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-people"></i>
@@ -27,31 +26,69 @@
                 <div class="ps-3">
                   <h6>84</h6>
                   <span class="text-success small pt-1 fw-bold">12%</span>
-                  <span class="text-muted small pt-2 ps-1">augmentation</span>
+                  <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
                 </div>
               </div>
             </div>
           </div>
         </div><!-- End Prospects Card -->
 
-        <!-- Carte Rendez-vous -->
+        <!-- Carte Taux Conversion Personnel -->
         <div class="col-md-6">
-          <div class="card info-card meetings-card">
+          <div class="card info-card conversion-card">
             <div class="card-body">
-              <h5 class="card-title">Rendez-vous <span>| Cette semaine</span></h5>
+              <h5 class="card-title">Taux de conversion <span>| Ce mois</span></h5>
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-calendar-check"></i>
+                  <i class="bi bi-graph-up"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>15</h6>
-                  <span class="text-success small pt-1 fw-bold">8%</span>
-                  <span class="text-muted small pt-2 ps-1">augmentation</span>
+                  <h6>5.2%</h6>
+                  <span class="text-success small pt-1 fw-bold">0.8%</span>
+                  <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
                 </div>
               </div>
             </div>
           </div>
-        </div><!-- End Meetings Card -->
+        </div><!-- End Conversion Card -->
+
+        <!-- Carte Prospects Globaux -->
+        <div class="col-md-6">
+          <div class="card info-card global-prospects-card">
+            <div class="card-body">
+              <h5 class="card-title">Prospects agence <span>| Ce mois</span></h5>
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-building"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>245</h6>
+                  <span class="text-success small pt-1 fw-bold">15%</span>
+                  <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End Global Prospects Card -->
+
+        <!-- Carte Taux Conversion Global -->
+        <div class="col-md-6">
+          <div class="card info-card global-conversion-card">
+            <div class="card-body">
+              <h5 class="card-title">Taux conversion agence <span>| Ce mois</span></h5>
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-bar-chart"></i>
+                </div>
+                <div class="ps-3">
+                  <h6>6.8%</h6>
+                  <span class="text-success small pt-1 fw-bold">1.2%</span>
+                  <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End Global Conversion Card -->
 
         <!-- Graphique Activité -->
         <div class="col-12">
@@ -108,8 +145,36 @@
     <!-- Colonne secondaire -->
     <div class="col-lg-4">
 
+      <!-- Objectifs Prospecteur -->
+      <div class="card" style="z-index: 2;">
+        <div class="card-body">
+          <h5 class="card-title">Mes objectifs</h5>
+          
+          <h6 class="card-subtitle mb-2 text-muted">Prospection</h6>
+          <div class="progress mb-3">
+            <div class="progress-bar bg-primary" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
+              85% (85/100 prospects)
+            </div>
+          </div>
+          
+          <h6 class="card-subtitle mb-2 text-muted">Taux de conversion</h6>
+          <div class="progress mb-3">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
+              65% (6.5% sur objectif 10%)
+            </div>
+          </div>
+          
+          <h6 class="card-subtitle mb-2 text-muted">Objectif agence</h6>
+          <div class="progress">
+            <div class="progress-bar bg-info" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+              75% (6.8% sur objectif 9%)
+            </div>
+          </div>
+        </div>
+      </div><!-- End Goals -->
+
       <!-- Agenda -->
-      <div class="card">
+      <div class="card" style="z-index: 2;">
         <div class="card-body">
           <h5 class="card-title">Mon agenda <span>| Aujourd'hui</span></h5>
           <div class="activity">
@@ -135,32 +200,46 @@
         </div>
       </div><!-- End Agenda -->
 
-      <!-- Objectifs -->
-      <div class="card" style=" z-index: 2;">
+      <!-- Classement -->
+      <div class="card" style="z-index: 2;">
         <div class="card-body">
-          <h5 class="card-title">Mes objectifs</h5>
-          <div class="progress mb-3">
-            <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-              Prospects (75%)
+          <h5 class="card-title">Classement agence <span>| Ce mois</span></h5>
+          <div class="ranking-list">
+            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+              <div class="d-flex align-items-center">
+                <span class="badge bg-primary me-2">1</span>
+                <span>Marie Durand</span>
+              </div>
+              <span class="text-success fw-bold">8.2%</span>
             </div>
-          </div>
-          <div class="progress mb-3">
-            <div class="progress-bar bg-info" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
-              Rendez-vous (60%)
+            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+              <div class="d-flex align-items-center">
+                <span class="badge bg-secondary me-2">2</span>
+                <span>Jean Petit</span>
+              </div>
+              <span class="text-success fw-bold">7.5%</span>
             </div>
-          </div>
-          <div class="progress">
-            <div class="progress-bar bg-warning" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
-              Conversions (45%)
+            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+              <div class="d-flex align-items-center">
+                <span class="badge bg-warning me-2">3</span>
+                <span>Vous</span>
+              </div>
+              <span class="text-success fw-bold">5.2%</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center py-2">
+              <div class="d-flex align-items-center">
+                <span class="badge bg-light text-dark me-2">4</span>
+                <span>Luc Martin</span>
+              </div>
+              <span class="text-muted">4.8%</span>
             </div>
           </div>
         </div>
-      </div><!-- End Goals -->
+      </div><!-- End Ranking -->
 
-      
-      <div id="btn-ajouter-prospect" class="position-fixed" style="bottom: 100px; right: 50px; z-index: 1;" >
+      <div id="btn-ajouter-prospect" class="position-fixed" style="bottom: 100px; right: 50px; z-index: 1;">
         <a href="./forms/ajouter-prospect.php" class="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2 shadow" 
-          style="border-radius: 15px; padding: 15px 25px; background-color: #4154f1; border-color: #4154f1; color: white;"">
+          style="border-radius: 15px; padding: 15px 25px; background-color: #4154f1; border-color: #4154f1; color: white;">
             <i class="bi bi-plus"></i>
             Ajouter Prospect
         </a>
