@@ -84,7 +84,7 @@ require_once("../pages/head.php");
                 <form class="row g-3" action="" method="POST">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="nom" type="text" class="form-control" id="floatingName" placeholder="Nom du Prospect">
+                            <input name="nom" type="text" class="form-control" id="floatingName" placeholder="Nom du Prospect" required>
                             <label for="floatingName">Nom</label>
                         </div>
                     </div>
@@ -108,13 +108,13 @@ require_once("../pages/head.php");
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="telephone" type="text" class="form-control" id="floatingTelephone" placeholder="Téléphone du Prospect" name="telephone">
-                            <label for="floatingTelephone">Téléphone</label>
+                            <input name="telephone" type="text" class="form-control" id="floatingTelephone" placeholder="Téléphone du Prospect" name="telephone" required>
+                            <label for="floatingTelephone"require>Téléphone</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <select name="genre" class="form-select" id="floatingGenre">
+                            <select name="genre" class="form-select" id="floatingGenre" required>
                                 <option value="">Sélectionner le genre</option>
                                 <option value="Homme">Homme</option>
                                 <option value="Femme">Femme</option>
@@ -135,14 +135,21 @@ require_once("../pages/head.php");
                     ?>
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <select name="profession" class="form-select" aria-label="Default select example">
-                                <option selected="">Open this select menu</option>
+                            <select name="profession" class="form-select" id="profession" required>
+                                <option selected="">Sélectionner une profession</option>
                                 <?php foreach ($options as $value => $text) : ?>
                                     <option value="<?php echo $value; ?>"><?php echo $text; ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <label for="profession">Profession</label>
                         </div>
+
+                        <!-- Saisie libre si 'Autre' -->
+                        <!-- <div class="form-floating mb-3 d-none" id="autreProfessionDiv">
+                            <input type="text" name="autreProfession" id="autreProfession" class="form-control" placeholder="Votre profession">
+                            <label for="autreProfession">Précisez la profession</label>
+                        </div> -->
+
                     </div>
                     <!-- <div class="col-md-4">
                         <div class="form-floating mb-3">
@@ -158,8 +165,10 @@ require_once("../pages/head.php");
                         <div class="form-floating">
                             <input name="connaissanceBanque" class="form-check-input" type="checkbox" id="connaissanceBanque">
                             <label class="form-check-label" for="connaissanceBanque">Connaissance de la banque</label>
+        
                         </div>
                     </div>
+                    
                     <?php
                     $produits = [
                         "Épargne" => "Épargne",

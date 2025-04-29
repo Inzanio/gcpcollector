@@ -7,6 +7,34 @@ if (!isset($_SESSION['user_role'])) header('Location: /login');
 //       header('Location: /login');
 //       exit();
 //   }
+
+
+// Fonction pour récupérer les prospects depuis Firebase
+function getProspectsFromFirebase() {
+    // À implémenter selon votre SDK Firebase
+    // Retourne un tableau de prospects ou un tableau vide pour l'exemple
+    return [];
+}
+
+
+$prospects = [
+    [
+        'nom' => 'Martin Dupont',
+        'profession' => 'ABC Corp',
+        'telephone' => 'Relance téléphonique'
+    ],
+    [
+        'nom' => 'Sophie Lambert',
+        'profession' => 'XYZ SA',
+        'telephone' => 'Envoi contrat'
+    ],
+    [
+        'nom' => 'Pierre Moreau',
+        'profession' => '123 Industries',
+        'telephone' => 'Préparation présentation'
+    ]
+];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,40 +71,35 @@ require_once("pages/head.php");
                             <p></p>
 
                             <!-- Table with stripped rows -->
+                            
                             <div class="col-12">
                                 <div class="card recent-prospects">
                                     <div class="card-body">
-                                    <table class="table table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>Nom</th>
-                                            <th>Profession</th>
-                                            <th>Numéro Téléphone</th>
-                                            <th>Action</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>Martin Dupont</td>
-                                            <td>ABC Corp</td>
-                                            <td>Relance téléphonique</td>
-                                            <td ><a href="/forms/ajouter-prospect.php" ><span class="btn btn-outline-warning"><i class="bi bi-pencil me-2"></i>Modifier </a></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sophie Lambert</td>
-                                            <td>XYZ SA</td>
-                                            <td>Envoi contrat</td>
-                                            <td ><a href="/forms/ajouter-prospect.php" ><span class="btn btn-outline-warning"><i class="bi bi-pencil me-2"></i>Modifier </a></span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pierre Moreau</td>
-                                            <td>123 Industries</td>
-                                            <td>Préparation présentation</td>
-                                            <td ><a href="/forms/ajouter-prospect.php" ><span class="btn btn-outline-warning"><i class="bi bi-pencil me-2"></i>Modifier </a></span></td>
-
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nom</th>
+                                                    <th>Profession</th>
+                                                    <th>Numéro Téléphone</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($prospects as $prospect): ?>
+                                                    <tr>
+                                                        <td><?= htmlspecialchars($prospect['nom']) ?></td>
+                                                        <td><?= htmlspecialchars($prospect['profession']) ?></td>
+                                                        <td><?= htmlspecialchars($prospect['telephone']) ?></td>
+                                                        <td>
+                                                            <a href="/forms/ajouter-prospect.php?id=<?= urlencode($prospect['id'] ?? '') ?>" 
+                                                            class="btn btn-outline-warning">
+                                                                <i class="bi bi-pencil me-2"></i>Modifier
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

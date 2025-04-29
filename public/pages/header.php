@@ -180,7 +180,7 @@
             <img src="../assets/img/profile-img.png" alt="Profile" class="rounded-circle">
             <?php 
               if ($_SESSION["user_role"]=="agent") {
-                echo '<span class="d-none d-md-block ps-2">' .htmlspecialchars($_SESSION['user_prenom']) .' '. htmlspecialchars($_SESSION['user_nom']) .'</span>';
+                echo '<span class="d-none d-md-block dropdown-toggle ps-2">' .htmlspecialchars($_SESSION['user_prenom']) .' '. htmlspecialchars($_SESSION['user_nom']) .'</span>';
               }else {
                 echo '<span class="d-none d-md-block dropdown-toggle ps-2" href=#>' .htmlspecialchars($_SESSION['user_prenom']) .' '. htmlspecialchars($_SESSION['user_nom'])  .'</span>';
               }
@@ -191,49 +191,51 @@
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6><?= htmlspecialchars($_SESSION['user_login']); ?></h6>
+              <h5><?= htmlspecialchars($_SESSION['user_login']); ?></h5>
               <span><?= htmlspecialchars($_SESSION['user_role']); ?></span>
+              <br>
+              <h7><?= htmlspecialchars('Agence Douala'); ?></h7>
             </li>
-            <li>
+            <!-- <li>
               <hr class="dropdown-divider">
-            </li>
+            </li> -->
 
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
-            </li>
-            <li>
+            </li> -->
+            <!-- <li>
               <hr class="dropdown-divider">
-            </li>
+            </li> -->
 
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="">
                 <i class="bi bi-gear"></i>
                 <span>Account Settings</span>
               </a>
-            </li>
-            <li>
+            </li> -->
+            <!-- <li>
               <hr class="dropdown-divider">
-            </li> 
+            </li>  -->
 
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="">
                 <i class="bi bi-question-circle"></i>
                 <span>Need Help?</span>
               </a>
-            </li> 
-            <li>
+            </li>  -->
+            <!-- <li>
               <hr class="dropdown-divider">
-            </li>
+            </li> -->
 
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
-            </li>
+            </li> -->
 
           </ul>
           <!-- End Profile Dropdown Items -->
