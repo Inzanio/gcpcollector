@@ -6,6 +6,31 @@ if (!isset($_SESSION['user_id'])) header('Location: /login');
 ?>
 
 <?php
+$id = isset($_GET['id']) ? intval($_GET['id']) : null;
+if (!$id) {
+?>
+    <div class="alert alert-danger">
+        <?php echo "Il semblerait qu'il manque un paramçtre inmportant pour que cette requête aboutissent (id)"; ?>
+    </div>
+<?php // Redirect to an error page if ID is missing
+    exit();
+}
+
+// Fetch prospect details using the ID
+require_once("../services/ProspectService.php");
+$prospect = ProspectService::getProspectById($id);
+
+if (!$prospect) {
+    ?>
+    <div class="alert alert-danger">
+        <?php echo "Aïe, Aïe il semblerait que le prospect que vous souhaitez modifier n'existe pas"; ?>
+    </div>
+<?php
+    exit();
+}
+?>
+
+<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupération des données du formulaire
     $nom = trim(htmlspecialchars($_POST['nom'] ?? ''));
@@ -21,16 +46,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Création d'un objet Prospect
     require_once("../models/Prospect.php");
-    $prospect = new Prospect(
-        $nom,
-        $prenom,
-        $dateNaissance,
-        [$telephone],
-        "",
-        $profession,
-        $produitsInteresse,
-        $connaissanceBanque
-    );
+
+    $prospect->setNom($nom);
+    $prospect->setPrenom($prenom);
+    $prospect->setDateNaissance($dateNaissance);
+    $prospect->addTelephone($telephone);
+    $prospect->setProfession($profession);
+    $prospect->setProduitsInteresse($produitsInteresse);
+    $prospect->setConnaissanceBanque($connaissanceBanque);
 
     // Configuration des propriétés supplémentaires du prospect
     $prospect->setIdAgentProspecteur($_SESSION['user_id']);
@@ -42,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // var_dump($prospect);
 
     // var_dump($prospect->toArray());
-    $result = ProspectService::createProspect($prospect);
+    $result = ProspectService::updateProspect($id,$prospect);
     // var_dump($result);
     // Traitement du résultat
     if (!$result) {
@@ -81,37 +104,37 @@ require_once("../pages/head.php");
     <main id="main" class="main">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Enregistrement d'un Prospect</h5>
+                <h5 class="card-title">Modification d'un Prospect</h5>
 
                 <!-- Floating Labels Form -->
                 <form class="row g-3" action="" method="POST">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="nom" type="text" class="form-control" id="floatingName" placeholder="Nom du Prospect">
+                            <input name="nom" type="text" class="form-control" id="floatingName" placeholder="Nom du Prospect" value="<?php echo $prospect->getNom(); ?>">
                             <label for="floatingName">Nom</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="prenom" type="text" class="form-control" id="floatingName" placeholder="Prenom du Prospect">
+                            <input name="prenom" type="text" class="form-control" id="floatingName" placeholder="Prenom du Prospect" value="<?php echo $prospect->getPrenom(); ?>">
                             <label for="floatingName">Prenom</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="email" type="email" class="form-control" id="floatingEmail" placeholder="Email du Prospect">
+                            <input name="email" type="email" class="form-control" id="floatingEmail" placeholder="Email du Prospect" value="<?php echo $prospect->getEmail(); ?>">
                             <label for="floatingEmail">Email</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="dateNaissance" type="date" class="form-control" id="floatingDateNaissance" placeholder="Date de naissance">
+                            <input name="dateNaissance" type="date" class="form-control" id="floatingDateNaissance" placeholder="Date de naissance" >
                             <label for="floatingDateNaissance">Date de naissance</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="telephone" type="text" class="form-control" id="floatingTelephone" placeholder="Téléphone du Prospect" name="telephone">
+                            <input name="telephone" type="text" class="form-control" id="floatingTelephone" placeholder="Téléphone du Prospect" name="telephone" value="<?php echo $prospect->getTelephone()[0]; ?>">
                             <label for="floatingTelephone">Téléphone</label>
                         </div>
                     </div>
@@ -119,8 +142,8 @@ require_once("../pages/head.php");
                         <div class="form-floating">
                             <select name="genre" class="form-select" id="floatingGenre">
                                 <option value="">Sélectionner le genre</option>
-                                <option value="Homme">Homme</option>
-                                <option value="Femme">Femme</option>
+                                <option value="Homme" <?php echo $prospect->getGenre() === 'Homme' ? 'selected' : ''; ?>>Homme</option>
+                                <option value="Femme" <?php echo $prospect->getGenre() === 'Femme' ? 'selected' : ''; ?>>Femme</option>
                             </select>
                             <label for="floatingGenre">Genre</label>
                         </div>
@@ -141,7 +164,7 @@ require_once("../pages/head.php");
                             <select name="profession" class="form-select" aria-label="Default select example">
                                 <option selected="">Open this select menu</option>
                                 <?php foreach ($options as $value => $text) : ?>
-                                    <option value="<?php echo $value; ?>"><?php echo $text; ?></option>
+                                    <option value="<?php echo $value; ?>" <?php echo $prospect->getProfession() === $value ? 'selected' : ''; ?>><?php echo $text; ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <label for="profession">Profession</label>
@@ -159,7 +182,7 @@ require_once("../pages/head.php");
                     </div> -->
                     <div class="col-md-2">
                         <div class="form-floating">
-                            <input name="connaissanceBanque" class="form-check-input" type="checkbox" id="connaissanceBanque">
+                            <input name="connaissanceBanque" class="form-check-input" type="checkbox" id="connaissanceBanque" <?php echo $prospect->getConnaissanceBanque() ? 'checked' : ''; ?>>
                             <label class="form-check-label" for="connaissanceBanque">Connaissance de la banque</label>
                         </div>
                     </div>
@@ -176,15 +199,15 @@ require_once("../pages/head.php");
                         <label>Produits intéressés</label>
                         <?php foreach ($produits as $value => $text) : ?>
                             <div class="form-check">
-                                <input name="produitsInteresse[]" class="form-check-input" type="checkbox" id="<?php echo $value; ?>" name="produitsInteresse[]" value="<?php echo $value; ?>">
+                                <input name="produitsInteresse[]" class="form-check-input" type="checkbox" id="<?php echo $value; ?>" value="<?php echo $value; ?>" <?php echo in_array($value, $prospect->getProduitsInteresse()) ? 'checked' : ''; ?>>
                                 <label class="form-check-label" for="<?php echo $value; ?>"><?php echo $text; ?></label>
                             </div>
                         <?php endforeach; ?>
                     </div>
                     <div class="col-12">
                         <div class="form-floating">
-                            <textarea name="commentaire" class="form-control" placeholder="Address" id="floatingCommentaire" style="height: 100px;"></textarea>
-                            <label for="floatingTextarea">Commentaire</label>
+                            <textarea name="commentaire" class="form-control" placeholder="Commentaire" id="floatingCommentaire" style="height: 100px;"><?php echo $prospect->getCommentaire(); ?></textarea>
+                            <label for="floatingCommentaire">Commentaire</label>
                         </div>
                     </div>
                     <div class="text-center">

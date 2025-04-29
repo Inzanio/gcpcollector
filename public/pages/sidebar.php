@@ -37,7 +37,7 @@
 
         <!-- Déconnexion -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="logout.php">
+            <a class="nav-link collapsed" href="/logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Déconnexion</span>
             </a>

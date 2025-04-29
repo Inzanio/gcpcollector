@@ -59,11 +59,17 @@ class Prospect extends Personne
      */
     private string $commentaire;
 
+
+    /**
+     * 
+     */
+    private string $idAgence;
+
     /**
      * Constructeur de la classe Prospect
      * @param string $nom Nom du prospect
      * @param string $prenom Prénom du prospect
-     * @param DateTime $dateNaissance Date de naissance du prospect
+     * @param DateTime $dateNaissance Date de naissance du prospect 
      * @param string[] $telephone Liste des numéros de téléphone du prospect (optionnel)
      * @param string $adresse Adresse du prospect (optionnel)
      * @param string $profession Profession du prospect
@@ -185,6 +191,24 @@ class Prospect extends Personne
     {
         $this->idAgentProspecteur = $idAgentProspecteur;
     }
+
+    /**
+     * Récupère l'ID de l'agence
+     * @return string
+     */
+    public function getIdAgence(): string
+    {
+        return $this->idAgence;
+    }
+
+    /**
+     * Modifie l'ID de l'agence
+     * @param string $idAgence Nouvel ID de l'agence
+     */
+    public function setIdAgence(string $idAgence): void
+    {
+        $this->idAgence = $idAgence;
+    }
 }
 
 require_once "../db.php";
@@ -207,23 +231,25 @@ class ProspectService
     public static function createProspect(Prospect $prospect)
     {
         // Préparation des données pour la création
-        $data = [
-            "nom" => $prospect->getNom(),
-            "prenom" => $prospect->getPrenom(),
-            "dateNaissance" => $prospect->getDateNaissance()->format("Y-m-d"),
-            "telephone" => $prospect->getTelephone(),
-            "adresse" => $prospect->getAdresse(),
-            "profession" => $prospect->getProfession(),
-            "produitsInteresse" => $prospect->getproduitsInteresse(),
-            "connaissanceBanque" => $prospect->getConnaissanceBanque(),
-            "idAgentProspecteur" => $prospect->getIdAgentProspecteur()
-        ];
-
+        // $data = [
+        //     "nom" => $prospect->getNom(),
+        //     "prenom" => $prospect->getPrenom(),
+        //     "dateNaissance" => $prospect->getDateNaissance()->format("Y-m-d"),
+        //     "telephone" => $prospect->getTelephone(),
+        //     "adresse" => $prospect->getAdresse(),
+        //     "profession" => $prospect->getProfession(),
+        //     "produitsInteresse" => $prospect->getproduitsInteresse(),
+        //     "connaissanceBanque" => $prospect->getConnaissanceBanque(),
+        //     "idAgentProspecteur" => $prospect->getIdAgentProspecteur()
+        // ];
+        if (self::prospectExist($prospect)) {
+            return false;
+        }
         // Génération d'un ID unique pour le document
         $documentId = uniqid();
 
         // Appel de la méthode de création de document dans la classe Database
-        $result = Database::createDocument(self::$collectionName, $documentId, $data);
+        $result = Database::createDocument(self::$collectionName, $documentId, $prospect->toArray());
         return $result;
     }
 
@@ -245,7 +271,9 @@ class ProspectService
             ["path" => "profession", "value" => $prospect->getProfession()],
             ["path" => "produitsInteresse", "value" => $prospect->getproduitsInteresse()],
             ["path" => "connaissanceBanque", "value" => $prospect->getConnaissanceBanque()],
-            ["path" => "idAgentProspecteur", "value" => $prospect->getIdAgentProspecteur()]
+            ["path" => "idAgentProspecteur", "value" => $prospect->getIdAgentProspecteur()],
+            ["path" => "commentaire", "value" => $prospect->getCommentaire()],
+            ["path" => "idAgence", "value" => $prospect->getIdAgence()]
         ];
 
         // Appel de la méthode de mise à jour de document dans la classe Database
@@ -287,6 +315,72 @@ class ProspectService
             $data['connaissanceBanque'] ?? false,
             $data['idAgentProspecteur'] ?? ""
         );
+
+        if (isset($data['commentaire'])) {
+            $prospect->setCommentaire($data['commentaire']);
+        }
+
+        if (isset($data['idAgence'])) {
+            $prospect->setIdAgence($data['idAgence']);
+        }
         return $prospect;
     }
+    /**
+     * * Vérifie si un prospect existe dans la base de données
+     * @param Prospect $prospect - l'objet Prospect à vérifier
+     * @return bool - true si le prospect existe, false sinon
+     */
+    public static function prospectExist($prospect)
+    {
+        // Vérification de l'existence du prospect dans la base de données
+        $queryBuilder = Database::queryBuilder('prospects');
+        $queryBuilder->where('telephone', 'ARRAY_CONTAINS', $prospect->getTelephone()[0]);
+        $query = $queryBuilder->build();
+
+        $result = Database::query($query);
+        return ($result != null && count($result) > 0);
+        //     {
+        //         if (count($result) > 1) {
+        //             // Plus d'un prospect trouvé, vous pouvez gérer cela comme vous le souhaitez
+        //             //echo("Plus d'un prospect trouvé avec ce numéro de téléphone.");
+        //             return true;
+        //         } else {
+        //             // Un seul prospect trouvé, vous pouvez le retourner ou faire ce que vous voulez avec
+        //             // $prospect = $result[0];
+        //             // return self::fromFirestoreDocument($prospect);
+        //             return true;
+        //         }
+        //     } else {
+        //         // Aucune correspondance trouvée
+        //         return false;
+        //     }
+
+    }
+    public static function getAllProspects($idAgentProspecteur = null, $idAgence = null)
+    {
+        // Appel de la méthode de récupération de tous les documents dans la classe Database
+        $queryBuilder = Database::queryBuilder(self::$collectionName);
+        if ($idAgentProspecteur != null) {
+            $queryBuilder->where('idAgentProspecteur', 'EQUAL', $idAgentProspecteur);
+        }
+        if ($idAgence != null) {
+            $queryBuilder->where('idAgence', 'EQUAL', $idAgence);
+        }
+        
+        $query = $queryBuilder->build();
+        $result = Database::query($query);
+        return $result;
+    }
+    /**
+     * * Récupère un prospect par son ID
+     * @param string $prospectId - l'ID du prospect
+     * @return Prospect - le résultat de la requête
+     */
+    public static function getProspectById($prospectId)
+    {
+        // Appel de la méthode de récupération d'un document par ID dans la classe Database
+        $result = Database::getDocument(self::$collectionName, $prospectId);
+        return self::fromFirestoreDocument($result);
+    }
+
 }

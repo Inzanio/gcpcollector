@@ -44,6 +44,10 @@ class Utilisateur extends Personne
      */
     private static string $collection_name = "utilisateurs" ;
 
+    private string $idAgence = "";
+
+
+
     /**
      * Constructeur de la classe Utilisateur
      * @param string $nom Nom de l'utilisateur
@@ -64,6 +68,25 @@ class Utilisateur extends Personne
         $this->password = password_hash($password, PASSWORD_DEFAULT);
         $this->role = $role;
     }
+
+        /**
+     * Récupère l'ID de l'agence de l'utilisateur
+     * @return string
+     */
+    public function getIdAgence(): string
+    {
+        return $this->idAgence;
+    }
+
+    /**
+     * Modifie l'ID de l'agence de l'utilisateur
+     * @param string $idAgence Nouveau ID de l'agence
+     */
+    public function setIdAgence(string $idAgence): void
+    {
+        $this->idAgence = $idAgence;
+    }
+    
     /**
      * Récupère l'UID de l'utilisateur
      * @return string

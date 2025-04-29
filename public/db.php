@@ -249,6 +249,8 @@ class Database
         $parts = explode('/', $name);
         return end($parts);
     }
+
+
 }
 class FirestoreQueryBuilder
 {
