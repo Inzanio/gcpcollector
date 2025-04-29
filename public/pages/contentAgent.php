@@ -16,10 +16,10 @@
 
         <!-- Carte Prospects Personnels -->
         <div class="col-md-6">
-          <div class="card info-card prospects-card">
-            <div class="card-body">
+          <div class="card info-card prospects-card h-100"> <!-- Ajout de h-100 -->
+            <div class="card-body d-flex flex-column"> <!-- Ajout de d-flex flex-column -->
               <h5 class="card-title">Prospects enregistrés <span>| Ce mois</span></h5>
-              <div class="d-flex align-items-center">
+              <div class="d-flex align-items-center flex-grow-1"> <!-- Ajout de flex-grow-1 -->
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-people"></i>
                 </div>
@@ -35,10 +35,10 @@
 
         <!-- Carte Taux Conversion Personnel -->
         <div class="col-md-6">
-          <div class="card info-card conversion-card">
-            <div class="card-body">
+          <div class="card info-card conversion-card h-100"> <!-- Ajout de h-100 -->
+            <div class="card-body d-flex flex-column"> <!-- Ajout de d-flex flex-column -->
               <h5 class="card-title">Taux de conversion <span>| Ce mois</span></h5>
-              <div class="d-flex align-items-center">
+              <div class="d-flex align-items-center flex-grow-1"> <!-- Ajout de flex-grow-1 -->
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-graph-up"></i>
                 </div>
@@ -52,43 +52,7 @@
           </div>
         </div><!-- End Conversion Card -->
 
-        <!-- Carte Prospects Globaux -->
-        <div class="col-md-6">
-          <div class="card info-card global-prospects-card">
-            <div class="card-body">
-              <h5 class="card-title">Prospects agence <span>| Ce mois</span></h5>
-              <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-building"></i>
-                </div>
-                <div class="ps-3">
-                  <h6>245</h6>
-                  <span class="text-success small pt-1 fw-bold">15%</span>
-                  <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- End Global Prospects Card -->
-
-        <!-- Carte Taux Conversion Global -->
-        <div class="col-md-6">
-          <div class="card info-card global-conversion-card">
-            <div class="card-body">
-              <h5 class="card-title">Taux conversion agence <span>| Ce mois</span></h5>
-              <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-bar-chart"></i>
-                </div>
-                <div class="ps-3">
-                  <h6>6.8%</h6>
-                  <span class="text-success small pt-1 fw-bold">1.2%</span>
-                  <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- End Global Conversion Card -->
+        <div class="col-12 mb-4"></div>  
 
         <!-- Graphique Activité -->
         <div class="col-12">
@@ -237,8 +201,8 @@
         </div>
       </div><!-- End Ranking -->
 
-      <div id="btn-ajouter-prospect" class="position-fixed" style="bottom: 100px; right: 50px; z-index: 1;">
-        <a href="./forms/ajouter-prospect.php" class="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2 shadow" 
+      <div id="btn-ajouter-prospect" class="position-fixed" style="bottom: 100px; right: 50px; z-index: 3;">
+        <a href="./forms/ajouter-prospect.php" class="btn btn-primary  btn-lg d-flex align-items-center justify-content-center gap-2 shadow" 
           style="border-radius: 15px; padding: 15px 25px; background-color: #4154f1; border-color: #4154f1; color: white;">
             <i class="bi bi-plus"></i>
             Ajouter Prospect
