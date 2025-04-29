@@ -1,9 +1,11 @@
 <?php 
+require_once "traits.php";
 /**
  * Classe représentant une personne
  */
 class Personne
 {
+    use ToArrayTrait;
     /**
      * Nom de la personne
      * @var string

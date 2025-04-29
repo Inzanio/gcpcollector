@@ -11,7 +11,7 @@ use \MrShan0\PHPFirestore\FireStoreDocument;
  */
 class Database
 {
-    private static $GOOGLE_APPLICATION_CREDENTIALS = "../application_default_credentials.json";
+    //private static $GOOGLE_APPLICATION_CREDENTIALS = ;
     private static $credentials;
     private static $firestoreClient;
     /**
@@ -22,7 +22,8 @@ class Database
     public static function getFirestore()
     {
         if (!self::$firestoreClient) {
-            $json = file_get_contents(self::$GOOGLE_APPLICATION_CREDENTIALS);
+            //echo "Initialisation de l'API Firestore";
+            $json = file_get_contents(dirname($_SERVER['DOCUMENT_ROOT']) . '/application_default_credentials.json');
             self::$credentials = json_decode($json, true);
             self::$firestoreClient = new FireStoreApiClient(self::$credentials["project_id"], self::$credentials["apiKey"], [
                 'database' => '(default)',
@@ -244,7 +245,10 @@ class Database
         // return null;
         return $docs;
     }
-   
+    public static function getDocumentIdFromName($name) {
+        $parts = explode('/', $name);
+        return end($parts);
+    }
 }
 class FirestoreQueryBuilder
 {

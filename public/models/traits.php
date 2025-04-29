@@ -17,24 +17,21 @@ trait ToArrayTrait
      */
     public function toArray()
     {
-        // Crée une instance de ReflectionClass pour obtenir les propriétés de la classe
-        $reflectionClass = new ReflectionClass($this);
-        
-        // Obtient les propriétés privées de la classe
-        $properties = $reflectionClass->getProperties(ReflectionProperty::IS_PRIVATE);
-
         // Initialise le tableau qui contiendra les valeurs des propriétés
         $array = [];
-        
-        // Itère sur les propriétés et appelle les getters correspondants
-        foreach ($properties as $property) {
-            $propertyName = $property->getName();
-            $getterName = 'get' . ucfirst($propertyName);
-            
-            // Vérifie si le getter existe pour la propriété
-            if (method_exists($this, $getterName)) {
+
+        // Obtient toutes les méthodes de l'objet
+        $methods = get_class_methods($this);
+
+        // Itère sur les méthodes et appelle celles qui sont des getters
+        foreach ($methods as $method) {
+            // Vérifie si la méthode est un getter (commence par 'get' et a plus de 3 caractères)
+            if (strpos($method, 'get') === 0 && strlen($method) > 3) {
+                // Extrait le nom de la propriété à partir du nom de la méthode getter
+                $propertyName = lcfirst(substr($method, 3));
+
                 // Appelle le getter et ajoute la valeur au tableau
-                $array[$propertyName] = $this->$getterName();
+                $array[$propertyName] = $this->$method();
             }
         }
 

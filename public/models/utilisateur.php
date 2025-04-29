@@ -1,14 +1,14 @@
 <?php 
 
 require_once "personne.php";
-require_once "traits.php";
+
 
 /**
  * Classe représentant un utilisateur
  */
 class Utilisateur extends Personne
 {
-    use ToArrayTrait;
+
     /**
      * Matricule de l'utilisateur
      * @var string
@@ -32,6 +32,12 @@ class Utilisateur extends Personne
      * @var string
      */
     private string $role;
+    
+    /**
+     * UID de l'utilisateur
+     * @var string
+     */
+    private string $uid;
 
     /**
      * Nom de la collection ou de la table des utilisateurs
@@ -57,6 +63,23 @@ class Utilisateur extends Personne
         $this->login = $login;
         $this->password = password_hash($password, PASSWORD_DEFAULT);
         $this->role = $role;
+    }
+    /**
+     * Récupère l'UID de l'utilisateur
+     * @return string
+     */
+    public function getUid(): string
+    {
+        return $this->uid;
+    }
+
+    /**
+     * Modifie l'UID de l'utilisateur
+     * @param string $uid Nouveau UID
+     */
+    public function setUid(string $uid): void
+    {
+        $this->uid = $uid;
     }
 
     /**
@@ -178,6 +201,7 @@ class Utilisateur extends Personne
     {
         //var_dump($doc);
         $data = $doc->toArray();
+        $id = Database::getDocumentIdFromName($doc->getName());
         $utilisateur = new Utilisateur(
             $data['nom'] ?? "",
             $data['prenom'] ?? "",
@@ -189,7 +213,9 @@ class Utilisateur extends Personne
             $data['telephone'] ?? [],
             $data['adresse'] ?? ""
         );
+        $utilisateur->setUid($id);
         return $utilisateur;
     }
+   
 }
 ?>

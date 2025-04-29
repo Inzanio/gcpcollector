@@ -1,7 +1,10 @@
 <?php
 
+require_once "../models/personne.php";
+
 class Prospect extends Personne
 {
+
     /**
      * Liste des professions prédéfinies
      */
@@ -27,28 +30,10 @@ class Prospect extends Personne
     ];
 
     /**
-     * Liste des niveaux de revenu prédéfinis
-     */
-    public const NIVEAUX_REVENU = [
-        "Moins de 20 000 FCFA" => "0-20000",
-        "20 000 - 50 000 FCFA" => "20000-50000",
-        "50 000 - 100 000 FCFA" => "50000-100000",
-        "100 000 - 200 000 FCFA" => "100000-200000",
-        "200 000 - 500 000 FCFA" => "200000-500000",
-        "Plus de 500 000 FCFA" => "500000+"
-    ];
-
-    /**
      * Profession du prospect
      * @var string
      */
     private string $profession;
-
-    /**
-     * Situation familiale du prospect
-     * @var string
-     */
-    private string $situationFamiliale;
 
     /**
      * Besoins objectifs financiers du prospect
@@ -63,10 +48,16 @@ class Prospect extends Personne
     private bool $connaissanceBanque;
 
     /**
-     * Niveau de revenu du prospect
+     * id de l'agent prospecteur ayant enregistré le prospect
      * @var string
      */
-    private string $niveauRevenu;
+    private string $idAgentProspecteur;
+
+    /**
+     * id de l'agent prospecteur ayant enregistré le prospect
+     * @var string
+     */
+    private string $commentaire;
 
     /**
      * Constructeur de la classe Prospect
@@ -76,10 +67,8 @@ class Prospect extends Personne
      * @param string[] $telephone Liste des numéros de téléphone du prospect (optionnel)
      * @param string $adresse Adresse du prospect (optionnel)
      * @param string $profession Profession du prospect
-     * @param string $situationFamiliale Situation familiale du prospect
      * @param string[] $produitsInteresse Besoins objectifs financiers du prospect
      * @param bool $connaissanceBanque Connaissance de la banque par le prospect
-     * @param string $niveauRevenu Niveau de revenu du prospect
      */
     public function __construct(
         string $nom,
@@ -88,16 +77,33 @@ class Prospect extends Personne
         array $telephone = [],
         string $adresse = "",
         string $profession = "",
-        string $situationFamiliale = "",
         array $produitsInteresse = [],
         bool $connaissanceBanque = false,
-        string $niveauRevenu = ""
+        string $idAgentProspecteur = ""
     ) {
         parent::__construct($nom, $prenom, $dateNaissance, $telephone, $adresse);
         $this->setProfession($profession);
         $this->setproduitsInteresse($produitsInteresse);
         $this->connaissanceBanque = $connaissanceBanque;
-        $this->setNiveauRevenu($niveauRevenu);
+        $this->idAgentProspecteur = $idAgentProspecteur;
+    }
+
+    /**
+     * Récupère le commentaire du prospect
+     * @return string
+     */
+    public function getCommentaire(): string
+    {
+        return $this->commentaire;
+    }
+
+    /**
+     * Modifie le commentaire du prospect
+     * @param string $commentaire Nouveau commentaire
+     */
+    public function setCommentaire(string $commentaire): void
+    {
+        $this->commentaire = $commentaire;
     }
 
     /**
@@ -120,7 +126,6 @@ class Prospect extends Personne
         }
         $this->profession = $profession;
     }
-
 
     /**
      * Récupère les besoins objectifs financiers du prospect
@@ -164,27 +169,25 @@ class Prospect extends Personne
     }
 
     /**
-     * Récupère le niveau de revenu du prospect
+     * Récupère l'ID de l'agent prospecteur
      * @return string
      */
-    public function getNiveauRevenu(): string
+    public function getIdAgentProspecteur(): string
     {
-        return $this->niveauRevenu;
+        return $this->idAgentProspecteur;
     }
 
     /**
-     * Modifie le niveau de revenu du prospect
-     * @param string $niveauRevenu Nouveau niveau de revenu
+     * Modifie l'ID de l'agent prospecteur
+     * @param string $idAgentProspecteur Nouvel ID de l'agent prospecteur
      */
-    public function setNiveauRevenu(string $niveauRevenu): void
+    public function setIdAgentProspecteur(string $idAgentProspecteur): void
     {
-        if (!array_key_exists($niveauRevenu, self::NIVEAUX_REVENU)) {
-            throw new InvalidArgumentException("Niveau de revenu invalide");
-        }
-        $this->niveauRevenu = $niveauRevenu;
+        $this->idAgentProspecteur = $idAgentProspecteur;
     }
 }
-require_once "../database.php";
+
+require_once "../db.php";
 
 /**
  * Classe de service pour gérer les prospects
@@ -213,7 +216,7 @@ class ProspectService
             "profession" => $prospect->getProfession(),
             "produitsInteresse" => $prospect->getproduitsInteresse(),
             "connaissanceBanque" => $prospect->getConnaissanceBanque(),
-            "niveauRevenu" => $prospect->getNiveauRevenu()
+            "idAgentProspecteur" => $prospect->getIdAgentProspecteur()
         ];
 
         // Génération d'un ID unique pour le document
@@ -223,36 +226,6 @@ class ProspectService
         $result = Database::createDocument(self::$collectionName, $documentId, $data);
         return $result;
     }
-
-    /**
-     * Récupère un prospect à partir de son ID
-     * @param string $documentId - l'ID du prospect
-     * @return Prospect|null - l'objet Prospect ou null si non trouvé
-     */
-    // public static function getProspect($documentId)
-    // {
-    //     // Appel de la méthode de récupération de document dans la classe Database
-    //     $result = Database::getDocument(self::$collectionName, $documentId);
-    //     if ($result) {
-    //         // Création d'un objet Prospect à partir des données récupérées
-    //         $data = $result->getData();
-    //         $prospect = new Prospect(
-    //             $data["nom"],
-    //             $data["prenom"],
-    //             new DateTime($data["dateNaissance"]),
-    //             $data["telephone"],
-    //             $data["adresse"],
-    //             $data["profession"],
-    //             $data["situationFamiliale"],
-    //             $data["produitsInteresse"],
-    //             $data["connaissanceBanque"],
-    //             $data["niveauRevenu"]
-    //         );
-    //         return $prospect;
-    //     } else {
-    //         return null;
-    //     }
-    // }
 
     /**
      * Met à jour un prospect existant
@@ -272,7 +245,7 @@ class ProspectService
             ["path" => "profession", "value" => $prospect->getProfession()],
             ["path" => "produitsInteresse", "value" => $prospect->getproduitsInteresse()],
             ["path" => "connaissanceBanque", "value" => $prospect->getConnaissanceBanque()],
-            ["path" => "niveauRevenu", "value" => $prospect->getNiveauRevenu()]
+            ["path" => "idAgentProspecteur", "value" => $prospect->getIdAgentProspecteur()]
         ];
 
         // Appel de la méthode de mise à jour de document dans la classe Database
@@ -297,7 +270,7 @@ class ProspectService
      * @param \MrShan0\PHPFirestore\FireStoreDocument $doc - le document Firestore à transformer
      * @return Prospect - l'objet Prospect créé
      */
-    public static function fromFirestoreDocument($doc)//: self
+    public static function fromFirestoreDocument($doc)
     {
         // Récupération des données du document
         $data = $doc->toArray();
@@ -310,12 +283,10 @@ class ProspectService
             $data['telephone'] ?? [],
             $data['adresse'] ?? "",
             $data['profession'] ?? "",
-            $data['situationFamiliale'] ?? "",
             isset($data['produitsInteresse']) ? (array) $data['produitsInteresse'] : [],
             $data['connaissanceBanque'] ?? false,
-            $data['niveauRevenu'] ?? ""
+            $data['idAgentProspecteur'] ?? ""
         );
         return $prospect;
     }
 }
-?>
