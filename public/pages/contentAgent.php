@@ -1,3 +1,19 @@
+<?php
+//require_once("routes.php");
+//var_dump($_SESSION['user_role']);
+if (!isset($_SESSION['user_role'])) header('Location: /login');
+//   if ( $_SESSION['user_role'] != "agent") {
+//       header('Location: /login');
+//       exit();
+//   }
+
+// Fonction pour récupérer les prospects depuis Firebase
+require_once "db.php";
+require_once("./models/prospect.php");
+$prospects = ProspectService::getAllProspects();
+
+//var_dump($prospects);
+?>
 <div class="pagetitle">
   <nav>
     <ol class="breadcrumb">
@@ -70,35 +86,30 @@
             <div class="card-body">
               <h5 class="card-title">Prospects récents</h5>
               <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Nom</th>
-                    <th>Entreprise</th>
-                    <th>Statut</th>
-                    <th>Prochaine action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Martin Dupont</td>
-                    <td>ABC Corp</td>
-                    <td><span class="badge bg-warning">En cours</span></td>
-                    <td>Relance téléphonique</td>
-                  </tr>
-                  <tr>
-                    <td>Sophie Lambert</td>
-                    <td>XYZ SA</td>
-                    <td><span class="badge bg-success">Converti</span></td>
-                    <td>Envoi contrat</td>
-                  </tr>
-                  <tr>
-                    <td>Pierre Moreau</td>
-                    <td>123 Industries</td>
-                    <td><span class="badge bg-primary">RDV pris</span></td>
-                    <td>Préparation présentation</td>
-                  </tr>
-                </tbody>
-              </table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Nom</th>
+                                                    <th>Profession</th>
+                                                    <th>Numéro Téléphone</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($prospects as $prospect): ?>
+                                                    <tr>
+                                                        <td><?= htmlspecialchars($prospect->getNom()) ?></td>
+                                                        <td><?= htmlspecialchars($prospect->getProfession()) ?></td>
+                                                        <td><?= htmlspecialchars($prospect->getTelephone()[0]) ?></td>
+                                                        <td>
+                                                            <a href="/forms/modifier-prospect.php?id=<?= urlencode($prospect->getDocId() ?? '') ?>" 
+                                                            class="btn btn-outline-warning">
+                                                                <i class="bi bi-pencil me-2"></i>Modifier
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
             </div>
           </div>
         </div><!-- End Recent Prospects -->

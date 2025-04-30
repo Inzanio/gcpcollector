@@ -8,31 +8,12 @@ if (!isset($_SESSION['user_role'])) header('Location: /login');
 //       exit();
 //   }
 
-//require_once ("./models/prospect.php");
-// Fonction pour récupérer les prospects depuis Firebase
+// Fonction pour récupérer les superviseurs depuis Firebase
+require_once "db.php";
+require_once("./models/superviseur.php");
+$superviseurs = SuperviseurService::getAllSuperviseurs();
 
-// $prospects_ = ProspectService::getAllProspects();
-// var_dump($prospects_);
-
-
-$superviseurs = [
-    [
-        'nom' => 'Martin Dupont',
-        'profession' => 'ABC Corp',
-        'telephone' => 'Relance téléphonique'
-    ],
-    [
-        'nom' => 'Sophie Lambert',
-        'profession' => 'XYZ SA',
-        'telephone' => 'Envoi contrat'
-    ],
-    [
-        'nom' => 'Pierre Moreau',
-        'profession' => '123 Industries',
-        'telephone' => 'Préparation présentation'
-    ]
-];
-
+//var_dump($superviseurs);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,13 +46,13 @@ require_once("pages/head.php");
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">LISTE DES SUPERVISEURS</h5>
-                            <a href="/forms/ajouter-prospect.php" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter </a>
+                            <a href="/forms/ajouter-superviseur.php" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter </a>
                             <p></p>
 
                             <!-- Table with stripped rows -->
                             
                             <div class="col-12">
-                                <div class="card recent-prospects">
+                                <div class="card recent-superviseurs">
                                     <div class="card-body">
                                         <table class="table table-hover">
                                             <thead>
@@ -85,17 +66,13 @@ require_once("pages/head.php");
                                             <tbody>
                                                 <?php foreach ($superviseurs as $superviseur): ?>
                                                     <tr>
-                                                        <td><?= htmlspecialchars($superviseur['nom']) ?></td>
-                                                        <td><?= htmlspecialchars($superviseur['profession']) ?></td>
-                                                        <td><?= htmlspecialchars($superviseur['telephone']) ?></td>
+                                                        <td><?= htmlspecialchars($superviseur->getNom()) ?></td>
+                                                        <td><?= htmlspecialchars($superviseur->getProfession()) ?></td>
+                                                        <td><?= htmlspecialchars($superviseur->getTelephone()[0]) ?></td>
                                                         <td>
-                                                            <a href="/forms/modifier-superviseur.php?id=<?= urlencode($superviseur['id'] ?? '') ?>" 
+                                                            <a href="/forms/modifier-superviseur.php?id=<?= urlencode($superviseur->getDocId() ?? '') ?>" 
                                                             class="btn btn-outline-warning">
                                                                 <i class="bi bi-pencil me-2"></i>Modifier
-                                                            </a>
-                                                            <a href="/forms/modifier-superviseur.php?id=<?= urlencode($superviseur['id'] ?? '') ?>" 
-                                                            class="btn btn-outline-danger">
-                                                                <i class="bi bi-pencil me-2"></i>Suspendre
                                                             </a>
                                                         </td>
                                                     </tr>
