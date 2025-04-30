@@ -47,10 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!$result) {
         $error_message = "Erreur lors de l'enregistrement du prospect.";
     } else {
+
         $error_message = "Prospect enregistré avec succès.";
         // Redirection ou autre action après l'enregistrement réussi
-        // header("Location: /success.php"); // Exemple de redirection
-        // exit();
+        header("Location: /gestionProspects.php"); // redirection vers la liste des prospects
+        exit();
     } 
 }
 ?>
@@ -108,7 +109,7 @@ require_once("../pages/head.php");
                             <label for="floatingDateNaissance">Date de naissance</label>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-floating">
                             <input name="telephone" type="text" class="form-control" id="floatingTelephone" placeholder="Téléphone du Prospect" name="telephone" required>
                             <label for="floatingTelephone"require>Téléphone</label>
@@ -117,7 +118,7 @@ require_once("../pages/head.php");
                     <div class="col-md-6">
                         <div class="form-floating">
                             <select name="genre" class="form-select" id="floatingGenre" required>
-                                <option value="">Sélectionner le genre</option>
+                                <option value="" disabled selected>Sélectionner le genre</option>
                                 <option value="Homme">Homme</option>
                                 <option value="Femme">Femme</option>
                             </select>
@@ -138,7 +139,7 @@ require_once("../pages/head.php");
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <select name="profession" class="form-select" id="profession" required>
-                                <option selected="">Sélectionner une profession</option>
+                                <option value="" disabled selected>Sélectionner une profession</option>
                                 <?php foreach ($options as $value => $text) : ?>
                                     <option value="<?php echo $value; ?>"><?php echo $text; ?></option>
                                 <?php endforeach; ?>
@@ -151,24 +152,12 @@ require_once("../pages/head.php");
                             <input type="text" name="autreProfession" id="autreProfession" class="form-control" placeholder="Votre profession">
                             <label for="autreProfession">Précisez la profession</label>
                         </div> -->
-
                     </div>
-                    <!-- <div class="col-md-4">
-                        <div class="form-floating mb-3">
-                            <select class="form-select" id="floatingSelect" aria-label="State">
-                                <option selected="">New York</option>
-                                <option value="1">Oregon</option>
-                                <option value="2">DC</option>
-                            </select>
-                            <label for="floatingSelect">State</label>
-                        </div>
-                    </div> -->
-                    <div class="col-md-2">
-                        <div class="form-floating">
+                    
+                    <div class="col-md-12">
                             <input name="connaissanceBanque" class="form-check-input" type="checkbox" id="connaissanceBanque">
                             <label class="form-check-label" for="connaissanceBanque">Connaissance de la banque</label>
         
-                        </div>
                     </div>
                     
                     <?php

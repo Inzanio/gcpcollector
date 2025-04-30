@@ -1,4 +1,6 @@
 <?php
+    require_once('config.php');
+
     $url = $_SERVER['REQUEST_URI'];
 
     $routes = [
