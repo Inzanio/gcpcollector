@@ -8,31 +8,12 @@ if (!isset($_SESSION['user_role'])) header('Location: /login');
 //       exit();
 //   }
 
-//require_once ("./models/prospect.php");
 // Fonction pour récupérer les prospects depuis Firebase
+require_once "db.php";
+require_once("./models/prospect.php");
+$prospects = ProspectService::getAllProspects();
 
-// $prospects_ = ProspectService::getAllProspects();
-// var_dump($prospects_);
-
-
-$prospects = [
-    [
-        'nom' => 'Martin Dupont',
-        'profession' => 'ABC Corp',
-        'telephone' => 'Relance téléphonique'
-    ],
-    [
-        'nom' => 'Sophie Lambert',
-        'profession' => 'XYZ SA',
-        'telephone' => 'Envoi contrat'
-    ],
-    [
-        'nom' => 'Pierre Moreau',
-        'profession' => '123 Industries',
-        'telephone' => 'Préparation présentation'
-    ]
-];
-
+//var_dump($prospects);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,11 +66,11 @@ require_once("pages/head.php");
                                             <tbody>
                                                 <?php foreach ($prospects as $prospect): ?>
                                                     <tr>
-                                                        <td><?= htmlspecialchars($prospect['nom']) ?></td>
-                                                        <td><?= htmlspecialchars($prospect['profession']) ?></td>
-                                                        <td><?= htmlspecialchars($prospect['telephone']) ?></td>
+                                                        <td><?= htmlspecialchars($prospect->getNom()) ?></td>
+                                                        <td><?= htmlspecialchars($prospect->getProfession()) ?></td>
+                                                        <td><?= htmlspecialchars($prospect->getTelephone()[0]) ?></td>
                                                         <td>
-                                                            <a href="/forms/modifier-prospect.php?id=<?= urlencode($prospect['id'] ?? '') ?>" 
+                                                            <a href="/forms/modifier-prospect.php?id=<?= urlencode($prospect->getDocId() ?? '') ?>" 
                                                             class="btn btn-outline-warning">
                                                                 <i class="bi bi-pencil me-2"></i>Modifier
                                                             </a>

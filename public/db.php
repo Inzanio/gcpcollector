@@ -90,10 +90,10 @@ class Database
      * ]);
      * ```
      */
-    public static function updateDocument($collectionName, $documentId, $data)
+    public static function updateDocument($collectionName, $documentId, $data, $documentExist=True)
     {
         $firestoreClient = self::getFirestore();
-        return $firestoreClient->updateDocument($collectionName, $documentId, $data);
+        return $firestoreClient->updateDocument($collectionName, $documentId, $data, $documentExist);
     }
 
     /**
@@ -248,6 +248,19 @@ class Database
     public static function getDocumentIdFromName($name) {
         $parts = explode('/', $name);
         return end($parts);
+    }
+    /**
+     * Vérifie si la requête a réussi
+     * @param string $response La réponse de Firestore au format JSON
+     * @return bool true si la requête a réussi, false sinon
+     */
+    public static function isSuccessfullRequest($response) {
+        $error = json_decode($response, true);
+        if (isset($error["error"])) {
+            var_dump($error["error"]);
+            return false;
+        }
+        return true;
     }
 
 

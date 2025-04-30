@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) header('Location: /login');
 ?>
 
 <?php
-$id = isset($_GET['id']) ? intval($_GET['id']) : null;
+$id = isset($_GET['id']) ?$_GET['id'] : null;
 if (!$id) {
 ?>
     <div class="alert alert-danger">
@@ -17,7 +17,8 @@ if (!$id) {
 }
 
 // Fetch prospect details using the ID
-require_once("../services/ProspectService.php");
+require_once("../db.php");
+require_once("../models/prospect.php");
 $prospect = ProspectService::getProspectById($id);
 
 if (!$prospect) {
@@ -56,22 +57,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $prospect->setConnaissanceBanque($connaissanceBanque);
 
     // Configuration des propriétés supplémentaires du prospect
-    $prospect->setIdAgentProspecteur($_SESSION['user_id']);
+    //$prospect->setIdAgentProspecteur($_SESSION['user_id']);
     $prospect->setCommentaire($commentaire);
     $prospect->setEmail($email);
     $prospect->setGenre($genre);
 
     // Enregistrement du prospect
-    // var_dump($prospect);
+    //var_dump($prospect);
 
     // var_dump($prospect->toArray());
     $result = ProspectService::updateProspect($id,$prospect);
-    // var_dump($result);
+    var_dump($result);
     // Traitement du résultat
     if (!$result) {
         $error_message = "Erreur lors de l'enregistrement du prospect.";
     } else {
-        $error_message = "Prospect enregistré avec succès.";
+        $error_message = "Prospect Modifié avec succès.";
         // Redirection ou autre action après l'enregistrement réussi
         // header("Location: /success.php"); // Exemple de redirection
         // exit();
@@ -128,7 +129,7 @@ require_once("../pages/head.php");
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="dateNaissance" type="date" class="form-control" id="floatingDateNaissance" placeholder="Date de naissance" >
+                            <input name="dateNaissance" type="date" class="form-control" id="floatingDateNaissance" placeholder="Date de naissance" value="<?php echo $prospect->getDateNaissance(); ?>" >
                             <label for="floatingDateNaissance">Date de naissance</label>
                         </div>
                     </div>

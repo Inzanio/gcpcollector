@@ -71,6 +71,13 @@ class Prospect extends Personne
     private string $idAgence;
 
     /**
+     * Adresse email du prospect
+     * @var string
+     */
+    private string $email;
+
+
+    /**
      * Constructeur de la classe Prospect
      * @param string $nom Nom du prospect
      * @param string $prenom Prénom du prospect
@@ -234,9 +241,29 @@ class Prospect extends Personne
     {
         $this->docId = $getDocId;
     }
+    /**
+     * Récupère l'adresse email du prospect
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * Modifie l'adresse email du prospect
+     * @param string $email Nouvelle adresse email
+     */
+    public function setEmail(string $email): void
+    {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException("Adresse email invalide");
+        }
+        $this->email = $email;
+    }
 }
 
-require_once "../db.php";
+//require_once "../db.php";
 
 /**
  * Classe de service pour gérer les prospects
@@ -263,13 +290,9 @@ class ProspectService
         $documentId = uniqid();
 
         // Appel de la méthode de création de document dans la classe Database
-        $result = Database::createDocument(self::$collectionName, $documentId, $prospect->toArray());
-        $error = json_decode($result, true);
-        if (isset($error["error"])) {
-            var_dump($error["error"]);
-            return false;
-        }
-        return $result;
+        $response = Database::createDocument(self::$collectionName, $documentId, $prospect->toArray());
+        return Database::isSuccessfullRequest($response) ? $response : false;
+
     }
 
     /**
@@ -280,24 +303,10 @@ class ProspectService
      */
     public static function updateProspect($documentId, Prospect $prospect)
     {
-        // Préparation des données pour la mise à jour
-        $data = [
-            ["path" => "nom", "value" => $prospect->getNom()],
-            ["path" => "prenom", "value" => $prospect->getPrenom()],
-            ["path" => "dateNaissance", "value" => $prospect->getDateNaissance()],
-            ["path" => "telephone", "value" => $prospect->getTelephone()],
-            ["path" => "adresse", "value" => $prospect->getAdresse()],
-            ["path" => "profession", "value" => $prospect->getProfession()],
-            ["path" => "produitsInteresse", "value" => $prospect->getproduitsInteresse()],
-            ["path" => "connaissanceBanque", "value" => $prospect->getConnaissanceBanque()],
-            ["path" => "idAgentProspecteur", "value" => $prospect->getIdAgentProspecteur()],
-            ["path" => "commentaire", "value" => $prospect->getCommentaire()],
-            ["path" => "idAgence", "value" => $prospect->getIdAgence()]
-        ];
 
         // Appel de la méthode de mise à jour de document dans la classe Database
-        $result = Database::updateDocument(self::$collectionName, $documentId, $data);
-        return $result;
+        $response = Database::updateDocument(self::$collectionName, $documentId, $prospect->toArray());
+        return Database::isSuccessfullRequest($response) ? $response : false;
     }
 
     /**
@@ -335,18 +344,15 @@ class ProspectService
             $data['idAgentProspecteur'] ?? ""
         );
 
-        if (isset($data['commentaire'])) {
-            $prospect->setCommentaire($data['commentaire']);
-        }
-
-        if (isset($data['idAgence'])) {
-            $prospect->setIdAgence($data['idAgence']);
-        }
+        $prospect->setCommentaire($data['commentaire'] ?? "");
+        $prospect->setIdAgence($data['idAgence'] ?? "");
+        $prospect->setEmail($data['email'] ?? "");
+        $prospect->setGenre($data['genre'] ?? "");
         // Récupération de l'ID du document Firestore
         $id = Database::getDocumentIdFromName($doc->getName());
 
         // Définition de l'ID du prospect
-        $prospect->getDocId($id);
+        $prospect->setDocId($id);
         return $prospect;
     }
     /**
@@ -413,6 +419,7 @@ class ProspectService
     public static function getProspectById($prospectId)
     {
         // Appel de la méthode de récupération d'un document par ID dans la classe Database
+        //var_dump($prospectId);
         $result = Database::getDocument(self::$collectionName, $prospectId);
         return self::fromFirestoreDocument($result);
     }
