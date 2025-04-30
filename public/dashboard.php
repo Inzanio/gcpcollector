@@ -30,10 +30,15 @@
   <!-- ======= Main ======= -->
   <main id="main" class="main">
       <?php
-      if  ($_SESSION['user_role'] == "agent"){
+      if  ($_SESSION['user_role'] == ROLE_AGENT){
         require_once("pages/contentAgent.php");
       }
-      //elseif($_SESSION['user_role'])
+      elseif($_SESSION['user_role'] == ROLE_ADMIN){
+        require_once("pages/contentAdmin.php");
+      }
+      elseif($_SESSION['user_role'] == ROLE_SUPERVISEUR){
+        require_once("pages/contentSuperviseur.php");
+      }
         
       ?>
   </main>
