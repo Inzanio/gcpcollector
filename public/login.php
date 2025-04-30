@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['user_id'] = $login_result->getUid();
     $_SESSION['user_nom'] = $login_result->getNom();
     $_SESSION['user_prenom'] = $login_result->getPrenom();
+    $_SESSION['user_agence_id'] = null;
     //$_SESSION['user_date_naissance'] = $login_result->getDateNaissance()->format('Y-m-d');
     //var_dump($_SESSION['user_role']);
     header('Location: /');

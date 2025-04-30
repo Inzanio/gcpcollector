@@ -31,6 +31,8 @@
   <main id="main" class="main">
       <?php
       if  ($_SESSION['user_role'] == "agent"){
+        require_once("db.php");
+        require_once("models/prospect.php");
         require_once("pages/contentAgent.php");
       }
       //elseif($_SESSION['user_role'])

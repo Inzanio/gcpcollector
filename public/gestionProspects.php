@@ -11,8 +11,15 @@ if (!isset($_SESSION['user_role'])) header('Location: /login');
 // Fonction pour récupérer les prospects depuis Firebase
 require_once "db.php";
 require_once("./models/prospect.php");
-$prospects = ProspectService::getAllProspects();
-
+if ($_SESSION['user_role'] == ROLE_AGENT) {
+    $prospects = ProspectService::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
+}
+if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
+    $prospects = ProspectService::getAllProspects($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
+}
+if ($_SESSION['user_role'] == ROLE_ADMIN) {
+    $prospects = ProspectService::getAllProspects($idAgentProspecteur = null, $idAgence = null);
+}
 //var_dump($prospects);
 ?>
 <!DOCTYPE html>
@@ -50,7 +57,7 @@ require_once("pages/head.php");
                             <p></p>
 
                             <!-- Table with stripped rows -->
-                            
+
                             <div class="col-12">
                                 <div class="card recent-prospects">
                                     <div class="card-body">
@@ -70,8 +77,8 @@ require_once("pages/head.php");
                                                         <td><?= htmlspecialchars($prospect->getProfession()) ?></td>
                                                         <td><?= htmlspecialchars($prospect->getTelephone()[0]) ?></td>
                                                         <td>
-                                                            <a href="/forms/modifier-prospect.php?id=<?= urlencode($prospect->getDocId() ?? '') ?>" 
-                                                            class="btn btn-outline-warning">
+                                                            <a href="/forms/modifier-prospect.php?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
+                                                                class="btn btn-outline-warning">
                                                                 <i class="bi bi-pencil me-2"></i>Modifier
                                                             </a>
                                                         </td>

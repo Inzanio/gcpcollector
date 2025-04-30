@@ -2,6 +2,7 @@
 
 class Agence
 {
+    use DbDataTrait;
     /**
      * Liste des champs de l'agence
      */

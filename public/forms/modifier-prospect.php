@@ -51,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $prospect->setNom($nom);
     $prospect->setPrenom($prenom);
     $prospect->setDateNaissance($dateNaissance);
+    $prospect->removeTelephone($prospect->getTelephone()[0]); // Remove the old telephone number    
     $prospect->addTelephone($telephone);
     $prospect->setProfession($profession);
     $prospect->setProduitsInteresse($produitsInteresse);
@@ -67,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // var_dump($prospect->toArray());
     $result = ProspectService::updateProspect($id,$prospect);
-    var_dump($result);
+    //var_dump($result);
     // Traitement du résultat
     if (!$result) {
         $error_message = "Erreur lors de l'enregistrement du prospect.";

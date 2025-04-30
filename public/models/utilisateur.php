@@ -8,7 +8,7 @@ require_once "personne.php";
  */
 class Utilisateur extends Personne
 {
-
+    use DbDataTrait;
     /**
      * Matricule de l'utilisateur
      * @var string

@@ -4,7 +4,7 @@ require_once "personne.php";
 
 class Prospect extends Personne
 {
-
+    use DbDataTrait;
     /**
      * Liste des professions prédéfinies
      */
@@ -78,6 +78,19 @@ class Prospect extends Personne
 
 
     /**
+     * Numéro de compte du client
+     * @var string
+     */
+    private string $numeroCompte;
+
+    /**
+     * Date d'ouverture du compte
+     * @var DateTime
+     */
+    private DateTime $dateOuvertureCompte;
+
+
+    /**
      * Constructeur de la classe Prospect
      * @param string $nom Nom du prospect
      * @param string $prenom Prénom du prospect
@@ -107,6 +120,7 @@ class Prospect extends Personne
         $this->commentaire = "";
         $this->docId = "";
         $this->idAgence = "";
+
     }
 
     /**
@@ -261,6 +275,48 @@ class Prospect extends Personne
         }
         $this->email = $email;
     }
+    /**
+     * Récupère le numéro de compte du client
+     * @return string
+     */
+    public function getNumeroCompte(): string
+    {
+        return $this->numeroCompte;
+    }
+
+    /**
+     * Modifie le numéro de compte du client
+     * @param string $numeroCompte Nouveau numéro de compte
+     */
+    public function setNumeroCompte(string $numeroCompte): void
+    {
+        $this->numeroCompte = $numeroCompte;
+    }
+
+    /**
+     * Récupère la date d'ouverture du compte
+     * @return DateTime
+     */
+    public function getDateOuvertureCompte(): DateTime
+    {
+        return $this->dateOuvertureCompte;
+    }
+
+    /**
+     * Modifie la date d'ouverture du compte
+     * @param DateTime $dateOuvertureCompte Nouvelle date d'ouverture du compte
+     */
+    public function setDateOuvertureCompte(DateTime $dateOuvertureCompte): void
+    {
+        $this->dateOuvertureCompte = $dateOuvertureCompte;
+    }
+
+    public function isClient() : bool
+    {
+        return $this->getNumeroCompte() != null && $this->getDateOuvertureCompte() != null;
+        
+    }
+
 }
 
 //require_once "../db.php";
@@ -282,7 +338,7 @@ class ProspectService
      */
     public static function createProspect(Prospect $prospect)
     {
-        
+
         if (self::prospectExist($prospect)) {
             return false;
         }
@@ -292,7 +348,6 @@ class ProspectService
         // Appel de la méthode de création de document dans la classe Database
         $response = Database::createDocument(self::$collectionName, $documentId, $prospect->toArray());
         return Database::isSuccessfullRequest($response) ? $response : false;
-
     }
 
     /**
@@ -305,8 +360,23 @@ class ProspectService
     {
 
         // Appel de la méthode de mise à jour de document dans la classe Database
-        $response = Database::updateDocument(self::$collectionName, $documentId, $prospect->toArray());
-        return Database::isSuccessfullRequest($response) ? $response : false;
+
+        $champs = array_chunk($prospect->toArray(), 10, true);
+        $success = true;
+
+        foreach ($champs as $chunk) {
+            try {
+                $response = Database::updateDocument(self::$collectionName, $documentId, $chunk);
+                if (!Database::isSuccessfullRequest($response)) {
+                    $success = false;
+                    break;
+                }
+            } catch (\Exception $e) {
+                $success = false;
+                break;
+            }
+        }
+        return $success ? $response : false;
     }
 
     /**
@@ -348,6 +418,12 @@ class ProspectService
         $prospect->setIdAgence($data['idAgence'] ?? "");
         $prospect->setEmail($data['email'] ?? "");
         $prospect->setGenre($data['genre'] ?? "");
+        $prospect->setNumeroCompte($data['numeroCompte'] ?? "");
+        $prospect->setDateOuvertureCompte(isset($data['dateOuvertureCompte']) ? new DateTime($data['dateOuvertureCompte']) : new DateTime());
+
+        $prospect->setDateCreation($doc->createTime);
+        $prospect->setDateModification($doc->updateTime);
+
         // Récupération de l'ID du document Firestore
         $id = Database::getDocumentIdFromName($doc->getName());
 
@@ -422,5 +498,19 @@ class ProspectService
         //var_dump($prospectId);
         $result = Database::getDocument(self::$collectionName, $prospectId);
         return self::fromFirestoreDocument($result);
+    }
+    /**
+     * Confirme le succès de l'ouverture d'un compte pour un prospect
+     * en entrant le code de ce compte là où il est demandé
+     * et en mettant à jour le prospect avec le numéro de compte
+     * @param Prospect $prospect - l'objet Prospect à mettre à jour
+     * @param string $numeroCompte - le numéro de compte à associer au prospect
+     */
+    public static function confirmAccountOpening($prospect,$numeroCompte)
+    {
+        // Vérification de l'existence du prospect dans la base de données
+        $prospect->setNumeroCompte($numeroCompte);
+        $prospect->setDateOuvertureCompte(new DateTime());
+        return self::updateProspect($prospect->getDocId(), $prospect);
     }
 }

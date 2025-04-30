@@ -1,3 +1,65 @@
+<?php
+// session_start();
+
+if ($_SESSION['user_role'] == ROLE_AGENT) {
+  $data_prospects = ProspectService::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
+  $prospects = [];
+  $clients = [];
+
+  foreach ($data_prospects as $prospect) {
+    if ($prospect->isClient()) {
+      $clients[] = $prospect;
+    } else {
+      $prospects[] = $prospect;
+    }
+  }
+
+  // Définition des dates pour ce mois et le mois passé
+  $dateDebutCeMois = new DateTime('first day of this month');
+  $dateFinCeMois = new DateTime('last day of this month');
+  $dateDebutMoisPasse = new DateTime('first day of last month');
+  $dateFinMoisPasse = new DateTime('last day of last month');
+
+  // Calcul des statistiques pour ce mois
+  $prospectsCeMois = array_filter($prospects, function($prospect) use ($dateDebutCeMois, $dateFinCeMois) {
+    return $prospect->getDateCreation() >= $dateDebutCeMois && $prospect->getDateCreation() <= $dateFinCeMois;
+  });
+  $clientsCeMois = array_filter($clients, function($client) use ($dateDebutCeMois, $dateFinCeMois) {
+    return $client->getDateCreation() >= $dateDebutCeMois && $client->getDateCreation() <= $dateFinCeMois;
+  });
+  $totalProspectsCeMois = count($prospectsCeMois);
+  $totalClientsCeMois = count($clientsCeMois);
+  $tauxConversionCeMois = ($totalClientsCeMois / ($totalProspectsCeMois + $totalClientsCeMois)) * 100;
+
+  // Calcul des statistiques pour le mois passé
+  $prospectsMoisPasse = array_filter($prospects, function($prospect) use ($dateDebutMoisPasse, $dateFinMoisPasse) {
+    return $prospect->getDateCreation() >= $dateDebutMoisPasse && $prospect->getDateCreation() <= $dateFinMoisPasse;
+  });
+  $clientsMoisPasse = array_filter($clients, function($client) use ($dateDebutMoisPasse, $dateFinMoisPasse) {
+    return $client->getDateCreation() >= $dateDebutMoisPasse && $client->getDateCreation() <= $dateFinMoisPasse;
+  });
+  $totalProspectsMoisPasse = count($prospectsMoisPasse);
+  $totalClientsMoisPasse = count($clientsMoisPasse);
+  $tauxConversionMoisPasse  = ($totalProspectsCeMois + $totalClientsCeMois) > 0 ? ($totalClientsCeMois / ($totalProspectsCeMois + $totalClientsCeMois)) * 100 : 0;
+
+  // Affichage des résultats
+  // echo "Statistiques pour ce mois :\n";
+  // echo "Nombre total de prospects : $totalProspectsCeMois\n";
+  // echo "Nombre total de clients : $totalClientsCeMois\n";
+  // echo "Taux de conversion : $tauxConversionCeMois%\n";
+  // echo "\n";
+  // echo "Statistiques pour le mois passé :\n";
+  // echo "Nombre total de prospects : $totalProspectsMoisPasse\n";
+  // echo "Nombre total de clients : $totalClientsMoisPasse\n";
+  // echo "Taux de conversion : $tauxConversionMoisPasse%\n";
+  // echo "\n";
+  // echo "Évolution :\n";
+  // echo "Prospects : " . ($totalProspectsCeMois - $totalProspectsMoisPasse) . "\n";
+  // echo "Clients : " . ($totalClientsCeMois - $totalClientsMoisPasse) . "\n";
+  // echo "Taux de conversion : " . ($tauxConversionCeMois - $tauxConversionMoisPasse) . "%\n";
+}
+?>
+
 <div class="pagetitle">
   <nav>
     <ol class="breadcrumb">
@@ -24,8 +86,11 @@
                   <i class="bi bi-people"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>84</h6>
-                  <span class="text-success small pt-1 fw-bold">12%</span>
+                    <h6><?php echo $totalProspectsCeMois; ?></h6>
+                    <span class="text-success small pt-1 fw-bold">
+                    <?php echo ($totalProspectsCeMois - $totalProspectsMoisPasse) >= 0 ? '+' : ''; ?>
+                    <?php echo $totalProspectsCeMois - $totalProspectsMoisPasse; ?>%
+                    </span>
                   <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
                 </div>
               </div>
@@ -43,8 +108,11 @@
                   <i class="bi bi-graph-up"></i>
                 </div>
                 <div class="ps-3">
-                  <h6>5.2%</h6>
-                  <span class="text-success small pt-1 fw-bold">0.8%</span>
+                    <h6><?php echo number_format($tauxConversionCeMois, 1); ?>%</h6>
+                    <span class="text-success small pt-1 fw-bold">
+                    <?php echo ($tauxConversionCeMois - $tauxConversionMoisPasse) >= 0 ? '+' : ''; ?>
+                    <?php echo number_format($tauxConversionCeMois - $tauxConversionMoisPasse, 1); ?>%
+                    </span>
                   <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
                 </div>
               </div>
@@ -52,7 +120,7 @@
           </div>
         </div><!-- End Conversion Card -->
 
-        <div class="col-12 mb-4"></div>  
+        <div class="col-12 mb-4"></div>
 
         <!-- Graphique Activité -->
         <div class="col-12">
@@ -113,21 +181,21 @@
       <div class="card" style="z-index: 2;">
         <div class="card-body">
           <h5 class="card-title">Mes objectifs</h5>
-          
+
           <h6 class="card-subtitle mb-2 text-muted">Prospection</h6>
           <div class="progress mb-3">
-            <div class="progress-bar bg-primary" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-              85% (85/100 prospects)
+            <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo ($totalProspectsCeMois / 100) * 100; ?>%" aria-valuenow="<?php echo $totalProspectsCeMois; ?>" aria-valuemin="0" aria-valuemax="100">
+              <?php echo $totalProspectsCeMois; ?> (<?php echo $totalProspectsCeMois; ?>/100 prospects)
             </div>
           </div>
-          
+
           <h6 class="card-subtitle mb-2 text-muted">Taux de conversion</h6>
           <div class="progress mb-3">
-            <div class="progress-bar bg-success" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
-              65% (6.5% sur objectif 10%)
+            <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $tauxConversionCeMois; ?>%" aria-valuenow="<?php echo $tauxConversionCeMois; ?>" aria-valuemin="0" aria-valuemax="100">
+              <?php echo number_format($tauxConversionCeMois, 1); ?>% (<?php echo number_format($tauxConversionCeMois, 1); ?>% sur objectif 10%)
             </div>
           </div>
-          
+
           <h6 class="card-subtitle mb-2 text-muted">Objectif agence</h6>
           <div class="progress">
             <div class="progress-bar bg-info" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
@@ -202,10 +270,10 @@
       </div><!-- End Ranking -->
 
       <div id="btn-ajouter-prospect" class="position-fixed" style="bottom: 100px; right: 50px; z-index: 3;">
-        <a href="./forms/ajouter-prospect.php" class="btn btn-primary  btn-lg d-flex align-items-center justify-content-center gap-2 shadow" 
+        <a href="./forms/ajouter-prospect.php" class="btn btn-primary  btn-lg d-flex align-items-center justify-content-center gap-2 shadow"
           style="border-radius: 15px; padding: 15px 25px; background-color: #4154f1; border-color: #4154f1; color: white;">
-            <i class="bi bi-plus"></i>
-            Ajouter Prospect
+          <i class="bi bi-plus"></i>
+          Ajouter Prospect
         </a>
       </div>
 
@@ -216,20 +284,27 @@
 
 <!-- Script pour le graphique -->
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  new ApexCharts(document.querySelector("#activityChart"), {
-    series: [{
-      name: 'Prospects',
-      data: [10, 15, 12, 18, 22, 25, 30, 28, 35, 32, 40, 38]
-    }],
-    chart: {
-      type: 'bar',
-      height: 350
-    },
-    colors: ['#4154f1'],
-    xaxis: {
-      categories: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Dec']
-    }
-  }).render();
-});
+  document.addEventListener("DOMContentLoaded", () => {
+    const prospectsData = <?php echo json_encode(array_count_values(array_map(function($prospect) {
+      return $prospect->getDateCreation()->format('Y-m-d');
+    }, $prospects))); ?>;
+
+    const categories = Object.keys(prospectsData);
+    const data = Object.values(prospectsData);
+
+    new ApexCharts(document.querySelector("#activityChart"), {
+      series: [{
+        name: 'Prospects',
+        data: data
+      }],
+      chart: {
+        type: 'bar',
+        height: 350
+      },
+      colors: ['#4154f1'],
+      xaxis: {
+        categories: categories
+      }
+    }).render();
+  });
 </script>
