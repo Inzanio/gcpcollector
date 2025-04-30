@@ -171,23 +171,19 @@ require_once("../pages/head.php");
                             </select>
                             <label for="profession">Profession</label>
                         </div>
+
+                        <!-- Saisie libre si 'Autre' -->
+                        <!-- <div class="form-floating mb-3 d-none" id="autreProfessionDiv">
+                            <input type="text" name="autreProfession" id="autreProfession" class="form-control" placeholder="Votre profession">
+                            <label for="autreProfession">Précisez la profession</label>
+                        </div> -->
                     </div>
-                    <!-- <div class="col-md-4">
-                        <div class="form-floating mb-3">
-                            <select class="form-select" id="floatingSelect" aria-label="State">
-                                <option selected="">New York</option>
-                                <option value="1">Oregon</option>
-                                <option value="2">DC</option>
-                            </select>
-                            <label for="floatingSelect">State</label>
-                        </div>
-                    </div> -->
-                    <div class="col-md-2">
-                        <div class="form-floating">
-                            <input name="connaissanceBanque" class="form-check-input" type="checkbox" id="connaissanceBanque" <?php echo $prospect->getConnaissanceBanque() ? 'checked' : ''; ?>>
-                            <label class="form-check-label" for="connaissanceBanque">Connaissance de la banque</label>
-                        </div>
+                    
+                    <div class="col-md-12">
+                        <input name="connaissanceBanque" class="form-check-input" type="checkbox" id="connaissanceBanque" <?php echo $prospect->getConnaissanceBanque() ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="connaissanceBanque">Connaissance de la banque</label>
                     </div>
+                    
                     <?php
                     $produits = [
                         "Épargne" => "Épargne",

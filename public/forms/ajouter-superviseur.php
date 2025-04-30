@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $genre = trim(htmlspecialchars($_POST['genre'] ?? ''));
 
     // Création d'un objet Prospect
-    require_once("../models/Prospect.php");
+    require_once("../models/Superviseur.php");
     $prospect = new Prospect(
         $nom,
         $prenom,
@@ -48,14 +48,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error_message = "Erreur lors de l'enregistrement du prospect.";
     } else {
 
-        $error_message = "Prospect enregistré avec succès.";
+        $error_message = "Superviseur enregistré avec succès.";
         // Redirection ou autre action après l'enregistrement réussi
-        header("Location: /gestionProspects.php"); // redirection vers la liste des prospects
+        header("Location: /gestionSuperviseurs.php"); // redirection vers la liste des prospects
         exit();
     } 
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,10 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php
 require_once("../pages/head.php");
 ?>
-
 <body>
-
-
     <!-- ======= Header ======= -->
     <?php
     require_once("../pages/header.php");
@@ -79,120 +75,101 @@ require_once("../pages/head.php");
     ?>
     <!-- End Sidebar-->
 
+  
     <!-- ======= Main ======= -->
     <main id="main" class="main">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Enregistrement d'un Prospect</h5>
+                <h5 class="card-title">Enregistrement d'un Superviseur</h5>
 
                 <!-- Floating Labels Form -->
                 <form class="row g-3" action="" method="POST">
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="nom" type="text" class="form-control" id="floatingName" placeholder="Nom du Prospect" required>
+                            <input name="nom" type="text" class="form-control" id="floatingName" placeholder="Nom du Superviseur" required>
                             <label for="floatingName">Nom</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="prenom" type="text" class="form-control" id="floatingName" placeholder="Prenom du Prospect">
-                            <label for="floatingName">Prenom</label>
+                            <input name="prenom" type="text" class="form-control" id="floatingPrenom" placeholder="Prénom du Superviseur" required>
+                            <label for="floatingPrenom">Prénom</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="email" type="email" class="form-control" id="floatingEmail" placeholder="Email du Prospect">
-                            <label for="floatingEmail">Email</label>
+                            <input name="email" type="email" class="form-control" id="floatingEmail" placeholder="Email du Superviseur" required>
+                            <label for="floatingEmail">Email professionnel</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="dateNaissance" type="date" class="form-control" id="floatingDateNaissance" placeholder="Date de naissance">
+                            <input name="dateNaissance" type="date" class="form-control" id="floatingDateNaissance" placeholder="Date de naissance" required>
                             <label for="floatingDateNaissance">Date de naissance</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="telephone" type="text" class="form-control" id="floatingTelephone" placeholder="Téléphone du Prospect" name="telephone" required>
-                            <label for="floatingTelephone"require>Téléphone</label>
+                            <input name="telephone" type="tel" class="form-control" id="floatingTelephone" placeholder="Téléphone" required>
+                            <label for="floatingTelephone">Téléphone</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <select name="genre" class="form-select" id="floatingGenre" required>
-                                <option value="" disabled selected>Sélectionner le genre</option>
-                                <option value="Homme">Homme</option>
-                                <option value="Femme">Femme</option>
-                            </select>
-                            <label for="floatingGenre">Genre</label>
+                            <input name="dateEmbauche" type="date" class="form-control" id="floatingDateEmbauche" placeholder="Date d'embauche" required>
+                            <label for="floatingDateEmbauche">Date d'embauche</label>
                         </div>
                     </div>
+                    
                     <?php
-                    $options = [
-                        "Commerçant" => "Commerçant",
-                        "Entrepreneur" => "Entrepreneur",
-                        "Cadre" => "Cadre",
-                        "Employé" => "Employé",
-                        "Étudiant" => "Étudiant",
-                        "Retraité" => "Retraité",
-                        "Autre" => "Autre"
+                    $roles = [
+                        "Superviseur Regional" => "Superviseur Régional",
+                        "Superviseur National" => "Superviseur National",
+                        "Responsable d'agence" => "Responsable d'agence",
+                        "Directeur Adjoint" => "Directeur Adjoint",
+                        "Directeur" => "Directeur"
                     ];
                     ?>
                     <div class="col-md-6">
-                        <div class="form-floating mb-3">
-                            <select name="profession" class="form-select" id="profession" required>
-                                <option value="" disabled selected>Sélectionner une profession</option>
-                                <?php foreach ($options as $value => $text) : ?>
+                        <div class="form-floating">
+                            <select name="role" class="form-select" id="floatingRole" required>
+                                <option value="" disabled selected>Sélectionner un rôle</option>
+                                <?php foreach ($roles as $value => $text) : ?>
                                     <option value="<?php echo $value; ?>"><?php echo $text; ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <label for="profession">Profession</label>
+                            <label for="floatingRole">Rôle dans l'organisation</label>
                         </div>
-
-                        <!-- Saisie libre si 'Autre' -->
-                        <!-- <div class="form-floating mb-3 d-none" id="autreProfessionDiv">
-                            <input type="text" name="autreProfession" id="autreProfession" class="form-control" placeholder="Votre profession">
-                            <label for="autreProfession">Précisez la profession</label>
-                        </div> -->
                     </div>
                     
-                    <div class="col-md-12">
-                            <input name="connaissanceBanque" class="form-check-input" type="checkbox" id="connaissanceBanque">
-                            <label class="form-check-label" for="connaissanceBanque">Connaissance de la banque</label>
-        
-                    </div>
-                    
-                    <?php
-                    $produits = [
-                        "Épargne" => "Épargne",
-                        "Investissement" => "Investissement",
-                        "Crédit" => "Crédit",
-                        "Assurance" => "Assurance",
-                        "Gestion de patrimoine" => "Gestion de patrimoine"
-                    ];
-                    ?>
-                    <div class="col-md-12">
-                        <label>Produits intéressés</label>
-                        <?php foreach ($produits as $value => $text) : ?>
-                            <div class="form-check">
-                                <input name="produitsInteresse[]" class="form-check-input" type="checkbox" id="<?php echo $value; ?>" name="produitsInteresse[]" value="<?php echo $value; ?>">
-                                <label class="form-check-label" for="<?php echo $value; ?>"><?php echo $text; ?></label>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                    <div class="col-12">
+                    <div class="col-md-6">
                         <div class="form-floating">
-                            <textarea name="commentaire" class="form-control" placeholder="Address" id="floatingCommentaire" style="height: 100px;"></textarea>
-                            <label for="floatingTextarea">Commentaire</label>
+                            <input name="idAgence" type="text" class="form-control" id="floatingAgence" placeholder="ID Agence">
+                            <label for="floatingAgence">ID Agence d'affectation</label>
                         </div>
                     </div>
+                    
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            <textarea name="adresse" class="form-control" placeholder="Adresse" id="floatingAdresse" style="height: 100px;"></textarea>
+                            <label for="floatingAdresse">Adresse complète</label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="form-check">
+                            <input name="estActif" class="form-check-input" type="checkbox" id="estActif" checked>
+                            <label class="form-check-label" for="estActif">Superviseur actif</label>
+                        </div>
+                    </div>
+                    
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
                         <button type="reset" class="btn btn-secondary">Réinitialiser</button>
                     </div>
-
                 </form>
                 <!-- End floating Labels Form -->
+                
                 <?php if (!empty($error_message)) : ?>
                     <div class="alert alert-<?php echo $result ? 'success' : 'danger'; ?>">
                         <?php echo $error_message; ?>
@@ -203,6 +180,7 @@ require_once("../pages/head.php");
     </main>
     <!-- End #main -->
 
+
     <!-- ======= Footer ======= -->
     <?php
     require_once("../pages/footer.php");
@@ -210,5 +188,4 @@ require_once("../pages/head.php");
     <!-- End Footer -->
 
 </body>
-
 </html>
