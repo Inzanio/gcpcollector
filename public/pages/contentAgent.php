@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 // session_start();
 
 if ($_SESSION['user_role'] == ROLE_AGENT) {
@@ -61,23 +60,6 @@ if ($_SESSION['user_role'] == ROLE_AGENT) {
 }
 ?>
 
-=======
-//require_once("routes.php");
-//var_dump($_SESSION['user_role']);
-if (!isset($_SESSION['user_role'])) header('Location: /login');
-//   if ( $_SESSION['user_role'] != "agent") {
-//       header('Location: /login');
-//       exit();
-//   }
-
-// Fonction pour récupérer les prospects depuis Firebase
-require_once "db.php";
-require_once("./models/prospect.php");
-$prospects = ProspectService::getAllProspects();
-
-//var_dump($prospects);
-?>
->>>>>>> 5cdbb4a4eecfab7030f03ab299dafd10b746404f
 <div class="pagetitle">
   <nav>
     <ol class="breadcrumb">
