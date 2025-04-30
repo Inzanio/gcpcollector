@@ -1,14 +1,19 @@
 <?php
     $currentUri = $_SERVER['REQUEST_URI'];
     $dashboardActivity = ($currentUri === '/') ? 'active' : 'collapsed';
+
     $gestProspectActivity = (strpos(strtolower($currentUri), "prospect")) ? 'active' : 'collapsed';
     //$gestProspectActivity = (strpos($currentUri, "rospect")) ? 'active' : 'collapsed';
     $performancesActivity = ($currentUri === '/performances.php') ? 'active' : 'collapsed';
+
+
 ?>
+
+
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        <!-- Tableau de bord -->
+        <!-- Tableau de bord (commun à tous)  -->
         <li class="nav-item">
             
             <a class="nav-link <?php echo $dashboardActivity; ?>" href="/">
@@ -17,7 +22,7 @@
             </a>
         </li>
 
-        <!-- Prospects -->
+            <!-- Prospects -->
         <li class="nav-item">
             <a class="nav-link <?php echo $gestProspectActivity; ?>" href="/gestionProspects.php">
                 <i class="bi bi-people-fill"></i>
@@ -25,7 +30,7 @@
             </a>
         </li>
 
-        <!-- Performances -->
+         <!-- Performances -->
         <li class="nav-item">
             <a class="nav-link <?php echo $performancesActivity; ?>" href="">
                 <i class="bi bi-graph-up"></i>
