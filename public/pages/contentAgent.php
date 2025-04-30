@@ -1,63 +1,55 @@
 <?php
 // session_start();
-
 if ($_SESSION['user_role'] == ROLE_AGENT) {
   $data_prospects = ProspectService::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
-  $prospects = [];
-  $clients = [];
-
-  foreach ($data_prospects as $prospect) {
-    if ($prospect->isClient()) {
-      $clients[] = $prospect;
-    } else {
-      $prospects[] = $prospect;
-    }
-  }
-
-  // Définition des dates pour ce mois et le mois passé
-  $dateDebutCeMois = new DateTime('first day of this month');
-  $dateFinCeMois = new DateTime('last day of this month');
-  $dateDebutMoisPasse = new DateTime('first day of last month');
-  $dateFinMoisPasse = new DateTime('last day of last month');
-
-  // Calcul des statistiques pour ce mois
-  $prospectsCeMois = array_filter($prospects, function($prospect) use ($dateDebutCeMois, $dateFinCeMois) {
-    return $prospect->getDateCreation() >= $dateDebutCeMois && $prospect->getDateCreation() <= $dateFinCeMois;
-  });
-  $clientsCeMois = array_filter($clients, function($client) use ($dateDebutCeMois, $dateFinCeMois) {
-    return $client->getDateCreation() >= $dateDebutCeMois && $client->getDateCreation() <= $dateFinCeMois;
-  });
-  $totalProspectsCeMois = count($prospectsCeMois);
-  $totalClientsCeMois = count($clientsCeMois);
-  $tauxConversionCeMois = ($totalClientsCeMois / ($totalProspectsCeMois + $totalClientsCeMois)) * 100;
-
-  // Calcul des statistiques pour le mois passé
-  $prospectsMoisPasse = array_filter($prospects, function($prospect) use ($dateDebutMoisPasse, $dateFinMoisPasse) {
-    return $prospect->getDateCreation() >= $dateDebutMoisPasse && $prospect->getDateCreation() <= $dateFinMoisPasse;
-  });
-  $clientsMoisPasse = array_filter($clients, function($client) use ($dateDebutMoisPasse, $dateFinMoisPasse) {
-    return $client->getDateCreation() >= $dateDebutMoisPasse && $client->getDateCreation() <= $dateFinMoisPasse;
-  });
-  $totalProspectsMoisPasse = count($prospectsMoisPasse);
-  $totalClientsMoisPasse = count($clientsMoisPasse);
-  $tauxConversionMoisPasse  = ($totalProspectsCeMois + $totalClientsCeMois) > 0 ? ($totalClientsCeMois / ($totalProspectsCeMois + $totalClientsCeMois)) * 100 : 0;
-
-  // Affichage des résultats
-  // echo "Statistiques pour ce mois :\n";
-  // echo "Nombre total de prospects : $totalProspectsCeMois\n";
-  // echo "Nombre total de clients : $totalClientsCeMois\n";
-  // echo "Taux de conversion : $tauxConversionCeMois%\n";
-  // echo "\n";
-  // echo "Statistiques pour le mois passé :\n";
-  // echo "Nombre total de prospects : $totalProspectsMoisPasse\n";
-  // echo "Nombre total de clients : $totalClientsMoisPasse\n";
-  // echo "Taux de conversion : $tauxConversionMoisPasse%\n";
-  // echo "\n";
-  // echo "Évolution :\n";
-  // echo "Prospects : " . ($totalProspectsCeMois - $totalProspectsMoisPasse) . "\n";
-  // echo "Clients : " . ($totalClientsCeMois - $totalClientsMoisPasse) . "\n";
-  // echo "Taux de conversion : " . ($tauxConversionCeMois - $tauxConversionMoisPasse) . "%\n";
 }
+if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
+  $data_prospects = ProspectService::getAllProspects($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
+}
+if ($_SESSION['user_role'] == ROLE_ADMIN) {
+  $data_prospects = ProspectService::getAllProspects($idAgentProspecteur = null, $idAgence = null);
+}
+
+// $data_prospects = ProspectService::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
+$prospects = [];
+$clients = [];
+
+foreach ($data_prospects as $prospect) {
+  if ($prospect->isClient()) {
+    $clients[] = $prospect;
+  } else {
+    $prospects[] = $prospect;
+  }
+}
+
+// Définition des dates pour ce mois et le mois passé
+$dateDebutCeMois = new DateTime('first day of this month');
+$dateFinCeMois = new DateTime('last day of this month');
+$dateDebutMoisPasse = new DateTime('first day of last month');
+$dateFinMoisPasse = new DateTime('last day of last month');
+
+// Calcul des statistiques pour ce mois
+$prospectsCeMois = array_filter($prospects, function ($prospect) use ($dateDebutCeMois, $dateFinCeMois) {
+  return $prospect->getDateCreation() >= $dateDebutCeMois && $prospect->getDateCreation() <= $dateFinCeMois;
+});
+$clientsCeMois = array_filter($clients, function ($client) use ($dateDebutCeMois, $dateFinCeMois) {
+  return $client->getDateCreation() >= $dateDebutCeMois && $client->getDateCreation() <= $dateFinCeMois;
+});
+$totalProspectsCeMois = count($prospectsCeMois);
+$totalClientsCeMois = count($clientsCeMois);
+$tauxConversionCeMois = ($totalClientsCeMois / ($totalProspectsCeMois + $totalClientsCeMois)) * 100;
+
+// Calcul des statistiques pour le mois passé
+$prospectsMoisPasse = array_filter($prospects, function ($prospect) use ($dateDebutMoisPasse, $dateFinMoisPasse) {
+  return $prospect->getDateCreation() >= $dateDebutMoisPasse && $prospect->getDateCreation() <= $dateFinMoisPasse;
+});
+$clientsMoisPasse = array_filter($clients, function ($client) use ($dateDebutMoisPasse, $dateFinMoisPasse) {
+  return $client->getDateCreation() >= $dateDebutMoisPasse && $client->getDateCreation() <= $dateFinMoisPasse;
+});
+$totalProspectsMoisPasse = count($prospectsMoisPasse);
+$totalClientsMoisPasse = count($clientsMoisPasse);
+$tauxConversionMoisPasse  = ($totalProspectsCeMois + $totalClientsCeMois) > 0 ? ($totalClientsCeMois / ($totalProspectsCeMois + $totalClientsCeMois)) * 100 : 0;
+
 ?>
 
 <div class="pagetitle">
@@ -86,11 +78,11 @@ if ($_SESSION['user_role'] == ROLE_AGENT) {
                   <i class="bi bi-people"></i>
                 </div>
                 <div class="ps-3">
-                    <h6><?php echo $totalProspectsCeMois; ?></h6>
-                    <span class="text-success small pt-1 fw-bold">
+                  <h6><?php echo $totalProspectsCeMois; ?></h6>
+                  <span class="text-success small pt-1 fw-bold">
                     <?php echo ($totalProspectsCeMois - $totalProspectsMoisPasse) >= 0 ? '+' : ''; ?>
                     <?php echo $totalProspectsCeMois - $totalProspectsMoisPasse; ?>%
-                    </span>
+                  </span>
                   <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
                 </div>
               </div>
@@ -108,11 +100,11 @@ if ($_SESSION['user_role'] == ROLE_AGENT) {
                   <i class="bi bi-graph-up"></i>
                 </div>
                 <div class="ps-3">
-                    <h6><?php echo number_format($tauxConversionCeMois, 1); ?>%</h6>
-                    <span class="text-success small pt-1 fw-bold">
+                  <h6><?php echo number_format($tauxConversionCeMois, 1); ?>%</h6>
+                  <span class="text-success small pt-1 fw-bold">
                     <?php echo ($tauxConversionCeMois - $tauxConversionMoisPasse) >= 0 ? '+' : ''; ?>
                     <?php echo number_format($tauxConversionCeMois - $tauxConversionMoisPasse, 1); ?>%
-                    </span>
+                  </span>
                   <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
                 </div>
               </div>
@@ -138,30 +130,30 @@ if ($_SESSION['user_role'] == ROLE_AGENT) {
             <div class="card-body">
               <h5 class="card-title">Prospects récents</h5>
               <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nom</th>
-                                                    <th>Profession</th>
-                                                    <th>Numéro Téléphone</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php foreach ($prospects as $prospect): ?>
-                                                    <tr>
-                                                        <td><?= htmlspecialchars($prospect->getNom()) ?></td>
-                                                        <td><?= htmlspecialchars($prospect->getProfession()) ?></td>
-                                                        <td><?= htmlspecialchars($prospect->getTelephone()[0]) ?></td>
-                                                        <td>
-                                                            <a href="/forms/modifier-prospect.php?id=<?= urlencode($prospect->getDocId() ?? '') ?>" 
-                                                            class="btn btn-outline-warning">
-                                                                <i class="bi bi-pencil me-2"></i>Modifier
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                            </tbody>
-                                        </table>
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Profession</th>
+                    <th>Numéro Téléphone</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($prospects as $prospect): ?>
+                    <tr>
+                      <td><?= htmlspecialchars($prospect->getNom()) ?></td>
+                      <td><?= htmlspecialchars($prospect->getProfession()) ?></td>
+                      <td><?= htmlspecialchars($prospect->getTelephone()[0]) ?></td>
+                      <td>
+                        <a href="/forms/modifier-prospect.php?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
+                          class="btn btn-outline-warning">
+                          <i class="bi bi-pencil me-2"></i>Modifier
+                        </a>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                </tbody>
+              </table>
             </div>
           </div>
         </div><!-- End Recent Prospects -->
@@ -201,7 +193,7 @@ if ($_SESSION['user_role'] == ROLE_AGENT) {
       </div><!-- End Goals -->
 
       <!-- Agenda -->
-      <div class="card" style="z-index: 2;">
+      <!-- <div class="card" style="z-index: 2;">
         <div class="card-body">
           <h5 class="card-title">Mon agenda <span>| Aujourd'hui</span></h5>
           <div class="activity">
@@ -225,7 +217,8 @@ if ($_SESSION['user_role'] == ROLE_AGENT) {
             </div>
           </div>
         </div>
-      </div><!-- End Agenda -->
+      </div> -->
+      <!-- End Agenda -->
 
       <!-- Classement -->
       <div class="card" style="z-index: 2;">
@@ -280,9 +273,9 @@ if ($_SESSION['user_role'] == ROLE_AGENT) {
 <!-- Script pour le graphique -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const prospectsData = <?php echo json_encode(array_count_values(array_map(function($prospect) {
-      return $prospect->getDateCreation()->format('Y-m-d');
-    }, $prospects))); ?>;
+    const prospectsData = <?php echo json_encode(array_count_values(array_map(function ($prospect) {
+                            return $prospect->getDateCreation()->format('Y-m-d');
+                          }, $prospects))); ?>;
 
     const categories = Object.keys(prospectsData);
     const data = Object.values(prospectsData);

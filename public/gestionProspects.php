@@ -9,6 +9,7 @@ if (!isset($_SESSION['user_role'])) header('Location: /login');
 //   }
 
 // Fonction pour récupérer les prospects depuis Firebase
+require_once "config.php";
 require_once "db.php";
 require_once("./models/prospect.php");
 if ($_SESSION['user_role'] == ROLE_AGENT) {
