@@ -55,6 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } 
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -109,7 +111,7 @@ require_once("../pages/head.php");
                             <label for="floatingDateNaissance">Date de naissance</label>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-floating">
                             <input name="telephone" type="text" class="form-control" id="floatingTelephone" placeholder="Téléphone du Prospect" name="telephone" required>
                             <label for="floatingTelephone"require>Téléphone</label>

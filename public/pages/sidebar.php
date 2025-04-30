@@ -16,6 +16,7 @@
 
     $gestAgencesActivity = (strpos(strtolower($currentUri), "agence")) ? 'active' : 'collapsed';
 
+    $validerCompteActivity = (strpos(strtolower($currentUri), "compte")) ? 'active' : 'collapsed';
 ?>
 
 
@@ -68,13 +69,21 @@
                     <span>Performances des agents</span>
                 </a>
             </li>
+
+            <!-- Validation ouverture compte -->
+            <li class="nav-item">
+                <a class="nav-link <?php echo $validerCompteActivity; ?>" href="">
+                    <i class="bi bi-shield-check"></i>
+                    <span>Valider Préouverture</span>
+                </a>
+            </li>
         <?php endif; ?>
 
         <!-- Menu pour les ADMINISTRATEURS -->
         <?php if ($_SESSION['user_role'] === ROLE_ADMIN): ?>
             <!-- Gestion des superviseurs -->
             <li class="nav-item">
-                <a class="nav-link <?php echo $gestSuperviseursActivity; ?>" href="">
+                <a class="nav-link <?php echo $gestSuperviseursActivity; ?>" href="/gestionSuperviseurs.php">
                     <i class="bi bi-person-badge-fill"></i>
                     <span>Gérer les superviseurs</span>
                 </a>
@@ -85,6 +94,14 @@
                 <a class="nav-link <?php echo $gestAgencesActivity; ?>" href="">
                     <i class="bi bi-building"></i>
                     <span>Gérer les agences</span>
+                </a>
+            </li>
+
+            <!-- Validation ouverture compte -->
+            <li class="nav-item">
+                <a class="nav-link <?php echo $validerCompteActivity; ?>" href="">
+                    <i class="bi bi-shield-check"></i>
+                    <span>Valider Préouverture</span>
                 </a>
             </li>
         <?php endif; ?>
