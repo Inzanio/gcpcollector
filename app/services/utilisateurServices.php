@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Services;
 
-use App\Database;
 use App\Models\Utilisateur;
 use DateTime;
 

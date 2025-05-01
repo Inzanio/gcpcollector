@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Services;
 
 use \MrShan0\PHPFirestore\FireStoreApiClient;
 use \MrShan0\PHPFirestore\FireStoreDocument;

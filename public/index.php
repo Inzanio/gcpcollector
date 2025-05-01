@@ -1,12 +1,9 @@
 <?php
 require_once '../vendor/autoload.php';
 require_once '../config/constants.php';
-require_once '../config/database.php';
-
 
 use App\Controllers\HomeController;
 use App\Controllers\LoginController;
-
 
 $uri = $_SERVER['REQUEST_URI'];
 $parts = explode('/', trim($uri, '/'));

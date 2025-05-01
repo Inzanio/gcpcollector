@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Database;
 use App\Models\Prospect;
 use DateTime;
 
