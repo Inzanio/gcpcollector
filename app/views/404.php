@@ -4,7 +4,7 @@
 <html lang="en">
 
 <?php
-    require_once("pages/head.php");
+    require_once("head.php");
 ?>
 
 <body>
@@ -16,14 +16,14 @@
         <h1>404</h1>
         <h2>The page you are looking for doesn't exist.</h2>
         <a class="btn" href="/">Back to home</a>
-        <img src="<?php echo $baseUri; ?>/assets/img/not-found.svg" class="img-fluid py-5" alt="Page Not Found">
+        <img src="<?php echo $static_files_uri; ?>/img/not-found.svg" class="img-fluid py-5" alt="Page Not Found">
       </section>
 
     </div>
   </main><!-- End #main -->
 
     <?php
-        require_once("pages/footer.php");
+        require_once("footer.php");
       ?>
 
 </body>

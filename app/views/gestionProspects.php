@@ -3,23 +3,19 @@
 session_start();
 //var_dump($_SESSION['user_role']);
 if (!isset($_SESSION['user_role'])) header('Location: /login');
-//   if ( $_SESSION['user_role'] != "agent") {
-//       header('Location: /login');
-//       exit();
-//   }
 
 // Fonction pour récupérer les prospects depuis Firebase
 require_once "config.php";
 require_once "db.php";
 require_once("./models/prospect.php");
 if ($_SESSION['user_role'] == ROLE_AGENT) {
-    $prospects = ProspectService::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
+    $prospects = ProspectServices::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
 }
 if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
-    $prospects = ProspectService::getAllProspects($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
+    $prospects = ProspectServices::getAllProspects($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
 }
 if ($_SESSION['user_role'] == ROLE_ADMIN) {
-    $prospects = ProspectService::getAllProspects($idAgentProspecteur = null, $idAgence = null);
+    $prospects = ProspectServices::getAllProspects($idAgentProspecteur = null, $idAgence = null);
 }
 //var_dump($prospects);
 ?>

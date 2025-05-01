@@ -1,5 +1,7 @@
 <?php 
-require_once "traits.php";
+namespace App\Models;
+use App\Models\Traits\ToArrayTrait;
+use DateTime;
 /**
  * Classe représentant une personne
  */

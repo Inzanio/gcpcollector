@@ -1,0 +1,11 @@
+
+# Enable the rewrite engine
+RewriteEngine On
+
+# Redirect all requests to the public directory
+
+# Tells the server to apply the rule only if the request is not already pointing to /public/.
+RewriteCond %{REQUEST_URI} !^/public/
+
+# Rewrites the request to the new folder, /public/. The [L] flag indicates this is the last rule to be processed.
+RewriteRule ^(.*)$ /public/$1 [L]

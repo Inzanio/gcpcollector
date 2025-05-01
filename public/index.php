@@ -1,17 +1,35 @@
 <?php
-    require_once('config.php');
+require_once '../vendor/autoload.php';
+require_once '../config/constants.php';
+require_once '../config/database.php';
 
-    $url = $_SERVER['REQUEST_URI'];
 
-    $routes = [
-        '/' => 'dashboard.php',
-        '/login' => 'login.php',
-        '/dashboard' => 'dashboard.php',
-    ];
+use App\Controllers\HomeController;
+use App\Controllers\LoginController;
 
-    if (isset($routes[$url])) {
-        include $routes[$url];
-    } else {
-        include '404.php';
-    }
-?>
+
+$uri = $_SERVER['REQUEST_URI'];
+$parts = explode('/', trim($uri, '/'));
+
+switch ($parts[0]) {
+    case '':
+        // Afficher la page d'accueil
+        HomeController::index();
+        break;
+    case 'login':
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            LoginController::login();
+        } else {
+            LoginController::index();
+        }
+        break;
+    case 'logout':  
+        LoginController::logout();
+        break;
+    default:
+        // Afficher une page d'erreur 404
+        header('HTTP/1.1 404 Not Found');
+        include '../app/views/404.php';
+        exit;
+}

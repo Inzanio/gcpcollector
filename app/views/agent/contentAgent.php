@@ -1,13 +1,16 @@
 <?php
 // session_start();
+
+use App\Services\ProspectServices;
+
 if ($_SESSION['user_role'] == ROLE_AGENT) {
-  $data_prospects = ProspectService::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
+  $data_prospects = ProspectServices::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
 }
 if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
-  $data_prospects = ProspectService::getAllProspects($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
+  $data_prospects = ProspectServices::getAllProspects($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
 }
 if ($_SESSION['user_role'] == ROLE_ADMIN) {
-  $data_prospects = ProspectService::getAllProspects($idAgentProspecteur = null, $idAgence = null);
+  $data_prospects = ProspectServices::getAllProspects($idAgentProspecteur = null, $idAgence = null);
 }
 
 // $data_prospects = ProspectService::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
@@ -37,7 +40,7 @@ $clientsCeMois = array_filter($clients, function ($client) use ($dateDebutCeMois
 });
 $totalProspectsCeMois = count($prospectsCeMois);
 $totalClientsCeMois = count($clientsCeMois);
-$tauxConversionCeMois = ($totalClientsCeMois / ($totalProspectsCeMois + $totalClientsCeMois)) * 100;
+$tauxConversionCeMois = ($totalProspectsCeMois + $totalClientsCeMois) > 0 ? ($totalClientsCeMois / ($totalProspectsCeMois + $totalClientsCeMois)) * 100 : 0;
 
 // Calcul des statistiques pour le mois passé
 $prospectsMoisPasse = array_filter($prospects, function ($prospect) use ($dateDebutMoisPasse, $dateFinMoisPasse) {
@@ -48,7 +51,7 @@ $clientsMoisPasse = array_filter($clients, function ($client) use ($dateDebutMoi
 });
 $totalProspectsMoisPasse = count($prospectsMoisPasse);
 $totalClientsMoisPasse = count($clientsMoisPasse);
-$tauxConversionMoisPasse  = ($totalProspectsCeMois + $totalClientsCeMois) > 0 ? ($totalClientsCeMois / ($totalProspectsCeMois + $totalClientsCeMois)) * 100 : 0;
+$tauxConversionMoisPasse  = ($totalProspectsMoisPasse + $totalClientsMoisPasse) > 0 ? ($totalClientsMoisPasse / ($totalProspectsMoisPasse + $totalClientsMoisPasse)) * 100 : 0;
 
 ?>
 

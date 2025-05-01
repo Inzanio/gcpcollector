@@ -1,6 +1,7 @@
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
+namespace App;
+
 use \MrShan0\PHPFirestore\FireStoreApiClient;
 use \MrShan0\PHPFirestore\FireStoreDocument;
 
@@ -23,25 +24,14 @@ class Database
     {
         if (!self::$firestoreClient) {
             //echo "Initialisation de l'API Firestore";
-            $json = file_get_contents(dirname($_SERVER['DOCUMENT_ROOT']) . '/application_default_credentials.json');
+            $json = file_get_contents(FIREBASE_CREDENTIALS_PATH);
             self::$credentials = json_decode($json, true);
             self::$firestoreClient = new FireStoreApiClient(self::$credentials["project_id"], self::$credentials["apiKey"], [
                 'database' => '(default)',
             ]);
         }
         return self::$firestoreClient;
-
     }
-
-    /**
-     * Récupère une collection spécifique dans la base de données Firestore
-     * @param string $collectionName Nom de la collection
-     * @return \Google\Cloud\Firestore\CollectionReference
-     */
-    // public static function getCollectionRef($collectionName)
-    // {
-    //     return self::getFirestore()->collection($collectionName);
-    // }
 
     /**
      * Ajoute un document à une collection spécifique dans la base de données Firestore
@@ -56,9 +46,9 @@ class Database
      * ```
      * @return string ID du document ajouté
      */
-    public static function createDocument($collectionName, $documentId , $data)
-    {       
-        $result = self::getFirestore()->addDocument($collectionName, $data ,$documentId);
+    public static function createDocument($collectionName, $documentId, $data)
+    {
+        $result = self::getFirestore()->addDocument($collectionName, $data, $documentId);
         return $result;
     }
 
@@ -70,8 +60,8 @@ class Database
      */
     public static function getDocument($collectionName, $documentId)
     {
-        $result = self::getFirestore()->getDocument($collectionName,$documentId);
-        return $result ;// $document->exists() ? $document->data() : null;
+        $result = self::getFirestore()->getDocument($collectionName, $documentId);
+        return $result; // $document->exists() ? $document->data() : null;
     }
 
     /**
@@ -79,18 +69,8 @@ class Database
      * @param string $collectionName Nom de la collection
      * @param string $documentId ID du document
      * @param array $data Données à mettre à jour
-     *Example:
-     * ```
-     * $document->update([
-     *     ['path' => 'name', 'value' => 'John'],
-     *     ['path' => 'country', 'value' => 'USA'],
-     *     ['path' => 'cryptoCurrencies.bitcoin', 'value' => 0.5],
-     *     ['path' => 'cryptoCurrencies.ethereum', 'value' => 10],
-     *     ['path' => 'cryptoCurrencies.litecoin', 'value' => 5.51]
-     * ]);
-     * ```
      */
-    public static function updateDocument($collectionName, $documentId, $data, $documentExist=True)
+    public static function updateDocument($collectionName, $documentId, $data, $documentExist = True)
     {
         $firestoreClient = self::getFirestore();
         return $firestoreClient->updateDocument($collectionName, $documentId, $data, $documentExist);
@@ -140,17 +120,8 @@ class Database
      */
     public static function toDocument($object)
     {
-            return new FireStoreDocument($object);
+        return new FireStoreDocument($object);
     }
-    // /**
-    //  * Convertit un objet en tableau associatif
-    //  * @param object $object L'objet à convertir
-    //  * @return \MrShan0\PHPFirestore\Fields\FireStoreObject Le tableau associatif représentant l'objet
-    //  */
-    // public static function toFireStoreObject($object)
-    // {
-    //     return self::toDocument($object)->getObject($object);
-    // }
 
     /**
      * Convertit la réponse de Firestore en tableau d'objets
@@ -160,48 +131,15 @@ class Database
     public static function firestoreQueryResponseToObject($response)
     {
         $response = json_decode($response, true);
-        
+
         $result = [];
         foreach ($response as $object) {
-            // var_dump($object);
-            // var_dump(FireStoreDocument::isValidDocument($object));
-            
+
             if (isset($object['document'])) {
                 $document = $object['document'];
-                if ( FireStoreDocument::isValidDocument($document) ) {
+                if (FireStoreDocument::isValidDocument($document)) {
                     $result[] = self::toDocument($document);
                 }
-                // $name = explode('/', $document['name']);
-                // $documentId = end($name);
-                // $fields = isset($document['fields']) ? $document['fields'] : [];
-                // $data = self::firestoreFieldsToArray($fields);
-                // $result[] = (object) [
-                //     'id' => $documentId,
-                //     'data' => $data,
-                //     'createTime' => $document['createTime'],
-                //     'updateTime' => $document['updateTime'],
-                // ];
-            }
-        }
-        return $result;
-    }
-
-    private static function firestoreFieldsToArray($fields)
-    {
-        $result = [];
-        foreach ($fields as $field => $value) {
-            if (isset($value['stringValue'])) {
-                $result[$field] = $value['stringValue'];
-            } elseif (isset($value['integerValue'])) {
-                $result[$field] = (int) $value['integerValue'];
-            } elseif (isset($value['booleanValue'])) {
-                $result[$field] = (bool) $value['booleanValue'];
-            } elseif (isset($value['doubleValue'])) {
-                $result[$field] = (float) $value['doubleValue'];
-            } elseif (isset($value['arrayValue'])) {
-                $result[$field] = self::firestoreArrayValueToArray($value['arrayValue']);
-            } elseif (isset($value['mapValue'])) {
-                $result[$field] = self::firestoreFieldsToArray($value['mapValue']['fields']);
             }
         }
         return $result;
@@ -223,7 +161,7 @@ class Database
         }
         return $result;
     }
-    
+
     // public static function decode($response)
     // {
     //     return FireStoreHelper::decode($response);
@@ -235,17 +173,18 @@ class Database
      * @return MrShan0\PHPFirestore\FireStoreDocument[]
      */
     public static function toArrayDocument($response)
-    {   
+    {
         //var_dump($response);
         $docs = self::firestoreQueryResponseToObject($response);
-        
+
         // if ( FireStoreDocument::isValidDocument($object) ) {
         //     return new FireStoreDocument($object);
         // };
         // return null;
         return $docs;
     }
-    public static function getDocumentIdFromName($name) {
+    public static function getDocumentIdFromName($name)
+    {
         $parts = explode('/', $name);
         return end($parts);
     }
@@ -254,7 +193,8 @@ class Database
      * @param string $response La réponse de Firestore au format JSON
      * @return bool true si la requête a réussi, false sinon
      */
-    public static function isSuccessfullRequest($response) {
+    public static function isSuccessfullRequest($response)
+    {
         $error = json_decode($response, true);
         if (isset($error["error"])) {
             var_dump($error["error"]);
@@ -262,51 +202,125 @@ class Database
         }
         return true;
     }
-
-
 }
+/**
+ * Classe pour construire des requêtes Firestore.
+ */
 class FirestoreQueryBuilder
 {
+    /**
+     * Nom de la collection Firestore à interroger.
+     *
+     * @var string
+     */
     private $collectionName;
+
+    /**
+     * Champs à sélectionner dans la requête.
+     *
+     * @var array
+     */
     private $fields;
+
+    /**
+     * Conditions de filtrage pour la requête.
+     *
+     * @var array
+     */
     private $where;
+
+    /**
+     * Critères de tri pour les résultats.
+     *
+     * @var array
+     */
     private $orderBy;
+
+    /**
+     * Nombre maximum de documents à retourner.
+     *
+     * @var int
+     */
     private $limit;
 
+    /**
+     * Constructeur de la classe.
+     *
+     * @param string $collectionName Nom de la collection Firestore à interroger.
+     */
     public function __construct($collectionName)
     {
         $this->collectionName = $collectionName;
     }
 
+    /**
+     * Spécifie les champs à inclure dans les résultats.
+     *
+     * @param array $fields Champs à sélectionner.
+     *
+     * @return FirestoreQueryBuilder
+     */
     public function select($fields)
     {
         $this->fields = $fields;
         return $this;
     }
 
+    /**
+     * Ajoute une condition de filtrage.
+     *
+     * @param string $field Champ à filtrer.
+     * @param string $op Opérateur de comparaison.
+     * @param mixed $value Valeur à comparer.
+     *
+     * @return FirestoreQueryBuilder
+     */
     public function where($field, $op, $value)
     {
+        // Initialise le tableau de conditions si nécessaire
         if (!isset($this->where)) {
             $this->where = [];
         }
+        // Ajoute la condition au tableau
         $this->where[] = ['field' => $field, 'op' => $op, 'value' => $value];
         return $this;
     }
 
+    /**
+     * Spécifie le champ et la direction du tri.
+     *
+     * @param string $field Champ à trier.
+     * @param string $direction Direction du tri (asc ou desc).
+     *
+     * @return FirestoreQueryBuilder
+     */
     public function orderBy($field, $direction)
     {
         $this->orderBy = ['field' => $field, 'direction' => $direction];
         return $this;
     }
 
+    /**
+     * Fixe le nombre maximum de documents à retourner.
+     *
+     * @param int $limit Nombre maximum de documents.
+     *
+     * @return FirestoreQueryBuilder
+     */
     public function limit($limit)
     {
         $this->limit = $limit;
         return $this;
     }
 
+    /**
+     * Construit la requête Firestore.
+     *
+     * @return array Requête Firestore structurée.
+     */
     public function build()
     {
+        // Initialise la requête avec la collection
         $query = [
             'from' => [
                 [
@@ -315,12 +329,14 @@ class FirestoreQueryBuilder
             ],
         ];
 
+        // Ajoute les champs sélectionnés si spécifiés
         if (isset($this->fields)) {
             $query['select'] = [
                 'fields' => $this->fields,
             ];
         }
 
+        // Ajoute les conditions de filtrage si spécifiées
         if (isset($this->where)) {
             $filters = [];
             foreach ($this->where as $filter) {
@@ -337,6 +353,7 @@ class FirestoreQueryBuilder
                 ];
             }
 
+            // Utilise un filtre composite si plusieurs conditions
             if (count($filters) == 1) {
                 $query['where'] = $filters[0];
             } else {
@@ -349,6 +366,7 @@ class FirestoreQueryBuilder
             }
         }
 
+        // Ajoute les critères de tri si spécifiés
         if (isset($this->orderBy)) {
             $query['orderBy'] = [
                 [
@@ -360,6 +378,7 @@ class FirestoreQueryBuilder
             ];
         }
 
+        // Ajoute la limite si spécifiée
         if (isset($this->limit)) {
             $query['limit'] = $this->limit;
         }
@@ -367,6 +386,6 @@ class FirestoreQueryBuilder
         return $query;
     }
 }
+
 # initialisation de l'API Firestore
 Database::getFirestore();
-?>

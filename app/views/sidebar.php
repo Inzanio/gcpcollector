@@ -1,7 +1,5 @@
 <?php
 
-    require_once(__DIR__ . '/../config.php');
-
     $currentUri = $_SERVER['REQUEST_URI'];
     $dashboardActivity = ($currentUri === '/') ? 'active' : 'collapsed';
 
@@ -36,7 +34,7 @@
         <?php if ($_SESSION['user_role'] === ROLE_AGENT): ?>
                 <!-- Prospects -->
             <li class="nav-item">
-                <a class="nav-link <?php echo $gestProspectActivity; ?>" href="/gestionProspects.php">
+                <a class="nav-link <?php echo $gestProspectActivity; ?>" href="/prospects">
                     <i class="bi bi-people-fill"></i>
                     <span>Gestion des prospects</span>
                 </a>
@@ -83,7 +81,7 @@
         <?php if ($_SESSION['user_role'] === ROLE_ADMIN): ?>
             <!-- Gestion des superviseurs -->
             <li class="nav-item">
-                <a class="nav-link <?php echo $gestSuperviseursActivity; ?>" href="/gestionSuperviseurs.php">
+                <a class="nav-link <?php echo $gestSuperviseursActivity; ?>" href="/superviseurs">
                     <i class="bi bi-person-badge-fill"></i>
                     <span>Gérer les superviseurs</span>
                 </a>
@@ -111,7 +109,7 @@
 
         <!-- Déconnexion (commun à tous) -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/logout.php">
+            <a class="nav-link collapsed" href="/logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Déconnexion</span>
             </a>

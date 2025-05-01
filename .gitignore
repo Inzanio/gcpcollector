@@ -1,4 +1,3 @@
 application_default_credentials.json
-/public/vendor
-/public/test*.php
-curl.log
+/vendor
+/test*.php

@@ -1,6 +1,7 @@
 <?php 
-
-require_once "personne.php";
+namespace App\Models;
+use App\Models\Traits\DbDataTrait;
+use Datetime;
 
 
 /**
@@ -178,67 +179,5 @@ class Utilisateur extends Personne
     {
         $this->role = $role;
     }
-    /**
-     * Insert les données de l'utilisateur dans la base de données comme une nouvelle ligne
-     */
-    // public function create () : string 
-    // {
-    //     return Database::createDocument(self::$collection_name,$this->matricule,$this->toArray());
-    // }
-    /**
-     * Cherche le login avec le mot de passe donné et retourne les utilisateurs y correspondant
-     * @param string login - le login de l'utilisateur
-     * @param string password - le mot de passe déjà hashé de l'utilisateur
-     * @return Utilisateur|false - retourne l'utilisateur trouvé ou null si aucun utilisateur n'est trouvé
-     */
-    public static function login($login,$password)
-    {
-        $queryBuilder = Database::queryBuilder('utilisateurs');
-        $queryBuilder->where('login', 'EQUAL', $login);
-        $queryBuilder->where('password', 'EQUAL', $password);
-        $query = $queryBuilder->build();
-
-        $result = Database::query($query);
-        //var_dump($result);
-        if ($result != null && count($result) > 0) {
-            if (count($result) > 1) {
-                // Plus d'un utilisateur trouvé, vous pouvez gérer cela comme vous le souhaitez
-                echo("Plus d'un utilisateur trouvé avec ce login et mot de passe.");
-                return false;
-            } else {
-                // Un seul utilisateur trouvé, vous pouvez le retourner ou faire ce que vous voulez avec
-                $user = $result[0];
-                return self::fromFirestoreDocument($user);
-            }
-        } else {
-            // Aucune correspondance trouvée, vous pouvez gérer cela comme vous le souhaitez
-            return false;
-        }
-    }
-
-    /**
-     * Transforme un document Firestore en un objet Utilisateur
-     * @param \MrShan0\PHPFirestore\FireStoreDocument $doc - le document Firestore à transformer
-     */
-    public static function fromFirestoreDocument($doc)//: self
-    {
-        //var_dump($doc);
-        $data = $doc->toArray();
-        $id = Database::getDocumentIdFromName($doc->getName());
-        $utilisateur = new Utilisateur(
-            $data['nom'] ?? "",
-            $data['prenom'] ?? "",
-            isset($data['dateNaissance']) ? new DateTime($data['dateNaissance']) : new DateTime(),
-            $data['matricule'] ?? "",
-            $data['login'] ?? "",
-            $data['password'] ?? "",
-            $data['role'] ?? "",
-            $data['telephone'] ?? [],
-            $data['adresse'] ?? ""
-        );
-        $utilisateur->setUid($id);
-        return $utilisateur;
-    }
-   
 }
 ?>

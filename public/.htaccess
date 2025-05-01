@@ -1,9 +1,11 @@
-
+# Enable the Rewrite Engine
 RewriteEngine On
- 
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
- 
-RewriteRule ^.*$ ./index.php
 
-ErrorDocument 404 /404.php
+# Check if the requested file does not exist
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Check if the requested directory does not exist
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirect all other requests to index.php with query string appended
+RewriteRule ^(.*)$ index.php [QSA,L]
