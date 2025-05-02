@@ -69,6 +69,9 @@ switch ($parts[0]) {
         }
 
         break;
+    case "unittests": 
+        include '../test_firestore.php';
+        break;
     default:
         // Afficher une page d'erreur 404
         header('HTTP/1.1 404 Not Found');

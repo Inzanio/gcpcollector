@@ -28,36 +28,26 @@ class AgenceService
 
     /**
      * Met à jour une agence existante
-     * @param string $documentId - l'ID de l'agence
      * @param Agence $agence - l'objet Agence mis à jour
      * @return mixed - le résultat de la mise à jour
      */
-    public static function updateAgence($documentId, Agence $agence)
+    public static function updateAgence(Agence $agence)
     {
-        // Préparation des données pour la mise à jour
-        $data = [
-            ["path" => "code", "value" => $agence->getCode()],
-            ["path" => "nom", "value" => $agence->getNom()],
-            ["path" => "lieu", "value" => $agence->getLieu()],
-            ["path" => "idAdmin", "value" => $agence->getIdAdmin()]
-        ];
-
         // Appel de la méthode de mise à jour de document dans la classe Database
-        $result = Database::updateDocument(self::$collectionName, $documentId, $data);
-        return $result;
+        return Database::updateDocument(self::$collectionName, $agence->getDocId(), $agence->toArray());
     }
 
-    /**
-     * Supprime une agence à partir de son ID
-     * @param string $documentId - l'ID de l'agence
-     * @return mixed - le résultat de la suppression
-     */
-    public static function deleteAgence($documentId)
-    {
-        // Appel de la méthode de suppression de document dans la classe Database
-        $result = Database::deleteDocument(self::$collectionName, $documentId);
-        return $result;
-    }
+    // /**
+    //  * Supprime une agence à partir de son ID
+    //  * @param string $documentId - l'ID de l'agence
+    //  * @return mixed - le résultat de la suppression
+    //  */
+    // public static function deleteAgence($documentId)
+    // {
+    //     // Appel de la méthode de suppression de document dans la classe Database
+    //     $result = Database::deleteDocument(self::$collectionName, $documentId);
+    //     return $result;
+    // }
 
     /**
      * Récupère toutes les agences
@@ -65,14 +55,8 @@ class AgenceService
      */
     public static function getAllAgences()
     {
-        // Appel de la méthode de récupération de tous les documents dans la classe Database
+        // Appel de la méthode de récupération de tous les documents dans la classe
         $queryBuilder = Database::queryBuilder(self::$collectionName);
-        // if ($idAgentProspecteur != null) {
-        //     $queryBuilder->where('idAgentProspecteur', 'EQUAL', $idAgentProspecteur);
-        // }
-        // if ($idAgence != null) {
-        //     $queryBuilder->where('idAgence', 'EQUAL', $idAgence);
-        // }
 
         $query = $queryBuilder->build();
         $result = Database::query($query);

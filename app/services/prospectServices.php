@@ -26,12 +26,18 @@ class ProspectServices
         if (self::prospectExist($prospect)) {
             return false;
         }
-        // Génération d'un ID unique pour le document
-        $documentId = uniqid();
 
-        // Appel de la méthode de création de document dans la classe Database
-        $response = Database::createDocument(self::$collectionName, $documentId, $prospect->toArray());
-        return Database::isSuccessfullRequest($response) ? $response : false;
+        if (self::sendAccountOpeningRequest($prospect)) {
+            // Génération d'un ID unique pour le document
+            $documentId = null; //uniqid();
+
+            // Appel de la méthode de création de document dans la classe Database
+            $response = Database::createDocument(self::$collectionName, $documentId, $prospect->toArray());
+            return Database::isSuccessfullRequest($response) ? $response : false;
+        }
+        return false; // Si l'envoi de la demande échoue, retourner false
+
+
     }
 
     /**
@@ -42,24 +48,7 @@ class ProspectServices
     public static function updateProspect(Prospect $prospect)
     {
 
-        // Appel de la méthode de mise à jour de document dans la classe Database
-
-        $champs = array_chunk($prospect->toArray(), 10, true);
-        $success = true;
-
-        foreach ($champs as $chunk) {
-            try {
-                $response = Database::updateDocument(self::$collectionName, $prospect->getDocId(), $chunk);
-                if (!Database::isSuccessfullRequest($response)) {
-                    $success = false;
-                    break;
-                }
-            } catch (\Exception $e) {
-                $success = false;
-                break;
-            }
-        }
-        return $success ? $response : false;
+        return Database::updateDocument(self::$collectionName, $prospect->getDocId(), $prospect->toArray());
     }
 
     /**
@@ -146,15 +135,26 @@ class ProspectServices
 
     }
     /**
-     * * Récupère tous les prospects
+     * Récupère tous les prospects
      * @param string|null $idAgentProspecteur - l'ID de l'agent prospecteur (optionnel)
      * @param string|null $idAgence - l'ID de l'agence (optionnel)
+     * @param DateTime|null $dateDebut - la date de début (optionnel)
+     * @param DateTime|null $dateFin - la date de fin (optionnel)
+     * @param bool $excludeProspects - exclure les prospects (par défaut false)
+     * @param bool $excludeClients - exclure les clients (par défaut false)
      * @return Prospect[] - la liste des prospects
      */
-    public static function getAllProspects($idAgentProspecteur = null, $idAgence = null)
+    public static function getAll($idAgentProspecteur = null, $idAgence = null, $dateDebut = null, $dateFin = null, $excludeProspects = false, $excludeClients = false)
     {
         // Appel de la méthode de récupération de tous les documents dans la classe Database
         $queryBuilder = Database::queryBuilder(self::$collectionName);
+        if ($excludeProspects && !$excludeClients) {
+            $queryBuilder->where('numeroCompte', 'NOT_EQUAL', "");
+        }
+        if ($excludeClients && !$excludeProspects) {
+            $queryBuilder->where('numeroCompte', 'EQUAL', "");
+        }
+
         if ($idAgentProspecteur != null) {
             $queryBuilder->where('idAgentProspecteur', 'EQUAL', $idAgentProspecteur);
         }
@@ -168,8 +168,25 @@ class ProspectServices
         $prospects = array_map(function ($doc) {
             return self::fromFirestoreDocument($doc);
         }, $result);
+
+        // Filtrage des prospects en fonction des dates
+        if ($dateDebut !== null && $dateFin !== null) {
+            $prospects = array_filter($prospects, function ($prospect) use ($dateDebut, $dateFin) {
+                return $prospect->getDateCreation() >= $dateDebut && $prospect->getDateCreation() <= $dateFin;
+            });
+        } elseif ($dateDebut !== null) {
+            $prospects = array_filter($prospects, function ($prospect) use ($dateDebut) {
+                return $prospect->getDateCreation() >= $dateDebut;
+            });
+        } elseif ($dateFin !== null) {
+            $prospects = array_filter($prospects, function ($prospect) use ($dateFin) {
+                return $prospect->getDateCreation() <= $dateFin;
+            });
+        }
+
         return $prospects;
     }
+
     /**
      * * Récupère un prospect par son ID
      * @param string $prospectId - l'ID du prospect
@@ -182,6 +199,19 @@ class ProspectServices
         $result = Database::getDocument(self::$collectionName, $prospectId);
         return self::fromFirestoreDocument($result);
     }
+    /**
+     * * Envoie une demande d'ouverture de compte pour un prospect
+     * @param Prospect $prospect - l'objet Prospect à envoyer
+     */
+    public static function sendAccountOpeningRequest($prospect)
+    {
+        // Envoi de la demande d'ouverture de compte
+        // Vous pouvez ajouter ici le code pour envoyer la demande d'ouverture de compte
+        // Par exemple, en utilisant une API ou en envoyant un e-mail
+        return true; // Retourne true si l'envoi a réussi, sinon false
+    }
+
+
     /**
      * Confirme le succès de l'ouverture d'un compte pour un prospect
      * en entrant le code de ce compte là où il est demandé
@@ -196,4 +226,71 @@ class ProspectServices
         $prospect->setDateOuvertureCompte(new DateTime());
         return self::updateProspect($prospect);
     }
+    /**
+     * Récupère tous les prospects attribués à un agent prospecteur spécifique.
+     *
+     * @param int $idAgentProspecteur L'ID de l'agent prospecteur
+     * @param DateTime|null $dateDebut La date de début (optionnel)
+     * @param DateTime|null $dateFin La date de fin (optionnel)
+     * @return Prospect[] La liste des prospects
+     */
+    public static function getAllProspectsByAgent($idAgentProspecteur, $dateDebut = null, $dateFin = null)
+    {
+        return self::getAll($idAgentProspecteur, null, $dateDebut, $dateFin, false, true);
+    }
+
+    /**
+     * Récupère tous les clients (prospects convertis) attribués à un agent prospecteur spécifique.
+     *
+     * @param int $idAgentProspecteur L'ID de l'agent prospecteur
+     * @param DateTime|null $dateDebut La date de début (optionnel)
+     * @param DateTime|null $dateFin La date de fin (optionnel)
+     * @return Prospect[] La liste des prospects (clients)
+     */
+    public static function getAllClientsByAgent($idAgentProspecteur, $dateDebut = null, $dateFin = null)
+    {
+        return self::getAll($idAgentProspecteur, null, $dateDebut, $dateFin, true, false);
+    }
+
+    /**
+     * Récupère tous les prospects attribués à une agence spécifique.
+     *
+     * @param int $idAgence L'ID de l'agence
+     * @param DateTime|null $dateDebut La date de début (optionnel)
+     * @param DateTime|null $dateFin La date de fin (optionnel)
+     * @return Prospect[] La liste des prospects
+     */
+    public static function getAllProspectsByAgence($idAgence, $dateDebut = null, $dateFin = null)
+    {
+        return self::getAll(null, $idAgence, $dateDebut, $dateFin, false, true);
+    }
+
+    /**
+     * Récupère tous les clients (prospects convertis) attribués à une agence spécifique.
+     *
+     * @param int $idAgence L'ID de l'agence
+     * @param DateTime|null $dateDebut La date de début (optionnel)
+     * @param DateTime|null $dateFin La date de fin (optionnel)
+     * @return Prospect[] La liste des prospects (clients)
+     */
+    public static function getAllClientsByAgence($idAgence, $dateDebut = null, $dateFin = null)
+    {
+        return self::getAll(null, $idAgence, $dateDebut, $dateFin, true, false);
+    }
+
+    /**
+     * Récupère tous les prospects en attente d'ouverture de compte, 
+     * filtrés par agent prospecteur et/ou agence.
+     *
+     * @param int|null $idAgentProspecteur L'ID de l'agent prospecteur (facultatif)
+     * @param int|null $idAgence L'ID de l'agence (facultatif)
+     * @param DateTime|null $dateDebut La date de début (optionnel)
+     * @param DateTime|null $dateFin La date de fin (optionnel)
+     * @return Prospect[] La liste des prospects en attente d'ouverture de compte
+     */
+    public static function getAllProspectsWaitingForAccountValidation($idAgentProspecteur = null, $idAgence = null, $dateDebut = null, $dateFin = null)
+    {
+        return self::getAll($idAgentProspecteur, $idAgence, $dateDebut, $dateFin, false, true);
+    }
+
 }

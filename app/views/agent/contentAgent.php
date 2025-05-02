@@ -1,31 +1,5 @@
 <?php
-// session_start();
 
-use App\Services\ProspectServices;
-
-if ($_SESSION['user_role'] == ROLE_AGENT) {
-  $data_prospects = ProspectServices::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
-}
-if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
-  $data_prospects = ProspectServices::getAllProspects($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
-}
-if ($_SESSION['user_role'] == ROLE_ADMIN) {
-  $data_prospects = ProspectServices::getAllProspects($idAgentProspecteur = null, $idAgence = null);
-}
-
-// $data_prospects = ProspectService::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
-$prospects = [];
-$clients = [];
-
-foreach ($data_prospects as $prospect) {
-  if ($prospect->isClient()) {
-    $clients[] = $prospect;
-  } else {
-    $prospects[] = $prospect;
-  }
-}
-
-// Définition des dates pour ce mois et le mois passé
 $dateDebutCeMois = new DateTime('first day of this month');
 $dateFinCeMois = new DateTime('last day of this month');
 $dateDebutMoisPasse = new DateTime('first day of last month');

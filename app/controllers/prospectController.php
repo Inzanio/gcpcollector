@@ -14,13 +14,13 @@ class ProspectController
     public static function index()
     {
         if ($_SESSION['user_role'] == ROLE_AGENT) {
-            $prospects = ProspectServices::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
+            $prospects = ProspectServices::getAll($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
         }
         if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
-            $prospects = ProspectServices::getAllProspects($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
+            $prospects = ProspectServices::getAll($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
         }
         if ($_SESSION['user_role'] == ROLE_ADMIN) {
-            $prospects = ProspectServices::getAllProspects($idAgentProspecteur = null, $idAgence = null);
+            $prospects = ProspectServices::getAll($idAgentProspecteur = null, $idAgence = null);
         }
         include '../app/views/liste-prospect.php';
     }

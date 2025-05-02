@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\Models\Traits\DbDataTrait;
-
+use App\Models\Traits\ToArrayTrait;
 class Agence
 {
     use DbDataTrait;
+    use ToArrayTrait;
     /**
      * Liste des champs de l'agence
      */
@@ -102,17 +103,17 @@ class Agence
         $this->idAdmin = $idAdmin;
     }
 
-    /**
-     * Convertit l'objet en tableau
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return [
-            "code" => $this->code,
-            "nom" => $this->nom,
-            "lieu" => $this->lieu,
-            "idAdmin" => $this->idAdmin
-        ];
-    }
+    // /**
+    //  * Convertit l'objet en tableau
+    //  * @return array
+    //  */
+    // public function toArray(): array
+    // {
+    //     return [
+    //         "code" => $this->code,
+    //         "nom" => $this->nom,
+    //         "lieu" => $this->lieu,
+    //         "idAdmin" => $this->idAdmin
+    //     ];
+    // }
 }

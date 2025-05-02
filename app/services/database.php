@@ -5,6 +5,7 @@ namespace App\Services;
 use \MrShan0\PHPFirestore\FireStoreApiClient;
 use \MrShan0\PHPFirestore\FireStoreDocument;
 
+use Exception;
 
 /**
  * Classe qui gère les interactions avec la base de données Firestore via l'API REST
@@ -72,8 +73,24 @@ class Database
      */
     public static function updateDocument($collectionName, $documentId, $data, $documentExist = True)
     {
-        $firestoreClient = self::getFirestore();
-        return $firestoreClient->updateDocument($collectionName, $documentId, $data, $documentExist);
+
+        $champs = array_chunk($data, 10, true);
+        $success = true;
+
+        foreach ($champs as $chunk) {
+            try {
+                $firestoreClient = self::getFirestore();
+                $response = $firestoreClient->updateDocument($collectionName, $documentId, $chunk, $documentExist);
+                if (!self::isSuccessfullRequest($response)) {
+                    $success = false;
+                    break;
+                }
+            } catch (\Exception $e) {
+                $success = false;
+                break;
+            }
+        }
+        return $success ? $response : false;
     }
 
     /**
@@ -87,6 +104,26 @@ class Database
         return $firestoreClient->deleteDocument($collectionName, $documentId);
     }
 
+    public static function runAggregationQuery($query)
+    {
+        $url = 'https://firestore.googleapis.com/v1/projects/' . self::$credentials["project_id"] . '/databases/(default)/documents:runAggregationQuery';
+        $body = json_encode($query);
+        $headers = [
+            'Content-Type: application/json',
+            #'Authorization: Bearer ' . self::$credentials["apiKey"],
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($response, true);
+    }
     public static function query($query)
     {
         $url = 'https://firestore.googleapis.com/v1/projects/' . self::$credentials["project_id"] . '/databases/(default)/documents:runQuery';
@@ -201,6 +238,20 @@ class Database
             return false;
         }
         return true;
+    }
+
+    function readAggregationResponse($response, $aggregationType = 'count')
+    {
+        $supportedTypes = ['count', 'sum', 'avg'];
+        if (!in_array($aggregationType, $supportedTypes)) {
+            throw new Exception("Type d'agrégation non supporté : $aggregationType");
+        }
+        if (isset($response[0]['result']['aggregateFields'][$aggregationType]['integerValue'])) {
+            return $response[0]['result']['aggregateFields'][$aggregationType]['integerValue'];
+        } elseif (isset($response[0]['result']['aggregateFields'][$aggregationType]['readTime'])) {
+            return null; // ou vous pouvez lever une exception
+        }
+        return null;
     }
 }
 /**
@@ -386,6 +437,5 @@ class FirestoreQueryBuilder
         return $query;
     }
 }
-
 # initialisation de l'API Firestore
 Database::getFirestore();

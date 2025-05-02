@@ -14,22 +14,89 @@ class UtilisateurServices
     //     // Logic to fetch a user by ID
     // }
 
-    // public function createUtilisateur($data)
-    // {
-    //     // Logic to create a new user
-    // //     return Database::createDocument(self::$collectionName,$this->matricule,$this->toArray());
+    /**
+     * Crée un nouveau Utilisateur dans la base de données
+     * @param Utilisateur $user - l'objet Utilisateur à créer
+     * @return mixed - le résultat de la création
+     */
+    public static function createUtilisateur(Utilisateur $user)
+    {
+        if (self::utilisateurExist($user)) {
+            return false;
+        }
 
-    // }
+        // Génération d'un ID unique pour le document
+        $documentId = null; //uniqid();
 
-    // public function updateUtilisateur($id, $data)
-    // {
-    //     // Logic to update an existing user
-    // }
+        // Appel de la méthode de création de document dans la classe Database
+        $response = Database::createDocument(self::$collectionName, $documentId, $user->toArray());
+        return Database::isSuccessfullRequest($response) ? $response : false;
+    }
 
-    // public function deleteUtilisateur($id)
-    // {
-    //     // Logic to delete a user
-    // }
+
+    /**
+     * Met à jour un Utilisateur existant
+     * @param Utilisateur $user - l'objet Utilisateur mis à jour
+     * @return mixed - le résultat de la mise à jour
+     */
+    public static function updateUtilisateur(Utilisateur $user)
+    {
+        // Appel de la méthode de mise à jour de document dans la classe Database
+        $response = Database::updateDocument(self::$collectionName,$user->getDocId() , $user->toArray());
+        return Database::isSuccessfullRequest($response) ? $response : false;
+    }
+
+    /**
+     * Vérifie si un Utilisateur existe dans la base de données
+     * @param Utilisateur $user - l'objet Utilisateur à vérifier
+     * @return bool - true si le Utilisateur existe, false sinon
+     */
+    public static function UtilisateurExist(Utilisateur $user)
+    {
+        // Vérification par email ou téléphone
+        if (empty($user->getEmail()) && empty($user->getTelephone())) {
+            return false;
+        }
+        // Vérification par email
+        $queryBuilder = Database::queryBuilder(self::$collectionName);
+        $queryBuilder->where('email', 'EQUAL', $user->getEmail());
+
+        // Si l'email n'est pas défini, vérifier par téléphone
+        if (empty($user->getEmail()) && !empty($user->getTelephone())) {
+            $queryBuilder = Database::queryBuilder(self::$collectionName);
+            $queryBuilder->where('telephone', 'ARRAY_CONTAINS', $user->getTelephone()[0]);
+        }
+
+        $query = $queryBuilder->build();
+        $result = Database::query($query);
+
+        return ($result != null && count($result) > 0);
+    }
+
+
+    /**
+     * Récupère tous les Utilisateurs
+     * @param string|null $idAgence - l'ID de l'agence (optionnel)
+     * @return Utilisateur[] - la liste des Utilisateurs
+     */
+    public static function getAllUtilisateurs($idAgence = null)
+    {
+        $queryBuilder = Database::queryBuilder(self::$collectionName);
+
+        if ($idAgence != null) {
+            $queryBuilder->where('idAgence', 'EQUAL', $idAgence);
+        }
+
+        $query = $queryBuilder->build();
+        $result = Database::query($query);
+
+        // Transformation des documents Firestore en objets Utilisateur
+        $Utilisateurs = array_map(function ($doc) {
+            return self::fromFirestoreDocument($doc);
+        }, $result);
+
+        return $Utilisateurs;
+    }
 
     /**
      * Cherche le login avec le mot de passe donné et retourne les utilisateurs y correspondant
