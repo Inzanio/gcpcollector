@@ -29,7 +29,7 @@ require_once("head.php");
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">LISTE DES AGENCES</h5>      
-                            <a href="/forms/ajouter-agence.php" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter </a>                                   
+                            <a href="/ajouter-agence" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter </a>                                   
                             <p></p> 
                             <!-- Table with stripped rows -->
     
