@@ -1,34 +1,3 @@
-<?php
-
-$dateDebutCeMois = new DateTime('first day of this month');
-$dateFinCeMois = new DateTime('last day of this month');
-$dateDebutMoisPasse = new DateTime('first day of last month');
-$dateFinMoisPasse = new DateTime('last day of last month');
-
-// Calcul des statistiques pour ce mois
-$prospectsCeMois = array_filter($prospects, function ($prospect) use ($dateDebutCeMois, $dateFinCeMois) {
-  return $prospect->getDateCreation() >= $dateDebutCeMois && $prospect->getDateCreation() <= $dateFinCeMois;
-});
-$clientsCeMois = array_filter($clients, function ($client) use ($dateDebutCeMois, $dateFinCeMois) {
-  return $client->getDateCreation() >= $dateDebutCeMois && $client->getDateCreation() <= $dateFinCeMois;
-});
-$totalProspectsCeMois = count($prospectsCeMois);
-$totalClientsCeMois = count($clientsCeMois);
-$tauxConversionCeMois = ($totalProspectsCeMois + $totalClientsCeMois) > 0 ? ($totalClientsCeMois / ($totalProspectsCeMois + $totalClientsCeMois)) * 100 : 0;
-
-// Calcul des statistiques pour le mois passé
-$prospectsMoisPasse = array_filter($prospects, function ($prospect) use ($dateDebutMoisPasse, $dateFinMoisPasse) {
-  return $prospect->getDateCreation() >= $dateDebutMoisPasse && $prospect->getDateCreation() <= $dateFinMoisPasse;
-});
-$clientsMoisPasse = array_filter($clients, function ($client) use ($dateDebutMoisPasse, $dateFinMoisPasse) {
-  return $client->getDateCreation() >= $dateDebutMoisPasse && $client->getDateCreation() <= $dateFinMoisPasse;
-});
-$totalProspectsMoisPasse = count($prospectsMoisPasse);
-$totalClientsMoisPasse = count($clientsMoisPasse);
-$tauxConversionMoisPasse  = ($totalProspectsMoisPasse + $totalClientsMoisPasse) > 0 ? ($totalClientsMoisPasse / ($totalProspectsMoisPasse + $totalClientsMoisPasse)) * 100 : 0;
-
-?>
-
 <div class="pagetitle">
   <nav>
     <ol class="breadcrumb">
@@ -251,7 +220,7 @@ $tauxConversionMoisPasse  = ($totalProspectsMoisPasse + $totalClientsMoisPasse) 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const prospectsData = <?php echo json_encode(array_count_values(array_map(function ($prospect) {
-                            return (new DateTime($prospect->getDateCreation()->parseValue()))->format(DATE_FROMAT_SIMPLE_DISPLAY);
+                            return (new DateTime($prospect->getDateCreation()->parseValue()))->format(DATE_FORMAT_SIMPLE_DISPLAY);
                           }, $prospects))); ?>;
 
     const categories = Object.keys(prospectsData);

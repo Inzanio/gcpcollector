@@ -2,7 +2,7 @@
 
 namespace App\Bi;
 
-class Calcul {
+class CalculsBI {
 
     public static function tauxConversion ($nbProspects, $nbClients) {
         if ($nbProspects == 0) {

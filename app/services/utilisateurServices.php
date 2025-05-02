@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Utilisateur;
-use DateTime;
+use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 
 class UtilisateurServices
 {
@@ -141,7 +141,7 @@ class UtilisateurServices
         $utilisateur = new Utilisateur(
             $data['nom'] ?? "",
             $data['prenom'] ?? "",
-            isset($data['dateNaissance']) ? new DateTime($data['dateNaissance']) : new DateTime(),
+            isset($data['dateNaissance'])? $data['dateNaissance'] :null,
             $data['matricule'] ?? "",
             $data['login'] ?? "",
             $data['password'] ?? "",

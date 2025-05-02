@@ -1,7 +1,7 @@
 <?php 
 namespace App\Models;
 use App\Models\Traits\ToArrayTrait;
-use Datetime;
+
 use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 /**
  * Classe représentant une personne

@@ -126,7 +126,9 @@ class Database
 
         $response = curl_exec($ch);
         curl_close($ch);
-
+        if (!self::isSuccessfullRequest($response)) {
+            return false;
+        }
         return json_decode($response, true);
     }
     public static function query($query)
@@ -247,7 +249,7 @@ class Database
         return true;
     }
 
-    function readAggregationResponse($response, $aggregationType = 'count')
+    public static function readAggregationResponse($response, $aggregationType = 'count')
     {
         $supportedTypes = ['count', 'sum', 'avg'];
         if (!in_array($aggregationType, $supportedTypes)) {

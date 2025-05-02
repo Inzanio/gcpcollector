@@ -1,7 +1,7 @@
 <?php 
 namespace App\Models;
 use App\Models\Traits\DbDataTrait;
-use Datetime;
+use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 
 
 /**
@@ -53,7 +53,7 @@ class Utilisateur extends Personne
      * Constructeur de la classe Utilisateur
      * @param string $nom Nom de l'utilisateur
      * @param string $prenom Prénom de l'utilisateur
-     * @param DateTime $dateNaissance Date de naissance de l'utilisateur
+     * @param ?FireStoreTimestamp $dateNaissance Date de naissance de l'utilisateur
      * @param string $matricule Matricule de l'utilisateur
      * @param string $login Login de l'utilisateur
      * @param string $password Mot de passe de l'utilisateur
@@ -61,7 +61,7 @@ class Utilisateur extends Personne
      * @param array $telephone Liste des numéros de téléphone de l'utilisateur (optionnel)
      * @param string $adresse Adresse de l'utilisateur (optionnel)
      */
-    public function __construct(string $nom, string $prenom, DateTime $dateNaissance, string $matricule, string $login, string $password, string $role, array $telephone = [], string $adresse = "")
+    public function __construct(string $nom, string $prenom, ?FireStoreTimestamp $dateNaissance, string $matricule, string $login, string $password, string $role, array $telephone = [], string $adresse = "")
     {
         parent::__construct($nom, $prenom, $dateNaissance, $telephone, $adresse);
         $this->matricule = $matricule;
