@@ -1,25 +1,8 @@
-<?php
-//require_once("routes.php");
-session_start();
-//var_dump($_SESSION['user_role']);
-if (!isset($_SESSION['user_role'])) header('Location: /login');
-//   if ( $_SESSION['user_role'] != "agent") {
-//       header('Location: /login');
-//       exit();
-//   }
-
-// Fonction pour récupérer les superviseurs depuis Firebase
-require_once "db.php";
-require_once("./models/superviseur.php");
-$superviseurs = SuperviseurService::getAllSuperviseurs();
-
-//var_dump($superviseurs);
-?>
 <!DOCTYPE html>
 <html lang="en">
 
 <?php
-require_once("pages/head.php");
+require_once("head.php");
 ?>
 
 <body>
@@ -27,14 +10,14 @@ require_once("pages/head.php");
 
     <!-- ======= Header ======= -->
     <?php
-    require_once("pages/header.php");
+    require_once("header.php");
     ?>
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
     <?php
 
-    require_once("pages/sidebar.php");
+    require_once("sidebar.php");
     ?>
     <!-- End Sidebar-->
 
@@ -58,7 +41,6 @@ require_once("pages/head.php");
                                             <thead>
                                                 <tr>
                                                     <th>Nom</th>
-                                                    <th>Profession</th>
                                                     <th>Numéro Téléphone</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -95,7 +77,7 @@ require_once("pages/head.php");
 
     <!-- ======= Footer ======= -->
     <?php
-    require_once("pages/footer.php");
+    require_once("footer.php");
     ?>
     <!-- End Footer -->
 

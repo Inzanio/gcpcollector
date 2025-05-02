@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +6,7 @@ require_once("head.php");
 ?>
 
 <body>
+
 
   <main>
     <div class="container">
@@ -77,7 +77,7 @@ require_once("head.php");
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <?php
-  require_once("/pages/footer.php");
+  require_once("footer.php");
   ?>
 
 </body>
