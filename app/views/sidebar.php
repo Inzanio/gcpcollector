@@ -89,7 +89,7 @@
 
             <!-- Gestion des agences -->
             <li class="nav-item">
-                <a class="nav-link <?php echo $gestAgencesActivity; ?>" href="/liste-agence.php">
+                <a class="nav-link <?php echo $gestAgencesActivity; ?>" href="/agences">
                     <i class="bi bi-building"></i>
                     <span>Gérer les agences</span>
                 </a>

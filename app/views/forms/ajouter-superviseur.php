@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <?php
 require_once("../app/views/head.php");
@@ -25,28 +25,49 @@ require_once("../app/views/head.php");
             <div class="card-body">
                 <h5 class="card-title">Ajouter un superviseur</h5>
                 <form class="row g-3" method="POST" action="ajouter-superviseur.php">
-                    <!-- Champ Nom -->
+                    <!-- Section 1 : Informations de base -->
                     <div class="col-md-6">
-                        <label for="nom" class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="nom" name="nom" required>
+                        <label for="matricule" class="form-label">Matricule</label>
+                        <input type="text" class="form-control" id="matricule" name="matricule" required>
                     </div>
                     
-                    <!-- Champ Prénom -->
-                    <div class="col-md-6">
-                        <label for="prenom" class="form-label">Prénom</label>
-                        <input type="text" class="form-control" id="prenom" name="prenom" required>
-                    </div>
-                    
-                    <!-- Champ Date de naissance -->
                     <div class="col-md-6">
                         <label for="date_naissance" class="form-label">Date de naissance</label>
                         <input type="date" class="form-control" id="date_naissance" name="date_naissance" required>
                     </div>
                     
-                    <!-- Champ Téléphone -->
+                    <!-- Section 2 : Identité -->
+                    <div class="col-md-6">
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" required>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="prenom" name="prenom" required>
+                    </div>
+                    
+                    <!-- Section 3 : Coordonnées -->
                     <div class="col-md-6">
                         <label for="telephone" class="form-label">Téléphone</label>
                         <input type="tel" class="form-control" id="telephone" name="telephone" required>
+                    </div>
+                    
+                    <!-- Section 4 : Identifiants -->
+                    <div class="col-md-6">
+                        <label for="login" class="form-label">Login</label>
+                        <input type="text" class="form-control" id="login" name="login" required>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="mot_de_passe" class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" id="mot_de_passe" name="mot_de_passe" required>
+                        <div class="form-text">8 caractères minimum, avec majuscule et chiffre</div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="confirmation_mdp" class="form-label">Confirmer le mot de passe</label>
+                        <input type="password" class="form-control" id="confirmation_mdp" name="confirmation_mdp" required>
                     </div>
                     
                     <!-- Bouton de soumission -->
@@ -54,7 +75,6 @@ require_once("../app/views/head.php");
                         <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </main><!-- End #main -->
