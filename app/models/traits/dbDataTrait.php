@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Traits;
+
 use DateTimeImmutable;
 
 trait DbDataTrait
@@ -15,6 +16,29 @@ trait DbDataTrait
      */
     protected ?DateTimeImmutable $dateModification = null;
 
+
+    /**
+     * id prospect
+     */
+    private string $docId;
+
+    /**
+     * Récupère l'ID du prospect
+     * @return string
+     */
+    public function getDocId(): string
+    {
+        return $this->docId;
+    }
+
+    /**
+     * Modifie l'ID du prospect
+     * @param string $id Nouvel ID du prospect
+     */
+    public function setDocId(string $getDocId): void
+    {
+        $this->docId = $getDocId;
+    }
     /**
      * Obtient la date de création
      * 

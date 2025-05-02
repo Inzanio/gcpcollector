@@ -1,11 +1,4 @@
 <?php
-//require_once("routes.php");
-session_start();
-//var_dump($_SESSION['user_role']);
-if (!isset($_SESSION['user_id'])) header('Location: /login');
-?>
-
-<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupération des données du formulaire
     $nom = trim(htmlspecialchars($_POST['nom'] ?? ''));
@@ -60,18 +53,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 
 <?php
-require_once("../pages/head.php");
+require_once("../app/views/head.php");
 ?>
 <body>
     <!-- ======= Header ======= -->
     <?php
-    require_once("../pages/header.php");
+    require_once("../app/views/header.php");
     ?>
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
     <?php
-    require_once("../pages/sidebar.php");
+    require_once("../app/views/sidebar.php");
     ?>
     <!-- End Sidebar-->
 
@@ -183,7 +176,7 @@ require_once("../pages/head.php");
 
     <!-- ======= Footer ======= -->
     <?php
-    require_once("../pages/footer.php");
+    require_once("../app/views/footer.php");
     ?>
     <!-- End Footer -->
 

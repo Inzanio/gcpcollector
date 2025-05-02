@@ -36,11 +36,10 @@ class ProspectServices
 
     /**
      * Met à jour un prospect existant
-     * @param string $documentId - l'ID du prospect
      * @param Prospect $prospect - l'objet Prospect mis à jour
      * @return mixed - le résultat de la mise à jour
      */
-    public static function updateProspect($documentId, Prospect $prospect)
+    public static function updateProspect(Prospect $prospect)
     {
 
         // Appel de la méthode de mise à jour de document dans la classe Database
@@ -50,7 +49,7 @@ class ProspectServices
 
         foreach ($champs as $chunk) {
             try {
-                $response = Database::updateDocument(self::$collectionName, $documentId, $chunk);
+                $response = Database::updateDocument(self::$collectionName, $prospect->getDocId(), $chunk);
                 if (!Database::isSuccessfullRequest($response)) {
                     $success = false;
                     break;
@@ -195,6 +194,6 @@ class ProspectServices
         // Vérification de l'existence du prospect dans la base de données
         $prospect->setNumeroCompte($numeroCompte);
         $prospect->setDateOuvertureCompte(new DateTime());
-        return self::updateProspect($prospect->getDocId(), $prospect);
+        return self::updateProspect($prospect);
     }
 }

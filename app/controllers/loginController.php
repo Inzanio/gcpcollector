@@ -42,4 +42,27 @@ class LoginController
         session_destroy();
         header('Location: /');
     }
+
+
+    public static function must_logged_in()
+    {
+        // Démarrez la session
+        session_start();
+
+        // Vérifiez si l'utilisateur est connecté
+        if (!isset($_SESSION['user_id'])) {
+            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
+            header('Location: /login');
+            exit;
+        }
+    }
+    public static function is_logged_in()
+    {
+        session_start();
+        if (isset($_SESSION['user_role'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

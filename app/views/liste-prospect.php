@@ -1,29 +1,9 @@
-<?php
-//require_once("routes.php");
-session_start();
-//var_dump($_SESSION['user_role']);
-if (!isset($_SESSION['user_role'])) header('Location: /login');
 
-// Fonction pour récupérer les prospects depuis Firebase
-require_once "config.php";
-require_once "db.php";
-require_once("./models/prospect.php");
-if ($_SESSION['user_role'] == ROLE_AGENT) {
-    $prospects = ProspectServices::getAllProspects($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
-}
-if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
-    $prospects = ProspectServices::getAllProspects($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
-}
-if ($_SESSION['user_role'] == ROLE_ADMIN) {
-    $prospects = ProspectServices::getAllProspects($idAgentProspecteur = null, $idAgence = null);
-}
-//var_dump($prospects);
-?>
 <!DOCTYPE html>
 <html lang="en">
 
 <?php
-require_once("pages/head.php");
+require_once("head.php");
 ?>
 
 <body>
@@ -31,14 +11,14 @@ require_once("pages/head.php");
 
     <!-- ======= Header ======= -->
     <?php
-    require_once("pages/header.php");
+    require_once("header.php");
     ?>
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
     <?php
 
-    require_once("pages/sidebar.php");
+    require_once("sidebar.php");
     ?>
     <!-- End Sidebar-->
 
@@ -50,7 +30,7 @@ require_once("pages/head.php");
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">LISTE DES PROSPECTS</h5>
-                            <a href="/forms/ajouter-prospect.php" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter </a>
+                            <a href="/ajouter-prospect" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter </a>
                             <p></p>
 
                             <!-- Table with stripped rows -->
@@ -70,11 +50,11 @@ require_once("pages/head.php");
                                             <tbody>
                                                 <?php foreach ($prospects as $prospect): ?>
                                                     <tr>
-                                                        <td><?= htmlspecialchars($prospect->getNom()) ?></td>
+                                                        <td ><?= htmlspecialchars($prospect->getNom()) ?></td>
                                                         <td><?= htmlspecialchars($prospect->getProfession()) ?></td>
                                                         <td><?= htmlspecialchars($prospect->getTelephone()[0]) ?></td>
                                                         <td>
-                                                            <a href="/forms/modifier-prospect.php?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
+                                                            <a href="/editer-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
                                                                 class="btn btn-outline-warning">
                                                                 <i class="bi bi-pencil me-2"></i>Modifier
                                                             </a>
@@ -99,7 +79,7 @@ require_once("pages/head.php");
 
     <!-- ======= Footer ======= -->
     <?php
-    require_once("pages/footer.php");
+    require_once("footer.php");
     ?>
     <!-- End Footer -->
 

@@ -4,13 +4,17 @@ require_once '../config/constants.php';
 
 use App\Controllers\HomeController;
 use App\Controllers\LoginController;
+use App\Controllers\ProspectController;
+use App\Services\ProspectServices;
 
 $uri = $_SERVER['REQUEST_URI'];
-$parts = explode('/', trim($uri, '/'));
-
+$path = parse_url($uri, PHP_URL_PATH);
+$parts = explode('/', trim($path, '/'));
+//echo($parts[0]);
 switch ($parts[0]) {
     case '':
-        // Afficher la page d'accueil
+        LoginController::must_logged_in();
+        // Si l'utilisateur est connecté, redirigez vers la page d'accueil
         HomeController::index();
         break;
     case 'login':
@@ -21,8 +25,49 @@ switch ($parts[0]) {
             LoginController::index();
         }
         break;
-    case 'logout':  
+    case 'logout':
         LoginController::logout();
+        break;
+    case "prospects":
+        LoginController::must_logged_in();
+        ProspectController::index();
+        break;
+    case "ajouter-prospect":
+        LoginController::must_logged_in();
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            ProspectController::create();
+        } else {
+            include '../app/views/forms/ajouter-prospect.php';
+        }
+        break;
+    case "editer-prospect":
+        LoginController::must_logged_in();
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
+        if (!$id) {
+?>
+            <div class="alert alert-danger">
+                <?php echo "Il semblerait qu'il manque un paramçtre inmportant pour que cette requête aboutissent (id)"; ?>
+            </div>
+        <?php
+            exit();
+        }
+
+        $prospect = ProspectServices::getProspectById($id);
+
+        if (!$prospect) {
+        ?>
+            <div class="alert alert-danger">
+                <?php echo "Aïe, Aïe il semblerait que le prospect que vous souhaitez modifier n'existe pas"; ?>
+            </div>
+<?php
+            exit();
+        }
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            ProspectController::update($prospect);
+        } else {
+            include '../app/views/forms/modifier-prospect.php';
+        }
+
         break;
     default:
         // Afficher une page d'erreur 404

@@ -148,7 +148,7 @@ $tauxConversionMoisPasse  = ($totalProspectsMoisPasse + $totalClientsMoisPasse) 
                       <td><?= htmlspecialchars($prospect->getProfession()) ?></td>
                       <td><?= htmlspecialchars($prospect->getTelephone()[0]) ?></td>
                       <td>
-                        <a href="/forms/modifier-prospect.php?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
+                        <a href="/editer-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
                           class="btn btn-outline-warning">
                           <i class="bi bi-pencil me-2"></i>Modifier
                         </a>
@@ -261,7 +261,7 @@ $tauxConversionMoisPasse  = ($totalProspectsMoisPasse + $totalClientsMoisPasse) 
       </div><!-- End Ranking -->
 
       <div id="btn-ajouter-prospect" class="position-fixed" style="bottom: 100px; right: 50px; z-index: 3;">
-        <a href="./forms/ajouter-prospect.php" class="btn btn-primary  btn-lg d-flex align-items-center justify-content-center gap-2 shadow"
+        <a href="/ajouter-prospect" class="btn btn-primary  btn-lg d-flex align-items-center justify-content-center gap-2 shadow"
           style="border-radius: 15px; padding: 15px 25px; background-color: #4154f1; border-color: #4154f1; color: white;">
           <i class="bi bi-plus"></i>
           Ajouter Prospect

@@ -1,90 +1,8 @@
-<?php
-//require_once("routes.php");
-session_start();
-//var_dump($_SESSION['user_role']);
-if (!isset($_SESSION['user_id'])) header('Location: /login');
-?>
-
-<?php
-$id = isset($_GET['id']) ?$_GET['id'] : null;
-if (!$id) {
-?>
-    <div class="alert alert-danger">
-        <?php echo "Il semblerait qu'il manque un paramçtre inmportant pour que cette requête aboutissent (id)"; ?>
-    </div>
-<?php // Redirect to an error page if ID is missing
-    exit();
-}
-
-// Fetch prospect details using the ID
-require_once("../db.php");
-require_once("../models/prospect.php");
-$prospect = ProspectService::getProspectById($id);
-
-if (!$prospect) {
-    ?>
-    <div class="alert alert-danger">
-        <?php echo "Aïe, Aïe il semblerait que le prospect que vous souhaitez modifier n'existe pas"; ?>
-    </div>
-<?php
-    exit();
-}
-?>
-
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupération des données du formulaire
-    $nom = trim(htmlspecialchars($_POST['nom'] ?? ''));
-    $prenom = trim(htmlspecialchars($_POST['prenom'] ?? ''));
-    $dateNaissance = !empty($_POST['dateNaissance']) ? new DateTime($_POST['dateNaissance']) : null;
-    $telephone = trim(htmlspecialchars($_POST['telephone'] ?? ''));
-    $profession = trim(htmlspecialchars($_POST['profession'] ?? ''));
-    $connaissanceBanque = isset($_POST['connaissanceBanque']) ? true : false;
-    $produitsInteresse = $_POST['produitsInteresse'] ?? [];
-    $email = trim(htmlspecialchars($_POST['email'] ?? ''));
-    $commentaire = trim(htmlspecialchars($_POST['commentaire'] ?? ''));
-    $genre = trim(htmlspecialchars($_POST['genre'] ?? ''));
-
-    // Création d'un objet Prospect
-    require_once("../models/Prospect.php");
-
-    $prospect->setNom($nom);
-    $prospect->setPrenom($prenom);
-    $prospect->setDateNaissance($dateNaissance);
-    $prospect->removeTelephone($prospect->getTelephone()[0]); // Remove the old telephone number    
-    $prospect->addTelephone($telephone);
-    $prospect->setProfession($profession);
-    $prospect->setProduitsInteresse($produitsInteresse);
-    $prospect->setConnaissanceBanque($connaissanceBanque);
-
-    // Configuration des propriétés supplémentaires du prospect
-    //$prospect->setIdAgentProspecteur($_SESSION['user_id']);
-    $prospect->setCommentaire($commentaire);
-    $prospect->setEmail($email);
-    $prospect->setGenre($genre);
-
-    // Enregistrement du prospect
-    //var_dump($prospect);
-
-    // var_dump($prospect->toArray());
-    $result = ProspectService::updateProspect($id,$prospect);
-    //var_dump($result);
-    // Traitement du résultat
-    if (!$result) {
-        $error_message = "Erreur lors de l'enregistrement du prospect.";
-    } else {
-        $error_message = "Prospect Modifié avec succès.";
-        // Redirection ou autre action après l'enregistrement réussi
-        // header("Location: /success.php"); // Exemple de redirection
-        // exit();
-    } 
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
 <?php
-require_once("../pages/head.php");
+require_once("../app/views/head.php");
 ?>
 
 <body>
@@ -92,13 +10,13 @@ require_once("../pages/head.php");
 
     <!-- ======= Header ======= -->
     <?php
-    require_once("../pages/header.php");
+    require_once("../app/views/header.php");
     ?>
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
     <?php
-    require_once("../pages/sidebar.php");
+    require_once("../app/views/sidebar.php");
     ?>
     <!-- End Sidebar-->
 
@@ -227,7 +145,7 @@ require_once("../pages/head.php");
 
     <!-- ======= Footer ======= -->
     <?php
-    require_once("../pages/footer.php");
+    require_once("../app/views/footer.php");
     ?>
     <!-- End Footer -->
 

@@ -33,7 +33,7 @@ trait ToArrayTrait
                 $propertyName = lcfirst(substr($method, 3));
 
                 // Exclut les propriétés dateCreation et dateModification
-                if ($propertyName !== 'dateCreation' && $propertyName !== 'dateModification') {
+                if ($propertyName !== 'dateCreation' && $propertyName !== 'dateModification' && $propertyName !== 'docId') {
                     // Appelle le getter et ajoute la valeur au tableau
                     $array[$propertyName] = $this->$method();
                 }

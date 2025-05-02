@@ -62,12 +62,6 @@ class Prospect extends Personne
      */
     private string $commentaire;
 
-
-    /**
-     * id prospect
-     */
-    private string $docId;
-
     /**
      * 
      */
@@ -84,13 +78,13 @@ class Prospect extends Personne
      * Numéro de compte du client
      * @var string
      */
-    private string $numeroCompte;
+    private string $numeroCompte = "";
 
     /**
      * Date d'ouverture du compte
      * @var DateTime
      */
-    private DateTime $dateOuvertureCompte;
+    private ?DateTime $dateOuvertureCompte = null;
 
 
     /**
@@ -123,6 +117,9 @@ class Prospect extends Personne
         $this->commentaire = "";
         $this->docId = "";
         $this->idAgence = "";
+        $this->email = ""; 
+
+       
 
     }
 
@@ -241,23 +238,7 @@ class Prospect extends Personne
     {
         $this->idAgence = $idAgence;
     }
-    /**
-     * Récupère l'ID du prospect
-     * @return string
-     */
-    public function getDocId(): string
-    {
-        return $this->docId;
-    }
 
-    /**
-     * Modifie l'ID du prospect
-     * @param string $id Nouvel ID du prospect
-     */
-    public function setDocId(string $getDocId): void
-    {
-        $this->docId = $getDocId;
-    }
     /**
      * Récupère l'adresse email du prospect
      * @return string
@@ -298,11 +279,15 @@ class Prospect extends Personne
 
     /**
      * Récupère la date d'ouverture du compte
-     * @return DateTime
+     * @return ?string
      */
-    public function getDateOuvertureCompte(): DateTime
+    public function getDateOuvertureCompte(): ?string
     {
-        return $this->dateOuvertureCompte;
+        if ($this->dateOuvertureCompte == null) {
+            return null;
+        }
+        //return $this->dateOuvertureCompte->format("Y-m-d H:i:s");
+        return $this->dateOuvertureCompte->format("Y-m-d");
     }
 
     /**
@@ -316,7 +301,7 @@ class Prospect extends Personne
 
     public function isClient() : bool
     {
-        return $this->getNumeroCompte() != null && $this->getDateOuvertureCompte() != null;
+        return $this->getNumeroCompte() != "" && $this->getDateOuvertureCompte() != null;
         
     }
 
