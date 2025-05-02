@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use App\Models\Traits\DbDataTrait;
+use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 use Datetime;
 use InvalidArgumentException;
 
@@ -62,6 +63,8 @@ class Prospect extends Personne
      */
     private string $commentaire;
 
+
+
     /**
      * 
      */
@@ -82,16 +85,16 @@ class Prospect extends Personne
 
     /**
      * Date d'ouverture du compte
-     * @var DateTime
+     * @var ?FireStoreTimestamp
      */
-    private ?DateTime $dateOuvertureCompte = null;
+    private ?FireStoreTimestamp $dateOuvertureCompte = null;
 
 
     /**
      * Constructeur de la classe Prospect
      * @param string $nom Nom du prospect
      * @param string $prenom Prénom du prospect
-     * @param DateTime $dateNaissance Date de naissance du prospect 
+     * @param ?FireStoreTimestamp|Datetime $dateNaissance Date de naissance du prospect 
      * @param string[] $telephone Liste des numéros de téléphone du prospect (optionnel)
      * @param string $adresse Adresse du prospect (optionnel)
      * @param string $profession Profession du prospect
@@ -101,7 +104,7 @@ class Prospect extends Personne
     public function __construct(
         string $nom,
         string $prenom,
-        DateTime $dateNaissance,
+        ?FireStoreTimestamp $dateNaissance,
         array $telephone = [],
         string $adresse = "",
         string $profession = "",
@@ -118,7 +121,7 @@ class Prospect extends Personne
         $this->docId = "";
         $this->idAgence = "";
         $this->email = ""; 
-
+        $this->setDateNaissance($dateNaissance);
        
 
     }
@@ -279,22 +282,22 @@ class Prospect extends Personne
 
     /**
      * Récupère la date d'ouverture du compte
-     * @return ?string
+     * @return ?FireStoreTimestamp
      */
-    public function getDateOuvertureCompte(): ?string
+    public function getDateOuvertureCompte(): ?FireStoreTimestamp
     {
         if ($this->dateOuvertureCompte == null) {
             return null;
         }
         //return $this->dateOuvertureCompte->format("Y-m-d H:i:s");
-        return $this->dateOuvertureCompte->format("Y-m-d");
+        return $this->dateOuvertureCompte;
     }
 
     /**
      * Modifie la date d'ouverture du compte
-     * @param DateTime $dateOuvertureCompte Nouvelle date d'ouverture du compte
+     * @param ?FireStoreTimestamp $dateOuvertureCompte Nouvelle date d'ouverture du compte
      */
-    public function setDateOuvertureCompte(DateTime $dateOuvertureCompte): void
+    public function setDateOuvertureCompte(?FireStoreTimestamp $dateOuvertureCompte): void
     {
         $this->dateOuvertureCompte = $dateOuvertureCompte;
     }

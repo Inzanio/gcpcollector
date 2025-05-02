@@ -2,19 +2,20 @@
 
 namespace App\Models\Traits;
 
-use DateTimeImmutable;
+use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 
 trait DbDataTrait
 {
     /**
-     * @var DateTimeImmutable|null La date de création
+     * @var FireStoreTimestamp|null La date de création
      */
-    protected ?DateTimeImmutable $dateCreation = null;
+    protected ?FireStoreTimestamp $dateCreation = null;
 
     /**
-     * @var DateTimeImmutable|null La date de modification
+     * @var FireStoreTimestamp|null La date de modification
      */
-    protected ?DateTimeImmutable $dateModification = null;
+    protected ?FireStoreTimestamp $dateModification = null;
+
 
 
     /**
@@ -42,9 +43,9 @@ trait DbDataTrait
     /**
      * Obtient la date de création
      * 
-     * @return DateTimeImmutable|null
+     * @return FireStoreTimestamp|null
      */
-    public function getDateCreation(): ?DateTimeImmutable
+    public function getDateCreation(): ?FireStoreTimestamp
     {
         return $this->dateCreation;
     }
@@ -52,24 +53,20 @@ trait DbDataTrait
     /**
      * Définit la date de création
      * 
-     * @param string|null $dateCreation
+     * @param FireStoreTimestamp|null $dateCreation
      * @return void
      */
-    public function setDateCreation(?string $dateCreation): void
+    public function setDateCreation(?FireStoreTimestamp $dateCreation): void
     {
-        if ($dateCreation !== null) {
-            $this->dateCreation = new DateTimeImmutable($dateCreation);
-        } else {
-            $this->dateCreation = null;
-        }
+        $this->dateCreation = $dateCreation;
     }
 
     /**
      * Obtient la date de modification
      * 
-     * @return DateTimeImmutable|null
+     * @return FireStoreTimestamp|null
      */
-    public function getDateModification(): ?DateTimeImmutable
+    public function getDateModification(): ?FireStoreTimestamp
     {
         return $this->dateModification;
     }
@@ -77,15 +74,12 @@ trait DbDataTrait
     /**
      * Définit la date de modification
      * 
-     * @param string|null $dateModification
+     * @param FireStoreTimestamp|null $dateModification
      * @return void
      */
-    public function setDateModification(?string $dateModification): void
+    public function setDateModification(?FireStoreTimestamp $dateModification): void
     {
-        if ($dateModification !== null) {
-            $this->dateModification = new DateTimeImmutable($dateModification);
-        } else {
-            $this->dateModification = null;
-        }
+
+        $this->dateModification = $dateModification;
     }
 }

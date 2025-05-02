@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models\Traits;
-
+use Datetime;
 /**
  * Trait ToArrayTrait
  * 
@@ -33,7 +33,7 @@ trait ToArrayTrait
                 $propertyName = lcfirst(substr($method, 3));
 
                 // Exclut les propriétés dateCreation et dateModification
-                if ($propertyName !== 'dateCreation' && $propertyName !== 'dateModification' && $propertyName !== 'docId') {
+                if ($propertyName !== 'docId') {
                     // Appelle le getter et ajoute la valeur au tableau
                     $array[$propertyName] = $this->$method();
                 }

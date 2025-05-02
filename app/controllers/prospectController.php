@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\ProspectServices;
 use App\Models\Prospect;
+use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 use Datetime;
 
 class ProspectController
@@ -40,7 +41,7 @@ class ProspectController
         // Récupération des données du formulaire
         $nom = trim(htmlspecialchars($_POST['nom'] ?? ''));
         $prenom = trim(htmlspecialchars($_POST['prenom'] ?? ''));
-        $dateNaissance = !empty($_POST['dateNaissance']) ? new DateTime($_POST['dateNaissance']) : null;
+        $dateNaissance = !empty($_POST['dateNaissance']) ? new Datetime($_POST['dateNaissance']) : null;
         $telephone = trim(htmlspecialchars($_POST['telephone'] ?? ''));
         $profession = trim(htmlspecialchars($_POST['profession'] ?? ''));
         $connaissanceBanque = isset($_POST['connaissanceBanque']) ? true : false;
@@ -53,7 +54,7 @@ class ProspectController
         $prospect = new Prospect(
             $nom,
             $prenom,
-            $dateNaissance,
+            new FireStoreTimestamp($dateNaissance),
             [$telephone],
             "",
             $profession,

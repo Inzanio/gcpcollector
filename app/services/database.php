@@ -4,7 +4,9 @@ namespace App\Services;
 
 use \MrShan0\PHPFirestore\FireStoreApiClient;
 use \MrShan0\PHPFirestore\FireStoreDocument;
+use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 
+use Datetime;
 use Exception;
 
 /**
@@ -49,6 +51,9 @@ class Database
      */
     public static function createDocument($collectionName, $documentId, $data)
     {
+        $data['dateCreation'] = new FireStoreTimestamp('now');
+        $data['dateModification'] = new FireStoreTimestamp('now');
+
         $result = self::getFirestore()->addDocument($collectionName, $data, $documentId);
         return $result;
     }
@@ -73,7 +78,7 @@ class Database
      */
     public static function updateDocument($collectionName, $documentId, $data, $documentExist = True)
     {
-
+        $data['dateModification'] = new FireStoreTimestamp('now');
         $champs = array_chunk($data, 10, true);
         $success = true;
 
@@ -141,7 +146,9 @@ class Database
 
         $response = curl_exec($ch);
         curl_close($ch);
-
+        if (!self::isSuccessfullRequest($response)) {
+            return false;
+        }
         return self::toArrayDocument($response);
     }
 

@@ -251,7 +251,7 @@ $tauxConversionMoisPasse  = ($totalProspectsMoisPasse + $totalClientsMoisPasse) 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const prospectsData = <?php echo json_encode(array_count_values(array_map(function ($prospect) {
-                            return $prospect->getDateCreation()->format('Y-m-d');
+                            return (new DateTime($prospect->getDateCreation()->parseValue()))->format(DATE_FROMAT_SIMPLE_DISPLAY);
                           }, $prospects))); ?>;
 
     const categories = Object.keys(prospectsData);

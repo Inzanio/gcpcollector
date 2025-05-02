@@ -1,7 +1,8 @@
 <?php 
 namespace App\Models;
 use App\Models\Traits\ToArrayTrait;
-use DateTime;
+use Datetime;
+use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 /**
  * Classe représentant une personne
  */
@@ -22,9 +23,9 @@ class Personne
 
     /**
      * Date de naissance de la personne
-     * @var DateTime
+     * @var ?FireStoreTimestamp
      */
-    private DateTime $dateNaissance;
+    private ?FireStoreTimestamp $dateNaissance;
 
     /**
      * Liste des numéros de téléphone de la personne
@@ -54,13 +55,13 @@ class Personne
      * Constructeur de la classe Personne
      * @param string $nom Nom de la personne
      * @param string $prenom Prénom de la personne
-     * @param DateTime $dateNaissance Date de naissance de la personne
+     * @param ?DaFireStoreTimestampteTime $dateNaissance Date de naissance de la personne
      * @param string[] $telephone Liste des numéros de téléphone de la personne (optionnel)
      * @param string $adresse Adresse de la personne (optionnel)
      * @param string $genre Genre de la personne (optionnel)
      * @param string $email Email de la personne (optionnel)
      */
-    public function __construct(string $nom, string $prenom, DateTime $dateNaissance, array $telephone = [], string $adresse = "", string $genre = "", string $email = "")
+    public function __construct(string $nom, string $prenom, ?FireStoreTimestamp $dateNaissance, array $telephone = [], string $adresse = "", string $genre = "", string $email = "")
     {
         $this->nom = $nom;
         $this->prenom = $prenom;
@@ -109,18 +110,18 @@ class Personne
 
     /**
      * Récupère la date de naissance de la personne
-     * @return string
+     * @return ?FireStoreTimestamp
      */
-    public function getDateNaissance(): string
+    public function getDateNaissance(): ?FireStoreTimestamp
     {
-        return $this->dateNaissance->format("Y-m-d");
+        return $this->dateNaissance;
     }
 
     /**
      * Modifie la date de naissance de la personne
-     * @param DateTime $dateNaissance Nouvelle date de naissance
+     * @param ?FireStoreTimestamp $dateNaissance Nouvelle date de naissance
      */
-    public function setDateNaissance(DateTime $dateNaissance): void
+    public function setDateNaissance($dateNaissance): void
     {
         $this->dateNaissance = $dateNaissance;
     }

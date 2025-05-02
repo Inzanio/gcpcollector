@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Prospect;
-use DateTime;
+use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 
 /**
  * Classe de service pour gérer les prospects
@@ -77,7 +77,7 @@ class ProspectServices
         $prospect = new Prospect(
             $data['nom'] ?? "",
             $data['prenom'] ?? "",
-            isset($data['dateNaissance']) ? new DateTime($data['dateNaissance']) : new DateTime(),
+            isset($data['dateNaissance']) ? $data['dateNaissance'] : null,
             $data['telephone'] ?? [],
             $data['adresse'] ?? "",
             $data['profession'] ?? "",
@@ -91,10 +91,10 @@ class ProspectServices
         $prospect->setEmail($data['email'] ?? "");
         $prospect->setGenre($data['genre'] ?? "");
         $prospect->setNumeroCompte($data['numeroCompte'] ?? "");
-        $prospect->setDateOuvertureCompte(isset($data['dateOuvertureCompte']) ? new DateTime($data['dateOuvertureCompte']) : new DateTime());
+        $prospect->setDateOuvertureCompte($data['dateOuvertureCompte']);
 
-        $prospect->setDateCreation($doc->createTime);
-        $prospect->setDateModification($doc->updateTime);
+        $prospect->setDateCreation($data['dateCreation']);
+        $prospect->setDateModification($data['dateModification']);
 
         // Récupération de l'ID du document Firestore
         $id = Database::getDocumentIdFromName($doc->getName());
@@ -138,8 +138,8 @@ class ProspectServices
      * Récupère tous les prospects
      * @param string|null $idAgentProspecteur - l'ID de l'agent prospecteur (optionnel)
      * @param string|null $idAgence - l'ID de l'agence (optionnel)
-     * @param DateTime|null $dateDebut - la date de début (optionnel)
-     * @param DateTime|null $dateFin - la date de fin (optionnel)
+     * @param FireStoreTimestamp|null $dateDebut - la date de début (optionnel)
+     * @param FireStoreTimestamp|null $dateFin - la date de fin (optionnel)
      * @param bool $excludeProspects - exclure les prospects (par défaut false)
      * @param bool $excludeClients - exclure les clients (par défaut false)
      * @return Prospect[] - la liste des prospects
@@ -223,15 +223,15 @@ class ProspectServices
     {
         // Vérification de l'existence du prospect dans la base de données
         $prospect->setNumeroCompte($numeroCompte);
-        $prospect->setDateOuvertureCompte(new DateTime());
+        $prospect->setDateOuvertureCompte(new FireStoreTimestamp());
         return self::updateProspect($prospect);
     }
     /**
      * Récupère tous les prospects attribués à un agent prospecteur spécifique.
      *
      * @param int $idAgentProspecteur L'ID de l'agent prospecteur
-     * @param DateTime|null $dateDebut La date de début (optionnel)
-     * @param DateTime|null $dateFin La date de fin (optionnel)
+     * @param FireStoreTimestamp|null $dateDebut La date de début (optionnel)
+     * @param FireStoreTimestamp|null $dateFin La date de fin (optionnel)
      * @return Prospect[] La liste des prospects
      */
     public static function getAllProspectsByAgent($idAgentProspecteur, $dateDebut = null, $dateFin = null)
@@ -243,8 +243,8 @@ class ProspectServices
      * Récupère tous les clients (prospects convertis) attribués à un agent prospecteur spécifique.
      *
      * @param int $idAgentProspecteur L'ID de l'agent prospecteur
-     * @param DateTime|null $dateDebut La date de début (optionnel)
-     * @param DateTime|null $dateFin La date de fin (optionnel)
+     * @param FireStoreTimestamp|null $dateDebut La date de début (optionnel)
+     * @param FireStoreTimestamp|null $dateFin La date de fin (optionnel)
      * @return Prospect[] La liste des prospects (clients)
      */
     public static function getAllClientsByAgent($idAgentProspecteur, $dateDebut = null, $dateFin = null)
@@ -256,8 +256,8 @@ class ProspectServices
      * Récupère tous les prospects attribués à une agence spécifique.
      *
      * @param int $idAgence L'ID de l'agence
-     * @param DateTime|null $dateDebut La date de début (optionnel)
-     * @param DateTime|null $dateFin La date de fin (optionnel)
+     * @param FireStoreTimestamp|null $dateDebut La date de début (optionnel)
+     * @param FireStoreTimestamp|null $dateFin La date de fin (optionnel)
      * @return Prospect[] La liste des prospects
      */
     public static function getAllProspectsByAgence($idAgence, $dateDebut = null, $dateFin = null)
@@ -269,8 +269,8 @@ class ProspectServices
      * Récupère tous les clients (prospects convertis) attribués à une agence spécifique.
      *
      * @param int $idAgence L'ID de l'agence
-     * @param DateTime|null $dateDebut La date de début (optionnel)
-     * @param DateTime|null $dateFin La date de fin (optionnel)
+     * @param FireStoreTimestamp|null $dateDebut La date de début (optionnel)
+     * @param FireStoreTimestamp|null $dateFin La date de fin (optionnel)
      * @return Prospect[] La liste des prospects (clients)
      */
     public static function getAllClientsByAgence($idAgence, $dateDebut = null, $dateFin = null)
@@ -284,8 +284,8 @@ class ProspectServices
      *
      * @param int|null $idAgentProspecteur L'ID de l'agent prospecteur (facultatif)
      * @param int|null $idAgence L'ID de l'agence (facultatif)
-     * @param DateTime|null $dateDebut La date de début (optionnel)
-     * @param DateTime|null $dateFin La date de fin (optionnel)
+     * @param FireStoreTimestamp|null $dateDebut La date de début (optionnel)
+     * @param FireStoreTimestamp|null $dateFin La date de fin (optionnel)
      * @return Prospect[] La liste des prospects en attente d'ouverture de compte
      */
     public static function getAllProspectsWaitingForAccountValidation($idAgentProspecteur = null, $idAgence = null, $dateDebut = null, $dateFin = null)

@@ -1,8 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <?php
 require_once("../app/views/head.php");
+
 ?>
 
 <body>
@@ -25,7 +27,6 @@ require_once("../app/views/head.php");
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Modification d'un Prospect</h5>
-
                 <!-- Floating Labels Form -->
                 <form class="row g-3" action="" method="POST">
                     <div class="col-md-6">
@@ -48,7 +49,7 @@ require_once("../app/views/head.php");
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">
-                            <input name="dateNaissance" type="date" class="form-control" id="floatingDateNaissance" placeholder="Date de naissance" value="<?php echo $prospect->getDateNaissance(); ?>" >
+                            <input name="dateNaissance" type="date" class="form-control" id="floatingDateNaissance" placeholder="Date de naissance" value="<?php echo (new Datetime(($prospect->getDateNaissance()->parseValue())))->format('Y-m-d') ; ?>" >
                             <label for="floatingDateNaissance">Date de naissance</label>
                         </div>
                     </div>
