@@ -41,12 +41,12 @@
             </li>
 
             <!-- Performances -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link <?php echo $performancesActivity; ?>" href="">
                     <i class="bi bi-graph-up"></i>
                     <span>Mes performances</span>
                 </a>
-            </li>
+            </li> -->
 
         <?php endif; ?>
            
@@ -89,7 +89,7 @@
 
             <!-- Gestion des agences -->
             <li class="nav-item">
-                <a class="nav-link <?php echo $gestAgencesActivity; ?>" href="">
+                <a class="nav-link <?php echo $gestAgencesActivity; ?>" href="/agences">
                     <i class="bi bi-building"></i>
                     <span>Gérer les agences</span>
                 </a>

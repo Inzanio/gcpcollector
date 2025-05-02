@@ -46,7 +46,7 @@ switch ($parts[0]) {
         if (!$id) {
 ?>
             <div class="alert alert-danger">
-                <?php echo "Il semblerait qu'il manque un paramçtre inmportant pour que cette requête aboutissent (id)"; ?>
+                <?php echo "Il semblerait qu'il manque un paramètre inmportant pour que cette requête aboutissent (id)"; ?>
             </div>
         <?php
             exit();
@@ -69,7 +69,31 @@ switch ($parts[0]) {
         }
 
         break;
-    case "unittests": 
+    case "superviseurs":
+        LoginController::must_logged_in();
+        include '../app/views/liste-superviseur.php';
+        break;
+    case "agences":
+        LoginController::must_logged_in();
+        include '../app/views/liste-agence.php';
+        break;
+    case "ajouter-superviseur":
+        LoginController::must_logged_in();
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            ProspectController::create();
+        } else {
+            include '../app/views/forms/ajouter-superviseur.php';
+        }
+        break;
+    case "ajouter-agence":
+        LoginController::must_logged_in();
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            ProspectController::create();
+        } else {
+            include '../app/views/forms/ajouter-agence.php';
+        }
+        break;
+    case "unittests":
         include '../test_firestore.php';
         break;
     default:
