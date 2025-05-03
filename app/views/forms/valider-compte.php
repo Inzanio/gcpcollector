@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <?php
-require_once("head.php");
+require_once("../app/views/head.php");
 ?>
 
 <body>
 
-
     <!-- ======= Header ======= -->
     <?php
-    require_once("header.php");
+    require_once("../app/views/header.php");
     ?>
     <!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
     <?php
-
-    require_once("sidebar.php");
+    require_once("../app/views/sidebar.php");
     ?>
     <!-- End Sidebar-->
 
@@ -29,11 +27,10 @@ require_once("head.php");
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">LISTE DES PROSPECTS</h5>
-                            <a href="/ajouter-prospect" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter </a>
+                            <a href="/ajouter-prospect" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter</a>
                             <p></p>
 
                             <!-- Table with stripped rows -->
-
                             <div class="col-12">
                                 <div class="card recent-prospects">
                                     <div class="card-body">
@@ -43,20 +40,26 @@ require_once("head.php");
                                                     <th>Nom</th>
                                                     <th>Profession</th>
                                                     <th>Numéro Téléphone</th>
-                                                    <th>Action</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php foreach ($prospects as $prospect): ?>
                                                     <tr>
-                                                        <td ><?= htmlspecialchars($prospect->getNom()) ?></td>
+                                                        <td><?= htmlspecialchars($prospect->getNom()) ?></td>
                                                         <td><?= htmlspecialchars($prospect->getProfession()) ?></td>
                                                         <td><?= htmlspecialchars($prospect->getTelephone()[0]) ?></td>
                                                         <td>
-                                                            <a href="/editer-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
-                                                                class="btn btn-outline-warning">
-                                                                <i class="bi bi-pencil me-2"></i>Modifier
-                                                            </a>
+                                                            <div class="btn-group" role="group">
+                                                                <a href="/editer-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>" 
+                                                                   class="btn btn-outline-warning me-2">
+                                                                    <i class="bi bi-pencil"></i> Modifier
+                                                                </a>
+                                                                <a href="/valider-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>" 
+                                                                   class="btn btn-outline-success">
+                                                                    <i class="bi bi-check-circle"></i> Valider
+                                                                </a>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
@@ -69,7 +72,6 @@ require_once("head.php");
 
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -78,10 +80,9 @@ require_once("head.php");
 
     <!-- ======= Footer ======= -->
     <?php
-    require_once("footer.php");
+    require_once("../app/views/footer.php");
     ?>
     <!-- End Footer -->
 
 </body>
-
 </html>
