@@ -140,7 +140,7 @@ $reportsCampaignActivity = (strpos(strtolower($currentUri), "campagne/rapports")
                     <i class="bi bi-shield-check"></i>
                     <span>Valider Préouverture</span>
                 </a>
-       main
+                
         <?php endif; ?>
          <!-- Séparateur (commun à tous) -->
          <li class="nav-heading">Compte</li>

@@ -133,7 +133,6 @@ switch ($parts[0]) {
         LoginController::must_logged_in();
         include '../app/views/liste-agent.php';
         break;
-    main
     case "unittests":
         include '../test_firestore.php';
         break;
