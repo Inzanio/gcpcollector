@@ -38,6 +38,11 @@ require_once("../app/views/head.php");
                         <label for="inputPassword4" class="form-label">Lieu</label>
                         <input type="text" class="form-control" id="inputPassword5" name="lieu" required>
                     </div>
+                    <?php
+                    if (isset($error_message)) {
+                        check_error_message($error_message);
+                    }
+                    ?>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary">Ajouter</button>         
 

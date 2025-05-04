@@ -151,6 +151,7 @@ class Database
         if (!self::isSuccessfullRequest($response)) {
             return false;
         }
+        //var_dump($response);
         return self::toArrayDocument($response);
     }
 

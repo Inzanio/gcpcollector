@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Services\AgenceServices;
 use App\Services\UtilisateurServices;
 
 class LoginController
@@ -16,7 +17,8 @@ class LoginController
 
         $login = htmlspecialchars($_POST["login"]);
         $password = htmlspecialchars($_POST["password"]);
-
+        //$password = password_hash($password, PASSWORD_DEFAULT);
+        
         $login_result = UtilisateurServices::login($login, $password);
 
         if ($login_result != false) {
@@ -27,7 +29,15 @@ class LoginController
             $_SESSION['user_id'] = $login_result->getDocId();
             $_SESSION['user_nom'] = $login_result->getNom();
             $_SESSION['user_prenom'] = $login_result->getPrenom();
-            $_SESSION['user_agence_id'] = null;
+            if ($_SESSION['user_role'] !== ROLE_ADMIN ){
+                var_dump($login_result->getIdAgence());
+                $_SESSION['user_agence_id'] = $login_result->getIdAgence();
+                $agence = AgenceServices::getAgenceById($login_result->getIdAgence());
+                $_SESSION['user_agence_name'] = $agence->getNom();
+            }else {
+                $_SESSION['user_agence_id'] = null;
+            }
+            
 
             header('Location: /');
         } else {

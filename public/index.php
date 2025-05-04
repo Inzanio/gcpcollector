@@ -9,7 +9,7 @@ use App\Controllers\SuperviseurController;
 use App\Controllers\AgenceController;
 use App\Services\AgenceServices;
 use App\Services\ProspectServices;
-
+use App\Services\UtilisateurServices;
 
 function check_id()
 {
@@ -32,9 +32,24 @@ function check_element($element)
         <div class="alert alert-danger">
             <?php echo "Aïe, Aïe il semblerait que le prospect que vous souhaitez modifier n'existe pas"; ?>
         </div>
-<?php
+    <?php
         exit();
     }
+}
+
+function check_error_message($error_message = null)
+{
+    /**<?php if (!empty($error_message)) : ?>
+        <div class="alert alert-<?php echo $result ? 'success' : 'danger'; ?>">
+            <?php echo $error_message; ?>
+        </div>
+    <?php endif; ?>**/
+
+
+    ?>
+    <p class="text-center small text-danger"><?php echo htmlspecialchars($error_message, ENT_QUOTES, 'UTF-8'); ?></p>
+<?php
+
 }
 
 $uri = $_SERVER['REQUEST_URI'];
@@ -93,8 +108,19 @@ switch ($parts[0]) {
         break;
     case "ajouter-superviseur":
         LoginController::must_logged_in();
+        $agences = AgenceServices::getAllAgences();
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            ProspectController::create();
+            SuperviseurController::create();
+        } else {
+            include '../app/views/forms/ajouter-superviseur.php';
+        }
+        break;
+    case "editer-superviseur":
+        LoginController::must_logged_in();
+        $id = check_id();
+        $superviseur = UtilisateurServices::getUtilisateurById($id);
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            SuperviseurController::update($superviseur);
         } else {
             include '../app/views/forms/ajouter-superviseur.php';
         }

@@ -22,6 +22,7 @@ class UtilisateurServices
     public static function createUtilisateur(Utilisateur $user)
     {
         if (self::utilisateurExist($user)) {
+            $error_message = "L'utilisateur existe déjà";
             return false;
         }
 
@@ -42,7 +43,7 @@ class UtilisateurServices
     public static function updateUtilisateur(Utilisateur $user)
     {
         // Appel de la méthode de mise à jour de document dans la classe Database
-        $response = Database::updateDocument(self::$collectionName,$user->getDocId() , $user->toArray());
+        $response = Database::updateDocument(self::$collectionName, $user->getDocId(), $user->toArray());
         return Database::isSuccessfullRequest($response) ? $response : false;
     }
 
@@ -102,7 +103,12 @@ class UtilisateurServices
         return $Utilisateurs;
     }
 
-
+    public static function getUtilisateurById($documentId)
+    {
+        // Appel de la méthode de récupération d'un document par ID dans la classe Database
+        $result = Database::getDocument(self::$collectionName, $documentId);
+        return self::fromFirestoreDocument($result);
+    }
     /**
      * Cherche le login avec le mot de passe donné et retourne les utilisateurs y correspondant
      * @param string login - le login de l'utilisateur
@@ -111,13 +117,13 @@ class UtilisateurServices
      */
     public static function login($login, $password)
     {
+        
         $queryBuilder = Database::queryBuilder(self::$collectionName);
         $queryBuilder->where('login', 'EQUAL', $login);
         $queryBuilder->where('password', 'EQUAL', $password);
         $query = $queryBuilder->build();
 
         $result = Database::query($query);
-        //var_dump($result);
         if ($result != null && count($result) > 0) {
             if (count($result) > 1) {
                 // Plus d'un utilisateur trouvé, vous pouvez gérer cela comme vous le souhaitez
@@ -146,7 +152,7 @@ class UtilisateurServices
         $utilisateur = new Utilisateur(
             $data['nom'] ?? "",
             $data['prenom'] ?? "",
-            isset($data['dateNaissance'])? $data['dateNaissance'] :null,
+            isset($data['dateNaissance']) ? $data['dateNaissance'] : null,
             $data['matricule'] ?? "",
             $data['login'] ?? "",
             $data['password'] ?? "",
@@ -155,6 +161,8 @@ class UtilisateurServices
             $data['adresse'] ?? ""
         );
         $utilisateur->setDocId($id);
+        $utilisateur->setIdAgence($data['idAgence']);
+        $utilisateur->setIdCreator($data['idCreator'] ?? "");
         return $utilisateur;
     }
 }

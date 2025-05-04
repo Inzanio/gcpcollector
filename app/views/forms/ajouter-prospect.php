@@ -55,7 +55,7 @@ require_once("../app/views/head.php");
                     <div class="col-md-6">
                         <div class="form-floating">
                             <input name="telephone" type="text" class="form-control" id="floatingTelephone" placeholder="Téléphone du Prospect" name="telephone" required>
-                            <label for="floatingTelephone"require>Téléphone</label>
+                            <label for="floatingTelephone" require>Téléphone</label>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -96,13 +96,13 @@ require_once("../app/views/head.php");
                             <label for="autreProfession">Précisez la profession</label>
                         </div> -->
                     </div>
-                    
+
                     <div class="col-md-12">
-                            <input name="connaissanceBanque" class="form-check-input" type="checkbox" id="connaissanceBanque">
-                            <label class="form-check-label" for="connaissanceBanque">Connaissance de la banque</label>
-        
+                        <input name="connaissanceBanque" class="form-check-input" type="checkbox" id="connaissanceBanque">
+                        <label class="form-check-label" for="connaissanceBanque">Connaissance de la banque</label>
+
                     </div>
-                    
+
                     <?php
                     $produits = [
                         "Épargne" => "Épargne",
@@ -133,12 +133,11 @@ require_once("../app/views/head.php");
                     </div>
 
                 </form>
-                <!-- End floating Labels Form -->
-                <?php if (!empty($error_message)) : ?>
-                    <div class="alert alert-<?php echo $result ? 'success' : 'danger'; ?>">
-                        <?php echo $error_message; ?>
-                    </div>
-                <?php endif; ?>
+                <?php
+                if (isset($error_message)) {
+                    check_error_message($error_message);
+                }
+                ?>
             </div>
         </div>
     </main>

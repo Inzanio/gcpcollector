@@ -142,11 +142,11 @@ require_once("../app/views/head.php");
 
                 </form>
                 <!-- End floating Labels Form -->
-                <?php if (!empty($error_message)) : ?>
-                    <div class="alert alert-<?php echo $result ? 'success' : 'danger'; ?>">
-                        <?php echo $error_message; ?>
-                    </div>
-                <?php endif; ?>
+                <?php
+                    if (isset($error_message)) {
+                        check_error_message($error_message);
+                    }
+                    ?>
             </div>
         </div>
     </main>

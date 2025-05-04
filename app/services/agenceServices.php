@@ -70,9 +70,9 @@ class AgenceServices
     /**
      * Récupère une agence par son ID
      * @param string $documentId - l'ID de l'agence
-     * @return mixed - le résultat de la requête
+     * @return Agence - le résultat de la requête
      */
-    public static function getAgenceById($documentId)
+    public static function getAgenceById($documentId) : Agence
     {
         // Appel de la méthode de récupération d'un document par ID dans la classe Database
         $result = Database::getDocument(self::$collectionName, $documentId);

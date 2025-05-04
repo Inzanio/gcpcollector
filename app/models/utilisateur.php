@@ -1,5 +1,7 @@
-<?php 
+<?php
+
 namespace App\Models;
+
 use App\Models\Traits\DbDataTrait;
 use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 
@@ -37,10 +39,11 @@ class Utilisateur extends Personne
     /**
      * Nom de la collection ou de la table des utilisateurs
      */
-    private static string $collection_name = "utilisateurs" ;
+    private static string $collection_name = "utilisateurs";
 
     private string $idAgence = "";
 
+    private string $idCreator = "";
 
 
     /**
@@ -60,11 +63,11 @@ class Utilisateur extends Personne
         parent::__construct($nom, $prenom, $dateNaissance, $telephone, $adresse);
         $this->matricule = $matricule;
         $this->login = $login;
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
+        $this->password = $password;
         $this->role = $role;
     }
 
-        /**
+    /**
      * Récupère l'ID de l'agence de l'utilisateur
      * @return string
      */
@@ -81,14 +84,14 @@ class Utilisateur extends Personne
     {
         $this->idAgence = $idAgence;
     }
- 
+
     /**
      * Récupère le matricule de l'utilisateur
      * @return string
      */
     public function getMatricule(): string
     {
-        
+
         return $this->matricule;
     }
 
@@ -99,6 +102,23 @@ class Utilisateur extends Personne
     public function setMatricule(string $matricule): void
     {
         $this->matricule = $matricule;
+    }
+    /**
+     * Récupère l'ID du créateur de l'utilisateur
+     * @return string
+     */
+    public function getIdCreator(): string
+    {
+        return $this->idCreator;
+    }
+
+    /**
+     * Modifie l'ID du créateur de l'utilisateur
+     * @param string $idCreator Nouveau ID du créateur
+     */
+    public function setIdCreator(string $idCreator): void
+    {
+        $this->idCreator = $idCreator;
     }
 
     /**
@@ -120,22 +140,22 @@ class Utilisateur extends Personne
     }
 
     /**
-     * Vérifie si le mot de passe est correct
-     * @param string $password Mot de passe à vérifier
-     * @return bool
+     * Donen le mot de passe hashé
+     * @return string
      */
-    public function checkpassword(string $password): bool
+    public function getPassword(): string
     {
-        return password_verify($password, $this->password);
+        return $this->password;
     }
+
 
     /**
      * Modifie le mot de passe de l'utilisateur
      * @param string $password Nouveau mot de passe
      */
-    public function setpassword(string $password): void
+    public function setPassword(string $password): void
     {
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
+        $this->password = $password;
     }
 
     /**
@@ -156,4 +176,3 @@ class Utilisateur extends Personne
         $this->role = $role;
     }
 }
-?>

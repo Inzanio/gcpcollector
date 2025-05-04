@@ -52,7 +52,7 @@ require_once("head.php");
                                                         <td><?= htmlspecialchars(($superviseur->getTelephone()[0]??"pas de Téléphone enregistré")) ?></td>
                                                         
                                                         <td>
-                                                            <a href="/forms/modifier-superviseur.php?id=<?= urlencode($superviseur->getDocId() ?? '') ?>" 
+                                                            <a href="/editer-superviseur?id=<?= urlencode($superviseur->getDocId() ?? '') ?>" 
                                                             class="btn btn-outline-warning">
                                                                 <i class="bi bi-pencil me-2"></i>Modifier
                                                             </a>
