@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Services\AgenceServices;
+use App\Models\Agence;
 
 class AgenceController
 {
@@ -13,5 +14,42 @@ class AgenceController
         include '../app/views/liste-agence.php';
     }
 
+    public static function create()
+    {
+        $nom = trim(htmlspecialchars($_POST['nom'] ?? ''));
+        $lieu = trim(htmlspecialchars($_POST['lieu'] ?? ''));
+        $code = trim(htmlspecialchars($_POST['code'] ?? ''));
 
+        $agence = new Agence($code, $nom, $lieu, $_SESSION["user_id"]);
+
+        $result = AgenceServices::createAgence($agence);
+        if ($result) {
+            header('Location: /agences');
+        }else {
+            $error_message = "Une ereur est survennue lors de la création de l'agence";
+            include '../app/views/forms/ajouter-agence.php';
+        }
+    }
+    /**
+     * param 
+     */
+    public static function update(Agence $agence)
+    {
+        $nom = trim(htmlspecialchars($_POST['nom'] ?? ''));
+        $lieu = trim(htmlspecialchars($_POST['lieu'] ?? ''));
+        $code = trim(htmlspecialchars($_POST['code'] ?? ''));
+
+        $agence->setCode($code);
+        $agence->setNom($nom);
+        $agence->setLieu($lieu);
+       
+
+        $result = AgenceServices::updateAgence($agence);
+        if ($result) {
+            header('Location: /agences');
+        }else {
+            $error_message = "Une ereur est survennue lors de la création de l'agence";
+            include '../app/views/forms/ajouter-agence.php';
+        }
+    }
 }

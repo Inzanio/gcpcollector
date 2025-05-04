@@ -23,7 +23,6 @@ class AgenceServices
 
         // Appel de la méthode de création de document dans la classe Database
         $result = Database::createDocument(self::$collectionName, $documentId, $agence->toArray());
-        var_dump($result);
         return $result;
     }
 
@@ -77,7 +76,7 @@ class AgenceServices
     {
         // Appel de la méthode de récupération d'un document par ID dans la classe Database
         $result = Database::getDocument(self::$collectionName, $documentId);
-        return $result;
+        return self::fromFirestoreDocument($result);
     }
 
     /**
@@ -97,6 +96,7 @@ class AgenceServices
             $data['idAdmin'] ?? "",
 
         );
+        $agence->setCode($id);
         $agence->setDocId($id);
         return $agence;
     }

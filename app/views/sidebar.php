@@ -67,12 +67,12 @@ $reportsCampaignActivity = (strpos(strtolower($currentUri), "campagne/rapports")
             </li>
 
             <!-- Performances de l'agent -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link <?php echo $performancesActivity; ?>" href="">
                     <i class="bi bi-graph-up"></i>
                     <span>Performances des agents</span>
                 </a>
-            </li>
+            </li> -->
         <?php endif; ?>
 
         <!-- Menu pour les ADMINISTRATEURS -->

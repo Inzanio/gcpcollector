@@ -52,7 +52,7 @@ require_once("head.php");
                                                         <td><?= htmlspecialchars($agence->getNom()) ?></td>
                                                         <td><?= htmlspecialchars($agence->getLieu()) ?></td>
                                                         <td>
-                                                            <a href="editer-agence.php?id=<?= urlencode($agence->getDocId() ?? '') ?>" 
+                                                            <a href="editer-agence?id=<?= urlencode($agence->getDocId() ?? '') ?>" 
                                                             class="btn btn-outline-warning">
                                                                 <i class="bi bi-pencil me-2"></i>Modifier
                                                             </a>

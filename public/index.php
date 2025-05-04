@@ -7,9 +7,35 @@ use App\Controllers\LoginController;
 use App\Controllers\ProspectController;
 use App\Controllers\SuperviseurController;
 use App\Controllers\AgenceController;
-
+use App\Services\AgenceServices;
 use App\Services\ProspectServices;
 
+
+function check_id()
+{
+    $id = isset($_GET['id']) ? $_GET['id'] : null;
+    if (!$id) {
+?>
+        <div class="alert alert-danger">
+            <?php echo "Il semblerait qu'il manque un paramètre inmportant pour que cette requête aboutissent (id)"; ?>
+        </div>
+    <?php
+        exit();
+    }
+    return $id;
+}
+
+function check_element($element)
+{
+    if (!$element) {
+    ?>
+        <div class="alert alert-danger">
+            <?php echo "Aïe, Aïe il semblerait que le prospect que vous souhaitez modifier n'existe pas"; ?>
+        </div>
+<?php
+        exit();
+    }
+}
 
 $uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($uri, PHP_URL_PATH);
@@ -46,26 +72,10 @@ switch ($parts[0]) {
         break;
     case "editer-prospect":
         LoginController::must_logged_in();
-        $id = isset($_GET['id']) ? $_GET['id'] : null;
-        if (!$id) {
-?>
-            <div class="alert alert-danger">
-                <?php echo "Il semblerait qu'il manque un paramètre inmportant pour que cette requête aboutissent (id)"; ?>
-            </div>
-        <?php
-            exit();
-        }
+        $id = check_id();
 
         $prospect = ProspectServices::getProspectById($id);
-
-        if (!$prospect) {
-        ?>
-            <div class="alert alert-danger">
-                <?php echo "Aïe, Aïe il semblerait que le prospect que vous souhaitez modifier n'existe pas"; ?>
-            </div>
-<?php
-            exit();
-        }
+        check_element($prospect);
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ProspectController::update($prospect);
         } else {
@@ -92,20 +102,24 @@ switch ($parts[0]) {
     case "ajouter-agence":
         LoginController::must_logged_in();
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            ProspectController::create();
+            AgenceController::create();
         } else {
             include '../app/views/forms/ajouter-agence.php';
         }
         break;
     case "editer-agence":
         LoginController::must_logged_in();
-        // if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        //     ProspectController::create();
-        // } else {
-        //     include '../app/views/forms/ajouter-agence.php';
-        // }
-        // break;
-        
+        $id = check_id();
+
+        $agence = AgenceServices::getAgenceById($id);
+        check_element($agence);
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            AgenceController::update($agence);
+        } else {
+            include '../app/views/forms/modifier-agence.php';
+        }
+        break;
+
     case "comptes":
         LoginController::must_logged_in();
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
