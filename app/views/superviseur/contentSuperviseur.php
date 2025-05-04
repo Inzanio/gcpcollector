@@ -1,7 +1,7 @@
 <section class="section dashboard">
     <div class="row">
         <!-- Carte Prospects Totaux -->
-        <div class="col-xxl-3 col-md-6">
+        <div class="col-xxl-4 col-md-6">
             <div class="card info-card customers-card">
                 <div class="card-body">
                     <h5 class="card-title">Prospects Totaux <span>| Ce Mois</span></h5>
@@ -19,55 +19,37 @@
             </div>
         </div>
 
-        <!-- Carte Taux de Conversion -->
-        <div class="col-xxl-3 col-md-6">
-            <div class="card info-card revenue-card">
+        <!-- Carte Nombre de Campagnes -->
+        <div class="col-xxl-4 col-md-6">
+            <div class="card info-card sales-card">
                 <div class="card-body">
-                    <h5 class="card-title">Conversion Globale <span>| Taux</span></h5>
+                    <h5 class="card-title">Campagnes Actives <span>| 30 jours</span></h5>
                     <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-success">
-                            <i class="bi bi-graph-up-arrow"></i>
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-warning">
+                            <i class="bi bi-megaphone"></i>
                         </div>
                         <div class="ps-3">
-                            <h6>34.7%</h6>
-                            <span class="text-success small pt-1 fw-bold">+2.1%</span>
-                            <span class="text-muted small pt-2 ps-1">amélioration</span>
+                            <h6>8 Campagnes</h6>
+                            <span class="text-muted small pt-2 ps-1">5 en cours</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Carte Produits Populaires -->
-        <div class="col-xxl-3 col-md-6">
-            <div class="card info-card sales-card">
+        <!-- Carte Meilleure Campagne -->
+        <div class="col-xxl-4 col-md-6">
+            <div class="card info-card revenue-card">
                 <div class="card-body">
-                    <h5 class="card-title">Produit Phare <span>| Top 1</span></h5>
+                    <h5 class="card-title">Top Campagne <span>| Performances</span></h5>
                     <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-warning">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-success">
                             <i class="bi bi-trophy"></i>
                         </div>
                         <div class="ps-3">
-                            <h6>Crédits Pro</h6>
-                            <span class="text-muted small pt-2 ps-1">42% des conversions</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Carte Zone Géographique -->
-        <div class="col-xxl-3 col-md-6">
-            <div class="card info-card">
-                <div class="card-body">
-                    <h5 class="card-title">Zone Active <span>| Top 1</span></h5>
-                    <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-info">
-                            <i class="bi bi-geo-alt"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h6>Quartier Affaires</h6>
-                            <span class="text-muted small pt-2 ps-1">28% des prospects</span>
+                            <h6>Offre Été 2024</h6>
+                            <span class="text-success small pt-1 fw-bold">214 clients</span>
+                            <span class="text-muted small pt-2 ps-1">28% de conversion</span>
                         </div>
                     </div>
                 </div>
@@ -75,14 +57,14 @@
         </div>
     </div>
 
-    <!-- Graphiques Secteur Activité -->
+    <!-- Graphiques Campagnes -->
     <div class="row">
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Prospects par Secteur</h5>
+                    <h5 class="card-title">Rendement des Campagnes</h5>
                     <div class="chart-container" style="height: 300px;">
-                        <canvas id="sectorChart"></canvas>
+                        <canvas id="campaignPerformanceChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -91,23 +73,23 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Taux Conversion par Secteur</h5>
+                    <h5 class="card-title">Évolution Mensuelle</h5>
                     <div class="chart-container" style="height: 300px;">
-                        <canvas id="conversionChart"></canvas>
+                        <canvas id="monthlyTrendChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Analyse Démographique -->
+    <!-- Analyse Détails -->
     <div class="row mt-4">
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Répartition par Tranche d'Âge</h5>
+                    <h5 class="card-title">Conversion par Canal</h5>
                     <div class="chart-container" style="height: 300px;">
-                        <canvas id="ageChart"></canvas>
+                        <canvas id="channelChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -116,9 +98,9 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Attractivité des Produits</h5>
+                    <h5 class="card-title">Coût par Acquisition</h5>
                     <div class="chart-container" style="height: 300px;">
-                        <canvas id="productChart"></canvas>
+                        <canvas id="cpaChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -129,51 +111,94 @@
 <!-- ChartJS Script -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Prospects par secteur
-    new Chart(document.getElementById('sectorChart'), {
+    // Performance des campagnes
+    new Chart(document.getElementById('campaignPerformanceChart'), {
         type: 'bar',
         data: {
-            labels: ['Commerce', 'Services', 'Industrie', 'Agriculture', 'TI'],
+            labels: ['Offre Été', 'Promo Crédit', 'Webinaire Pro', 'Parrainage', 'Emailing'],
             datasets: [{
-                label: 'Prospects',
-                data: [320, 180, 420, 90, 210],
+                label: 'Clients acquis',
+                data: [214, 187, 92, 156, 78],
                 backgroundColor: '#4154f1'
+            }, {
+                label: 'Taux conversion',
+                data: [28, 22, 15, 19, 10],
+                backgroundColor: '#2eca6a',
+                type: 'line',
+                yAxisID: 'y1'
             }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Clients' }
+                },
+                y1: {
+                    position: 'right',
+                    beginAtZero: true,
+                    max: 100,
+                    title: { display: true, text: 'Taux %' },
+                    grid: { drawOnChartArea: false }
+                }
+            }
         }
     });
 
-    // Taux conversion par secteur
-    new Chart(document.getElementById('conversionChart'), {
+    // Évolution mensuelle
+    new Chart(document.getElementById('monthlyTrendChart'), {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+            datasets: [{
+                label: 'Clients',
+                data: [420, 380, 510, 490, 620, 730],
+                borderColor: '#f83245',
+                fill: false
+            }, {
+                label: 'Campagnes',
+                data: [5, 4, 6, 7, 8, 9],
+                borderColor: '#2b7be4',
+                fill: false,
+                yAxisID: 'y1'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    title: { display: true, text: 'Clients' }
+                },
+                y1: {
+                    position: 'right',
+                    beginAtZero: true,
+                    title: { display: true, text: 'Nb Campagnes' },
+                    grid: { drawOnChartArea: false }
+                }
+            }
+        }
+    });
+
+    // Conversion par canal
+    new Chart(document.getElementById('channelChart'), {
         type: 'doughnut',
         data: {
-            labels: ['Commerce', 'Services', 'Industrie', 'Agriculture', 'TI'],
+            labels: ['Email', 'Réseaux sociaux', 'Téléphone', 'RDV physique', 'Site web'],
             datasets: [{
-                data: [28, 42, 35, 19, 50],
-                backgroundColor: ['#2eca6a', '#ff771d', '#f83245', '#2b7be4', '#7d3af2']
-            }]
-        }
-    });
-
-    // Tranche d'âge
-    new Chart(document.getElementById('ageChart'), {
-        type: 'polarArea',
-        data: {
-            labels: ['18-25', '26-35', '36-45', '46-55', '56+'],
-            datasets: [{
-                data: [15, 35, 30, 15, 5],
+                data: [25, 35, 20, 15, 5],
                 backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff']
             }]
         }
     });
 
-    // Produits
-    new Chart(document.getElementById('productChart'), {
+    // Coût par acquisition
+    new Chart(document.getElementById('cpaChart'), {
         type: 'radar',
         data: {
-            labels: ['Crédits Pro', 'Épargne', 'Assurances', 'Investissements', 'Cartes'],
+            labels: ['Offre Été', 'Promo Crédit', 'Webinaire', 'Parrainage'],
             datasets: [{
-                label: 'Demande',
-                data: [65, 59, 90, 81, 56],
+                label: 'Coût moyen/client',
+                data: [120, 85, 210, 65],
                 fill: true,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)'
