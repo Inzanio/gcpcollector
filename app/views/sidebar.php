@@ -60,7 +60,7 @@ $reportsCampaignActivity = (strpos(strtolower($currentUri), "campagne/rapports")
         <?php if ($_SESSION['user_role'] === ROLE_SUPERVISEUR): ?>
             <!-- Gestion des agents -->
             <li class="nav-item">
-                <a class="nav-link <?php echo $gestAgentsActivity; ?>" href="">
+                <a class="nav-link <?php echo $gestAgentsActivity; ?>" href="/agents">
                     <i class="bi bi-person-lines-fill"></i>
                     <span>Gérer les agents</span>
                 </a>
