@@ -33,12 +33,6 @@ class Utilisateur extends Personne
      * @var string
      */
     private string $role;
-    
-    /**
-     * UID de l'utilisateur
-     * @var string
-     */
-    private string $uid;
 
     /**
      * Nom de la collection ou de la table des utilisateurs
@@ -87,25 +81,7 @@ class Utilisateur extends Personne
     {
         $this->idAgence = $idAgence;
     }
-    
-    /**
-     * Récupère l'UID de l'utilisateur
-     * @return string
-     */
-    public function getUid(): string
-    {
-        return $this->uid;
-    }
-
-    /**
-     * Modifie l'UID de l'utilisateur
-     * @param string $uid Nouveau UID
-     */
-    public function setUid(string $uid): void
-    {
-        $this->uid = $uid;
-    }
-
+ 
     /**
      * Récupère le matricule de l'utilisateur
      * @return string

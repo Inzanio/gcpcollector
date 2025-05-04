@@ -72,7 +72,7 @@
             <li class="nav-item">
                 <a class="nav-link <?php echo $validerCompteActivity; ?>" href="">
                     <i class="bi bi-shield-check"></i>
-                    <span>Valider Préouverture</span>
+                    <span>Ouverture de Compte</span>
                 </a>
             </li>
         <?php endif; ?>

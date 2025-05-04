@@ -101,7 +101,8 @@ switch ($parts[0]) {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ProspectController::create();
         } else {
-            include '../app/views/forms/valider-compte.php';
+            ProspectController::showPropspectAccountWaitingForOpening(null, null, null, null);
+            //include '../app/views/forms/valider-compte.php';
         }
         break;
         

@@ -154,7 +154,7 @@ class UtilisateurServices
             $data['telephone'] ?? [],
             $data['adresse'] ?? ""
         );
-        $utilisateur->setUid($id);
+        $utilisateur->setDocId($id);
         return $utilisateur;
     }
 }

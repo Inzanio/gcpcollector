@@ -103,6 +103,10 @@ class ProspectController
         $commentaire = trim(htmlspecialchars($_POST['commentaire'] ?? ''));
         $genre = trim(htmlspecialchars($_POST['genre'] ?? ''));
 
+        if(isset($_POST['numeroCompte'])){
+            $prospect->setNumeroCompte(trim(htmlspecialchars($_POST['genre'] ?? '')));
+        }
+
         $prospect->setNom($nom);
         $prospect->setPrenom($prenom);
         $prospect->setDateNaissance($dateNaissance);
@@ -136,5 +140,10 @@ class ProspectController
             // exit();
             header("Location: /prospects");
         }
+    }
+
+    public static function showPropspectAccountWaitingForOpening($idAgent, $idAgence, $dateDebut, $dateFin){
+        $prospects = ProspectServices::getAllProspectsWaitingForAccountOpening($idAgent,$idAgence,$dateDebut,$dateFin);
+        include '../app/views/liste-prospect.php';
     }
 }

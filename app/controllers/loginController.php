@@ -24,7 +24,7 @@ class LoginController
             $_SESSION['user_role'] = $login_result->getRole();
             $_SESSION['user_matricule'] = $login_result->getMatricule();
             $_SESSION['user_login'] = $login_result->getLogin();
-            $_SESSION['user_id'] = $login_result->getUid();
+            $_SESSION['user_id'] = $login_result->getDocId();
             $_SESSION['user_nom'] = $login_result->getNom();
             $_SESSION['user_prenom'] = $login_result->getPrenom();
             $_SESSION['user_agence_id'] = null;

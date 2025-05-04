@@ -49,14 +49,27 @@ require_once("head.php");
                                             <tbody>
                                                 <?php foreach ($prospects as $prospect): ?>
                                                     <tr>
-                                                        <td ><?= htmlspecialchars($prospect->getNom()) ?></td>
+                                                        <td><?= htmlspecialchars($prospect->getNom()) ?></td>
                                                         <td><?= htmlspecialchars($prospect->getProfession()) ?></td>
                                                         <td><?= htmlspecialchars($prospect->getTelephone()[0]) ?></td>
                                                         <td>
-                                                            <a href="/editer-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
-                                                                class="btn btn-outline-warning">
-                                                                <i class="bi bi-pencil me-2"></i>Modifier
-                                                            </a>
+                                                            <?php if ($_SESSION["user_role"] === ROLE_AGENT): ?>
+                                                                <div class="btn-group" role="group">
+                                                                    <a href="/editer-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
+                                                                        class="btn btn-outline-warning me-2">
+                                                                        <i class="bi bi-pencil"></i> Modifier
+                                                                    </a>
+                                                                    <a href="/valider-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
+                                                                        class="btn btn-outline-success">
+                                                                        <i class="bi bi-check-circle"></i> Valider
+                                                                    </a>
+                                                                </div>
+                                                            <?php else: ?>
+                                                                <a href="/editer-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
+                                                                    class="btn btn-outline-warning">
+                                                                    <i class="bi bi-pencil me-2"></i>Modifier
+                                                                </a>
+                                                            <?php endif; ?>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
