@@ -23,56 +23,39 @@ require_once("../app/views/head.php");
     <main id="main" class="main">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Ajouter un superviseur</h5>
+                <h5 class="card-title">Modifier un agent</h5>
                 <form class="row g-3" method="POST" action="">
 
                     <!-- Section 2 : Identité -->
                     <div class="col-md-6">
                         <label for="nom" class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="nom" name="nom" <?php echo isset($nom) ? "value=\"$nom\"" : ''; ?> required>
+                        <input type="text" class="form-control" id="nom" name="nom" value="<?php echo $agent->getNom(); ?>" required>
                     </div>
 
                     <div class="col-md-6">
                         <label for="prenom" class="form-label">Prénom</label>
-                        <input type="text" class="form-control" id="prenom" name="prenom" <?php echo isset($prenom) ? "value=\"$prenom\"" : ''; ?> required>
+                        <input type="text" class="form-control" id="prenom" name="prenom" value="<?php echo $agent->getPrenom(); ?>" required>
                     </div>
 
                     <!-- Section 3 : Coordonnées -->
                     <div class="col-md-6">
                         <label for="telephone" class="form-label">Téléphone</label>
-                        <input type="tel" class="form-control" id="telephone" name="telephone" <?php echo isset($telephone) ? "value=\"$telephone\"" : ''; ?> required>
+                        <input type="tel" class="form-control" id="telephone" name="telephone" value="<?php echo $agent->getTelephone()[0]; ?>" required>
                     </div>
 
                     <div class="col-md-6">
                         <label for="date_naissance" class="form-label">Date de naissance</label>
-                        <input type="date" class="form-control" id="date_naissance" name="dateNaissance" <?php echo isset($dateNaissance) ? 'value="' . $dateNaissance->format('Y-m-d') . '"' : ''; ?> required>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3">
-                            <select name="idAgence" class="form-select" id="agence" required>
-                                <option value="" disabled selected>Sélectionner L'agence</option>
-                                <?php foreach ($agences as $agence) : ?>
-                                    <option value="<?php echo $agence->getCode(); ?>"><?php echo $agence->getNom(); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <label for="agence">Agence</label>
-                        </div>
-
-                        <!-- Saisie libre si 'Autre' -->
-                        <!-- <div class="form-floating mb-3 d-none" id="autreProfessionDiv">
-                            <input type="text" name="autreProfession" id="autreProfession" class="form-control" placeholder="Votre profession">
-                            <label for="autreProfession">Précisez la profession</label>
-                        </div> -->
+                        <input type="date" class="form-control" id="date_naissance" name="dateNaissance" value="<?php echo (new Datetime(($agent->getDateNaissance()->parseValue())))->format('Y-m-d'); ?>" required>
                     </div>
                     <!-- Section 1 : Informations de base -->
                     <div class="col-md-6">
                         <label for="matricule" class="form-label">Matricule</label>
-                        <input type="text" class="form-control" id="matricule" name="matricule" <?php echo isset($matricule) ? "value=\"$matricule\"" : ''; ?> required>
+                        <input type="text" class="form-control" id="matricule" name="matricule" value="<?php echo $agent->getMatricule(); ?>" required>
                     </div>
                     <!-- Section 4 : Identifiants -->
                     <div class="col-md-6">
                         <label for="login" class="form-label">Login</label>
-                        <input type="text" class="form-control" id="login" name="login" <?php echo isset($login) ? "value=\"$login\"" : ''; ?> required>
+                        <input type="text" class="form-control" id="login" name="login" value="<?php echo $agent->getLogin(); ?>" required>
                     </div>
 
                     <div class="col-md-6">

@@ -23,7 +23,7 @@ require_once("../app/views/head.php");
     <main id="main" class="main">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Ajouter un superviseur</h5>
+                <h5 class="card-title">Ajouter un agent</h5>
                 <form class="row g-3" method="POST" action="">
 
                     <!-- Section 2 : Identité -->
@@ -46,23 +46,6 @@ require_once("../app/views/head.php");
                     <div class="col-md-6">
                         <label for="date_naissance" class="form-label">Date de naissance</label>
                         <input type="date" class="form-control" id="date_naissance" name="dateNaissance" <?php echo isset($dateNaissance) ? 'value="' . $dateNaissance->format('Y-m-d') . '"' : ''; ?> required>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-floating mb-3">
-                            <select name="idAgence" class="form-select" id="agence" required>
-                                <option value="" disabled selected>Sélectionner L'agence</option>
-                                <?php foreach ($agences as $agence) : ?>
-                                    <option value="<?php echo $agence->getCode(); ?>"><?php echo $agence->getNom(); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <label for="agence">Agence</label>
-                        </div>
-
-                        <!-- Saisie libre si 'Autre' -->
-                        <!-- <div class="form-floating mb-3 d-none" id="autreProfessionDiv">
-                            <input type="text" name="autreProfession" id="autreProfession" class="form-control" placeholder="Votre profession">
-                            <label for="autreProfession">Précisez la profession</label>
-                        </div> -->
                     </div>
                     <!-- Section 1 : Informations de base -->
                     <div class="col-md-6">

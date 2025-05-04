@@ -7,6 +7,7 @@ use App\Controllers\LoginController;
 use App\Controllers\ProspectController;
 use App\Controllers\SuperviseurController;
 use App\Controllers\AgenceController;
+use App\Controllers\AgentController;
 use App\Services\AgenceServices;
 use App\Services\ProspectServices;
 use App\Services\UtilisateurServices;
@@ -157,7 +158,26 @@ switch ($parts[0]) {
         break;
     case "agents":
         LoginController::must_logged_in();
-        include '../app/views/liste-agent.php';
+        AgentController::index();
+        break;
+    case "ajouter-agent":
+        LoginController::must_logged_in();
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            AgentController::create();
+        } else {
+            include '../app/views/forms/ajouter-agent.php';
+        }
+        break;
+    case "editer-agent":
+        LoginController::must_logged_in();
+        $id = check_id();
+        $agent = UtilisateurServices::getUtilisateurById($id);
+        check_element($agent);
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            AgentController::update($agent);
+        } else {
+            include '../app/views/forms/modifier-agent.php';
+        }
         break;
     case "unittests":
         include '../test_firestore.php';
