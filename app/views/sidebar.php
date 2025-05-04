@@ -66,6 +66,43 @@ $reportsCampaignActivity = (strpos(strtolower($currentUri), "campagne/rapports")
                 </a>
             </li>
 
+            <!-- Performances de l'agent -->
+            <!-- <li class="nav-item">
+                <a class="nav-link <?php echo $performancesActivity; ?>" href="">
+                    <i class="bi bi-graph-up"></i>
+                    <span>Performances des agents</span>
+                </a>
+            </li> -->
+        <?php endif; ?>
+
+        <!-- Menu pour les ADMINISTRATEURS -->
+        <?php if ($_SESSION['user_role'] === ROLE_ADMIN): ?>
+            <!-- Gestion des agences -->
+            <li class="nav-item">
+                <a class="nav-link <?php echo $gestAgencesActivity; ?>" href="/agences">
+                    <i class="bi bi-building"></i>
+                    <span>Gérer les agences</span>
+                </a>
+            </li>
+            <!-- Gestion des superviseurs -->
+            <li class="nav-item">
+                <a class="nav-link <?php echo $gestSuperviseursActivity; ?>" href="/superviseurs">
+                    <i class="bi bi-person-badge-fill"></i>
+                    <span>Gérer les superviseurs</span>
+                </a>
+            </li>
+
+        <?php endif; ?>
+
+        <?php if ($_SESSION['user_role'] !== ROLE_AGENT): ?>
+            <!-- Validation ouverture compte -->
+            <li class="nav-item">
+                <a class="nav-link <?php echo $validerCompteActivity; ?>" href="/comptes">
+                    <i class="bi bi-shield-check"></i>
+                    <span>Ouverture de Compte</span>
+                </a>
+            </li>
+
             <!-- Campagnes -->
             <li class="nav-item">
                 <a class="nav-link collapsed <?php echo $campaignsActivity; ?>" data-bs-toggle="collapse" href="#campaignsCollapse">
@@ -103,38 +140,10 @@ $reportsCampaignActivity = (strpos(strtolower($currentUri), "campagne/rapports")
                     <i class="bi bi-shield-check"></i>
                     <span>Valider Préouverture</span>
                 </a>
-            </li>
+       main
         <?php endif; ?>
-
-        <!-- Menu pour les ADMINISTRATEURS -->
-        <?php if ($_SESSION['user_role'] === ROLE_ADMIN): ?>
-            <!-- Gestion des superviseurs -->
-            <li class="nav-item">
-                <a class="nav-link <?php echo $gestSuperviseursActivity; ?>" href="/superviseurs">
-                    <i class="bi bi-person-badge-fill"></i>
-                    <span>Gérer les superviseurs</span>
-                </a>
-            </li>
-
-            <!-- Gestion des agences -->
-            <li class="nav-item">
-                <a class="nav-link <?php echo $gestAgencesActivity; ?>" href="/agences">
-                    <i class="bi bi-building"></i>
-                    <span>Gérer les agences</span>
-                </a>
-            </li>
-
-            <!-- Validation ouverture compte -->
-            <li class="nav-item">
-                <a class="nav-link <?php echo $validerCompteActivity; ?>" href="/comptes">
-                    <i class="bi bi-shield-check"></i>
-                    <span>Valider Préouverture</span>
-                </a>
-            </li>
-        <?php endif; ?>
-
-        <!-- Séparateur (commun à tous) -->
-        <li class="nav-heading">Compte</li>
+         <!-- Séparateur (commun à tous) -->
+         <li class="nav-heading">Compte</li>
 
         <!-- Déconnexion (commun à tous) -->
         <li class="nav-item">

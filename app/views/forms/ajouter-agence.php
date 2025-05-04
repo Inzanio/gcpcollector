@@ -25,18 +25,18 @@ require_once("../app/views/head.php");
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Ajouter une agence</h5>
-                <form class="row g-3" method="POST" action="../controllers/ajouter-agence.php">
+                <form class="row g-3" method="POST" action="/ajouter-agence">
                     <div class="col-md-6">
                         <label for="inputEmail4" class="form-label">Code de l'agence</label>
-                        <input type="text" class="form-control" id="inputEmail4" name="nom_agence" required>
+                        <input type="text" class="form-control" id="inputEmail4" name="code" required>
                     </div>          
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Nom</label>
-                        <input type="text" class="form-control" id="inputPassword4" name="adresse" required>        
+                        <input type="text" class="form-control" id="inputPassword4" name="nom" required>        
                     </div>          
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Lieu</label>
-                        <input type="text" class="form-control" id="inputPassword4" name="lieu" required>
+                        <input type="text" class="form-control" id="inputPassword5" name="lieu" required>
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary">Ajouter</button>         

@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Agence;
 
-class AgenceService
+class AgenceServices
 {
     /**
      * Nom de la collection Firestore pour les agences
@@ -51,7 +51,7 @@ class AgenceService
 
     /**
      * Récupère toutes les agences
-     * @return mixed - le résultat de la requête
+     * @return Agence[] - le résultat de la requête
      */
     public static function getAllAgences()
     {
@@ -60,7 +60,11 @@ class AgenceService
 
         $query = $queryBuilder->build();
         $result = Database::query($query);
-        return $result;
+        
+        $agences = array_map(function ($doc) {
+            return self::fromFirestoreDocument($doc);
+        }, $result);
+        return $agences;
     }
 
     /**
@@ -72,6 +76,28 @@ class AgenceService
     {
         // Appel de la méthode de récupération d'un document par ID dans la classe Database
         $result = Database::getDocument(self::$collectionName, $documentId);
-        return $result;
+        return self::fromFirestoreDocument($result);
+    }
+
+    /**
+     * Transforme un document Firestore en un objet Utilisateur
+     * @param \MrShan0\PHPFirestore\FireStoreDocument $doc - le document Firestore à transformer
+     * @return Agence
+     */
+    public static function fromFirestoreDocument($doc) : Agence
+    {
+        //var_dump($doc);
+        $data = $doc->toArray();
+        $id = Database::getDocumentIdFromName($doc->getName());
+        $agence = new Agence(
+            $data['code'] ?? "",
+            $data['nom'] ?? "",
+            $data['lieu'] ?? "",
+            $data['idAdmin'] ?? "",
+
+        );
+        $agence->setCode($id);
+        $agence->setDocId($id);
+        return $agence;
     }
 }

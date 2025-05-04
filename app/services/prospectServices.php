@@ -288,7 +288,7 @@ class ProspectServices
      * @param FireStoreTimestamp|null $dateFin La date de fin (optionnel)
      * @return Prospect[] La liste des prospects en attente d'ouverture de compte
      */
-    public static function getAllProspectsWaitingForAccountValidation($idAgentProspecteur = null, $idAgence = null, $dateDebut = null, $dateFin = null)
+    public static function getAllProspectsWaitingForAccountOpening($idAgentProspecteur = null, $idAgence = null, $dateDebut = null, $dateFin = null)
     {
         return self::getAll($idAgentProspecteur, $idAgence, $dateDebut, $dateFin, false, true);
     }

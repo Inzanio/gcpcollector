@@ -50,9 +50,9 @@ require_once("head.php");
                                                     <tr>
                                                         <td><?= htmlspecialchars($agence->getCode()) ?></td>
                                                         <td><?= htmlspecialchars($agence->getNom()) ?></td>
-                                                        <td><?= htmlspecialchars($agence->Lieu()) ?></td>
+                                                        <td><?= htmlspecialchars($agence->getLieu()) ?></td>
                                                         <td>
-                                                            <a href="/forms/modifier-agence.php?id=<?= urlencode($agence->getDocId() ?? '') ?>" 
+                                                            <a href="editer-agence?id=<?= urlencode($agence->getDocId() ?? '') ?>" 
                                                             class="btn btn-outline-warning">
                                                                 <i class="bi bi-pencil me-2"></i>Modifier
                                                             </a>
