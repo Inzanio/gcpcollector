@@ -99,7 +99,7 @@ $reportsCampaignActivity = (strpos(strtolower($currentUri), "campagne/rapports")
 
             <!-- Validation ouverture compte -->
             <li class="nav-item">
-                <a class="nav-link <?php echo $validerCompteActivity; ?>" href="">
+                <a class="nav-link <?php echo $validerCompteActivity; ?>" href="/comptes">
                     <i class="bi bi-shield-check"></i>
                     <span>Valider Préouverture</span>
                 </a>
