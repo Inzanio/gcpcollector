@@ -1,20 +1,20 @@
 <?php
 
-    $currentUri = $_SERVER['REQUEST_URI'];
-    $dashboardActivity = ($currentUri === '/') ? 'active' : 'collapsed';
+$currentUri = $_SERVER['REQUEST_URI'];
+$dashboardActivity = ($currentUri === '/') ? 'active' : 'collapsed';
 
-    $gestProspectActivity = (strpos(strtolower($currentUri), "prospect")) ? 'active' : 'collapsed';
-    //$gestProspectActivity = (strpos($currentUri, "rospect")) ? 'active' : 'collapsed';
+$gestProspectActivity = (strpos(strtolower($currentUri), "prospect")) ? 'active' : 'collapsed';
+//$gestProspectActivity = (strpos($currentUri, "rospect")) ? 'active' : 'collapsed';
 
-    $performancesActivity = ($currentUri === '/performances.php') ? 'active' : 'collapsed';
+$performancesActivity = ($currentUri === '/performances.php') ? 'active' : 'collapsed';
 
-    $gestAgentsActivity = ($currentUri === '/agents.php') ? 'active' : 'collapsed';
+$gestAgentsActivity = ($currentUri === '/agents.php') ? 'active' : 'collapsed';
 
-    $gestSuperviseursActivity = (strpos(strtolower($currentUri), "superviseur")) ? 'active' : 'collapsed';
+$gestSuperviseursActivity = (strpos(strtolower($currentUri), "superviseur")) ? 'active' : 'collapsed';
 
-    $gestAgencesActivity = (strpos(strtolower($currentUri), "agence")) ? 'active' : 'collapsed';
+$gestAgencesActivity = (strpos(strtolower($currentUri), "agence")) ? 'active' : 'collapsed';
 
-    $validerCompteActivity = (strpos(strtolower($currentUri), "compte")) ? 'active' : 'collapsed';
+$validerCompteActivity = (strpos(strtolower($currentUri), "compte")) ? 'active' : 'collapsed';
 ?>
 
 
@@ -23,16 +23,16 @@
 
         <!-- Tableau de bord (commun à tous)  -->
         <li class="nav-item">
-            
+
             <a class="nav-link <?php echo $dashboardActivity; ?>" href="/">
                 <i class="bi bi-speedometer2"></i>
                 <span>Tableau de bord </span>
             </a>
         </li>
 
-         <!-- Menu pour les AGENTS -->
+        <!-- Menu pour les AGENTS -->
         <?php if ($_SESSION['user_role'] === ROLE_AGENT): ?>
-                <!-- Prospects -->
+            <!-- Prospects -->
             <li class="nav-item">
                 <a class="nav-link <?php echo $gestProspectActivity; ?>" href="/prospects">
                     <i class="bi bi-people-fill"></i>
@@ -49,7 +49,7 @@
             </li> -->
 
         <?php endif; ?>
-           
+
         <!-- Menu pour les SUPERVISEURS -->
         <?php if ($_SESSION['user_role'] === ROLE_SUPERVISEUR): ?>
             <!-- Gestion des agents -->
@@ -67,18 +67,17 @@
                     <span>Performances des agents</span>
                 </a>
             </li>
-
-            <!-- Validation ouverture compte -->
-            <li class="nav-item">
-                <a class="nav-link <?php echo $validerCompteActivity; ?>" href="">
-                    <i class="bi bi-shield-check"></i>
-                    <span>Ouverture de Compte</span>
-                </a>
-            </li>
         <?php endif; ?>
 
         <!-- Menu pour les ADMINISTRATEURS -->
         <?php if ($_SESSION['user_role'] === ROLE_ADMIN): ?>
+            <!-- Gestion des agences -->
+            <li class="nav-item">
+                <a class="nav-link <?php echo $gestAgencesActivity; ?>" href="/agences">
+                    <i class="bi bi-building"></i>
+                    <span>Gérer les agences</span>
+                </a>
+            </li>
             <!-- Gestion des superviseurs -->
             <li class="nav-item">
                 <a class="nav-link <?php echo $gestSuperviseursActivity; ?>" href="/superviseurs">
@@ -87,25 +86,19 @@
                 </a>
             </li>
 
-            <!-- Gestion des agences -->
-            <li class="nav-item">
-                <a class="nav-link <?php echo $gestAgencesActivity; ?>" href="/agences">
-                    <i class="bi bi-building"></i>
-                    <span>Gérer les agences</span>
-                </a>
-            </li>
+        <?php endif; ?>
 
+        <?php if ($_SESSION['user_role'] !== ROLE_AGENT): ?>
             <!-- Validation ouverture compte -->
             <li class="nav-item">
                 <a class="nav-link <?php echo $validerCompteActivity; ?>" href="/comptes">
                     <i class="bi bi-shield-check"></i>
-                    <span>Valider Préouverture</span>
+                    <span>Ouverture de Compte</span>
                 </a>
             </li>
         <?php endif; ?>
-
-         <!-- Séparateur (commun à tous) -->
-         <li class="nav-heading">Compte</li>
+        <!-- Séparateur (commun à tous) -->
+        <li class="nav-heading">Compte</li>
 
         <!-- Déconnexion (commun à tous) -->
         <li class="nav-item">

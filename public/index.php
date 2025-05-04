@@ -6,6 +6,7 @@ use App\Controllers\HomeController;
 use App\Controllers\LoginController;
 use App\Controllers\ProspectController;
 use App\Controllers\SuperviseurController;
+use App\Controllers\AgenceController;
 
 use App\Services\ProspectServices;
 
@@ -78,7 +79,7 @@ switch ($parts[0]) {
         break;
     case "agences":
         LoginController::must_logged_in();
-        include '../app/views/liste-agence.php';
+        AgenceController::index();
         break;
     case "ajouter-superviseur":
         LoginController::must_logged_in();
@@ -96,6 +97,15 @@ switch ($parts[0]) {
             include '../app/views/forms/ajouter-agence.php';
         }
         break;
+    case "editer-agence":
+        LoginController::must_logged_in();
+        // if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        //     ProspectController::create();
+        // } else {
+        //     include '../app/views/forms/ajouter-agence.php';
+        // }
+        // break;
+        
     case "comptes":
         LoginController::must_logged_in();
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -105,7 +115,7 @@ switch ($parts[0]) {
             //include '../app/views/forms/valider-compte.php';
         }
         break;
-        
+
     case "unittests":
         include '../test_firestore.php';
         break;
