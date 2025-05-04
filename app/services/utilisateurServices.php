@@ -79,12 +79,16 @@ class UtilisateurServices
      * @param string|null $idAgence - l'ID de l'agence (optionnel)
      * @return Utilisateur[] - la liste des Utilisateurs
      */
-    public static function getAllUtilisateurs($idAgence = null)
+    public static function getAllUtilisateurs($idAgence = null, $role = null)
     {
         $queryBuilder = Database::queryBuilder(self::$collectionName);
 
         if ($idAgence != null) {
             $queryBuilder->where('idAgence', 'EQUAL', $idAgence);
+        }
+
+        if ($role != null) {
+            $queryBuilder->where('role', 'EQUAL', $role);
         }
 
         $query = $queryBuilder->build();
@@ -97,6 +101,7 @@ class UtilisateurServices
 
         return $Utilisateurs;
     }
+
 
     /**
      * Cherche le login avec le mot de passe donné et retourne les utilisateurs y correspondant

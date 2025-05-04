@@ -5,7 +5,10 @@ require_once '../config/constants.php';
 use App\Controllers\HomeController;
 use App\Controllers\LoginController;
 use App\Controllers\ProspectController;
+use App\Controllers\SuperviseurController;
+
 use App\Services\ProspectServices;
+
 
 $uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($uri, PHP_URL_PATH);
@@ -71,7 +74,7 @@ switch ($parts[0]) {
         break;
     case "superviseurs":
         LoginController::must_logged_in();
-        include '../app/views/liste-superviseur.php';
+        SuperviseurController::index();
         break;
     case "agences":
         LoginController::must_logged_in();

@@ -49,8 +49,8 @@ require_once("head.php");
                                                 <?php foreach ($superviseurs as $superviseur): ?>
                                                     <tr>
                                                         <td><?= htmlspecialchars($superviseur->getNom()) ?></td>
-                                                        <td><?= htmlspecialchars($superviseur->getProfession()) ?></td>
-                                                        <td><?= htmlspecialchars($superviseur->getTelephone()[0]) ?></td>
+                                                        <td><?= htmlspecialchars(($superviseur->getTelephone()[0]??null)) ?></td>
+                                                    
                                                         <td>
                                                             <a href="/forms/modifier-superviseur.php?id=<?= urlencode($superviseur->getDocId() ?? '') ?>" 
                                                             class="btn btn-outline-warning">
