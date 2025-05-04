@@ -134,6 +134,7 @@ $reportsCampaignActivity = (strpos(strtolower($currentUri), "campagne/rapports")
                 </div>
             </li>
 
+
             <!-- Validation ouverture compte -->
             <li class="nav-item">
                 <a class="nav-link <?php echo $validerCompteActivity; ?>" href="/comptes">

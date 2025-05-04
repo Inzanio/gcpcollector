@@ -194,7 +194,7 @@
               <h5><?= htmlspecialchars($_SESSION['user_login']); ?></h5>
               <span><?= htmlspecialchars($_SESSION['user_role']); ?></span>
               <br>
-              <h7><?= htmlspecialchars('Agence Douala'); ?></h7>
+              <h7><?=  $_SESSION['user_role'] === ROLE_ADMIN ? '' : htmlspecialchars($_SESSION['user_agence_name']); ?></h7>
             </li>
             <!-- <li>
               <hr class="dropdown-divider">

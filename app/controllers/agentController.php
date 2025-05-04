@@ -7,13 +7,13 @@ use App\Services\UtilisateurServices;
 use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 use Datetime;
 
-class SuperviseurController
+class AgentController
 {
     public static function index()
     {
         // il faut récupérer la liste des superviseurs et des agences
-        $superviseurs = UtilisateurServices::getAllUtilisateurs(null, ROLE_SUPERVISEUR);
-        include '../app/views/liste-superviseur.php';
+        $agents = UtilisateurServices::getAllUtilisateurs($_SESSION["user_agence_id"], ROLE_AGENT);
+        include '../app/views/liste-agent.php';
     }
 
     public static function create()
@@ -26,8 +26,7 @@ class SuperviseurController
         $prenom = trim(htmlspecialchars($_POST['prenom'] ?? ''));
         $telephone = trim(htmlspecialchars($_POST['telephone'] ?? ''));
 
-        $dateNaissance = !empty($_POST['dateNaissance']) ? new Datetime($_POST['dateNaissance']) : null;
-        $idAgence = trim(htmlspecialchars($_POST['idAgence'] ?? ''));
+        $dateNaissance = !empty($_POST['dateNaissance']) ? new Datetime($_POST['dateNaissance']) : null; 
 
         $matricule =trim (htmlspecialchars($_POST['matricule'] ?? ''));
         $login = trim(htmlspecialchars($_POST['login'] ?? ''));
@@ -36,28 +35,30 @@ class SuperviseurController
             return include "../app/views/forms/ajouter-superviseur.php";
         }
         //$password = password_hash($password, PASSWORD_DEFAULT);
-        $superviseur = new Utilisateur(
+        $agent = new Utilisateur(
             $nom,
             $prenom,
             new FireStoreTimestamp($dateNaissance),
             $matricule,
             $login,
             $password,
-            ROLE_SUPERVISEUR,
+            ROLE_AGENT,
             [$telephone],
             ""
         );
-        $superviseur->setIdAgence($idAgence);
-        $superviseur->setIdCreator($_SESSION["user_id"]);
+        $agent->setIdAgence($_SESSION["user_agence_id"]);
+        $agent->setIdCreator($_SESSION["user_id"]);
         
-        $result = UtilisateurServices::createUtilisateur($superviseur);
+        $result = UtilisateurServices::createUtilisateur($agent);
         if ($result) {
-            header("Location: /superviseurs");
+            header("Location: /agents");
         } else {
             $error_message = "Une erreur est survenue lors de la création du superviseur";
-            include "../app/views/forms/ajouter-superviseur.php";
+            include "../app/views/forms/ajouter-agent.php";
         }
     }
 
-    public static function update(Utilisateur $utilisateur) {}
+    public static function update(Utilisateur $utilisateur) {
+        
+    }
 }
