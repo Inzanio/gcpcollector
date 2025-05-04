@@ -15,6 +15,12 @@ $gestSuperviseursActivity = (strpos(strtolower($currentUri), "superviseur")) ? '
 $gestAgencesActivity = (strpos(strtolower($currentUri), "agence")) ? 'active' : 'collapsed';
 
 $validerCompteActivity = (strpos(strtolower($currentUri), "compte")) ? 'active' : 'collapsed';
+
+$campaignsActivity = (strpos(strtolower($currentUri), "campagne")) ? 'active' : 'collapsed';
+$newCampaignActivity = (strpos(strtolower($currentUri), "campagne/nouvelle")) ? 'active' : 'collapsed';
+$listCampaignActivity = (strpos(strtolower($currentUri), "campagne/liste")) ? 'active' : 'collapsed';
+$reportsCampaignActivity = (strpos(strtolower($currentUri), "campagne/rapports")) ? 'active' : 'collapsed';
+
 ?>
 
 
@@ -96,9 +102,40 @@ $validerCompteActivity = (strpos(strtolower($currentUri), "compte")) ? 'active' 
                     <span>Ouverture de Compte</span>
                 </a>
             </li>
+
+            <!-- Campagnes -->
+            <li class="nav-item">
+                <a class="nav-link collapsed <?php echo $campaignsActivity; ?>" data-bs-toggle="collapse" href="#campaignsCollapse">
+                    <i class="bi bi-megaphone"></i>
+                    <span>Campagnes</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <div id="campaignsCollapse" class="collapse">
+                    <ul class="nav-content">
+                        <li>
+                            <a href="/campagnes/nouvelle" class="<?php echo $newCampaignActivity; ?>">
+                                <i class="bi bi-plus-circle"></i>
+                                <span>Nouvelle campagne</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/campagnes/liste" class="<?php echo $listCampaignActivity; ?>">
+                                <i class="bi bi-list-ul"></i>
+                                <span>Liste des campagnes</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/campagnes/rapports" class="<?php echo $reportsCampaignActivity; ?>">
+                                <i class="bi bi-bar-chart"></i>
+                                <span>Analyses</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         <?php endif; ?>
-        <!-- Séparateur (commun à tous) -->
-        <li class="nav-heading">Compte</li>
+         <!-- Séparateur (commun à tous) -->
+         <li class="nav-heading">Compte</li>
 
         <!-- Déconnexion (commun à tous) -->
         <li class="nav-item">
