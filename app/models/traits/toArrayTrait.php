@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Models\Traits;
+
 use Datetime;
+
 /**
  * Trait ToArrayTrait
  * 
@@ -42,5 +44,31 @@ trait ToArrayTrait
 
         // Retourne le tableau
         return $array;
+    }
+    /**
+     * Initialise l'objet à partir d'un tableau
+     * 
+     * @param array $array
+     * @return self
+     */
+    public function fromArray(array $array)
+    {
+        // Obtient toutes les méthodes de l'objet
+        $methods = get_class_methods($this);
+
+        // Itère sur les clés du tableau et appelle les setters correspondants
+        foreach ($array as $key => $value) {
+            // Construit le nom de la méthode setter
+            $setterMethod = 'set' . ucfirst($key);
+
+            // Vérifie si la méthode setter existe
+            if (in_array($setterMethod, $methods)) {
+                // Appelle le setter avec la valeur
+                $this->$setterMethod($value);
+            }
+        }
+
+        // Retourne l'objet
+        return $this;
     }
 }

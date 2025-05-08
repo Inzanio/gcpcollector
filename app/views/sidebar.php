@@ -17,9 +17,9 @@ $gestAgencesActivity = (strpos(strtolower($currentUri), "agence")) ? 'active' : 
 $validerCompteActivity = (strpos(strtolower($currentUri), "compte")) ? 'active' : 'collapsed';
 
 $campaignsActivity = (strpos(strtolower($currentUri), "campagne")) ? 'active' : 'collapsed';
-$newCampaignActivity = (strpos(strtolower($currentUri), "campagne/nouvelle")) ? 'active' : 'collapsed';
-$listCampaignActivity = (strpos(strtolower($currentUri), "campagne/liste")) ? 'active' : 'collapsed';
-$reportsCampaignActivity = (strpos(strtolower($currentUri), "campagne/rapports")) ? 'active' : 'collapsed';
+$newCampaignActivity = (strpos(strtolower($currentUri), "ajouter-campagne")) ? 'active' : 'collapsed';
+$listCampaignActivity = (strpos(strtolower($currentUri), "campagnes")) ? 'active' : 'collapsed';
+//$reportsCampaignActivity = (strpos(strtolower($currentUri), "campagne/rapports")) ? 'active' : 'collapsed';
 
 ?>
 
@@ -113,34 +113,26 @@ $reportsCampaignActivity = (strpos(strtolower($currentUri), "campagne/rapports")
                 <div id="campaignsCollapse" class="collapse">
                     <ul class="nav-content">
                         <li>
-                            <a href="/campagnes/nouvelle" class="<?php echo $newCampaignActivity; ?>">
+                            <a href="/ajouter-campagne" class="<?php echo $newCampaignActivity; ?>">
                                 <i class="bi bi-plus-circle"></i>
                                 <span>Nouvelle campagne</span>
                             </a>
                         </li>
                         <li>
-                            <a href="/campagnes/liste" class="<?php echo $listCampaignActivity; ?>">
+                            <a href="/campagnes" class="<?php echo $listCampaignActivity; ?>">
                                 <i class="bi bi-list-ul"></i>
                                 <span>Liste des campagnes</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="/campagnes/rapports" class="<?php echo $reportsCampaignActivity; ?>">
+                        <!-- <li>
+                            <a href="/campagnes/rapports" class="<?php /*echo $reportsCampaignActivity;*/ ?>">
                                 <i class="bi bi-bar-chart"></i>
                                 <span>Analyses</span>
                             </a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </li>
-
-
-            <!-- Validation ouverture compte -->
-            <li class="nav-item">
-                <a class="nav-link <?php echo $validerCompteActivity; ?>" href="/comptes">
-                    <i class="bi bi-shield-check"></i>
-                    <span>Valider Préouverture</span>
-                </a>
                 
         <?php endif; ?>
          <!-- Séparateur (commun à tous) -->

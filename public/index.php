@@ -8,10 +8,13 @@ use App\Controllers\ProspectController;
 use App\Controllers\SuperviseurController;
 use App\Controllers\AgenceController;
 use App\Controllers\AgentController;
+use App\Controllers\CampagneController;
 use App\Services\AgenceServices;
+use App\Services\CampagneServices;
 use App\Services\ProspectServices;
 use App\Services\UtilisateurServices;
 
+use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 function check_id()
 {
     $id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -52,6 +55,12 @@ function check_error_message($error_message = null)
 <?php
 
 }
+
+function showEditableDateValue(FireStoreTimestamp $dateFirestore){
+    $value = (new Datetime(($dateFirestore->parseValue())))->format('Y-m-d');
+    echo 'value="'. $value .'"';
+}
+
 
 $uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($uri, PHP_URL_PATH);
@@ -179,6 +188,30 @@ switch ($parts[0]) {
             include '../app/views/forms/modifier-agent.php';
         }
         break;
+        case "campagnes":
+            LoginController::must_logged_in();
+            CampagneController::index();
+            break;
+        case "ajouter-campagne":
+            LoginController::must_logged_in();
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                CampagneController::create();
+            } else {
+                include '../app/views/forms/ajouter-campagne.php';
+            }
+            break;
+        case "editer-campagne":
+            LoginController::must_logged_in();
+            $id = check_id();
+            $campagne = CampagneServices::getCampagneById($id);
+            check_element($campagne);
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                CampagneController::update($campagne);
+            } else {
+
+                include '../app/views/forms/modifier-campagne.php';
+            }
+            break;
     case "unittests":
         include '../test_firestore.php';
         break;
