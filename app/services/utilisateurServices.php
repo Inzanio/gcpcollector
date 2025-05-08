@@ -161,7 +161,12 @@ class UtilisateurServices
             $data['adresse'] ?? ""
         );
         $utilisateur->setDocId($id);
-        $utilisateur->setIdAgence($data['idAgence']);
+        if (isset($data['idAgence'])){
+            $utilisateur->setIdAgence($data['idAgence']);
+        }else{
+            $utilisateur->setIdAgence(null);
+        }
+ 
         $utilisateur->setIdCreator($data['idCreator'] ?? "");
         return $utilisateur;
     }

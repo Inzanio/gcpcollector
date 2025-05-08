@@ -21,18 +21,22 @@ class Objectif
     private string $cible; // clients, prospect, taux de conversion
     private bool $atteint;
     private int $valeur;
+    private int $valeurFaite;
+
+
 
     // réfrence
     private ?string $idAgent;
     private ?string $idAgence;
     private ?string $idCampagne;
 
-    public function __construct(string $docId, $idCampagne = null ,$idAgent=null, $idAgence = null)
+    public function __construct($idCampagne = null, $idAgent = null, $idAgence = null)
     {
-        $this->setDocId($docId);
         $this->setIdCampagne($idCampagne);
         $this->setIdAgent($idAgent);
         $this->setIdAgence($idAgence);
+        $this->setAtteint(False);
+        $this->setValeurFaite(0);
     }
     public function getIdCampagne(): ?string
     {
@@ -90,7 +94,7 @@ class Objectif
         return $this;
     }
 
-    public function estAtteint(): bool
+    public function getAtteint(): bool
     {
         return $this->atteint;
     }
@@ -109,6 +113,16 @@ class Objectif
     public function setValeur(int $valeur): self
     {
         $this->valeur = $valeur;
+        return $this;
+    }
+    public function getValeurFaite(): int
+    {
+        return $this->valeurFaite;
+    }
+
+    public function setValeurFaite(int $valeurFaite): self
+    {
+        $this->valeurFaite = $valeurFaite;
         return $this;
     }
 }

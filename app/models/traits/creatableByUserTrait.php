@@ -16,8 +16,4 @@ trait CreatableByUserTrait
         return $this;
     }
 
-    public function isCreatedBy(string $idUser): bool
-    {
-        return $this->idCreator === $idUser;
-    }
 }

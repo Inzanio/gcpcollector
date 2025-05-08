@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CreatableByUserTrait;
 use App\Models\Traits\DbDataTrait;
 use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 
@@ -12,6 +13,7 @@ use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 class Utilisateur extends Personne
 {
     use DbDataTrait;
+    use CreatableByUserTrait;
     /**
      * Matricule de l'utilisateur
      * @var string
@@ -41,9 +43,8 @@ class Utilisateur extends Personne
      */
     private static string $collection_name = "utilisateurs";
 
-    private string $idAgence = "";
+    private ?string $idAgence = "";
 
-    private string $idCreator = "";
 
 
     /**
@@ -69,18 +70,18 @@ class Utilisateur extends Personne
 
     /**
      * Récupère l'ID de l'agence de l'utilisateur
-     * @return string
+     * @return ?string
      */
-    public function getIdAgence(): string
+    public function getIdAgence(): ?string
     {
         return $this->idAgence;
     }
 
     /**
      * Modifie l'ID de l'agence de l'utilisateur
-     * @param string $idAgence Nouveau ID de l'agence
+     * @param ?string $idAgence Nouveau ID de l'agence
      */
-    public function setIdAgence(string $idAgence): void
+    public function setIdAgence(?string $idAgence): void
     {
         $this->idAgence = $idAgence;
     }
@@ -102,23 +103,6 @@ class Utilisateur extends Personne
     public function setMatricule(string $matricule): void
     {
         $this->matricule = $matricule;
-    }
-    /**
-     * Récupère l'ID du créateur de l'utilisateur
-     * @return string
-     */
-    public function getIdCreator(): string
-    {
-        return $this->idCreator;
-    }
-
-    /**
-     * Modifie l'ID du créateur de l'utilisateur
-     * @param string $idCreator Nouveau ID du créateur
-     */
-    public function setIdCreator(string $idCreator): void
-    {
-        $this->idCreator = $idCreator;
     }
 
     /**

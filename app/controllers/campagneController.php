@@ -55,7 +55,7 @@ class CampagneController
         $campagne->setDateDebut(new FireStoreTimestamp($dateDebut));
         $campagne->setDateFin(new FireStoreTimestamp($dateFin));
         //$campagne->setIdCreator($_SESSION["user_id"]);
-        $result = CampagneServices::updatecampagne($campagne);
+        $result = CampagneServices::updateCampagne($campagne);
         if ($result) {
             header('Location: /campagnes');
         } else {

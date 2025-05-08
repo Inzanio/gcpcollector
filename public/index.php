@@ -9,12 +9,15 @@ use App\Controllers\SuperviseurController;
 use App\Controllers\AgenceController;
 use App\Controllers\AgentController;
 use App\Controllers\CampagneController;
+use App\Controllers\ObjectifController;
 use App\Services\AgenceServices;
 use App\Services\CampagneServices;
+use App\Services\ObjectifServices;
 use App\Services\ProspectServices;
 use App\Services\UtilisateurServices;
 
 use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
+
 function check_id()
 {
     $id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -56,9 +59,10 @@ function check_error_message($error_message = null)
 
 }
 
-function showEditableDateValue(FireStoreTimestamp $dateFirestore){
+function showEditableDateValue(FireStoreTimestamp $dateFirestore)
+{
     $value = (new Datetime(($dateFirestore->parseValue())))->format('Y-m-d');
-    echo 'value="'. $value .'"';
+    echo 'value="' . $value . '"';
 }
 
 
@@ -188,30 +192,72 @@ switch ($parts[0]) {
             include '../app/views/forms/modifier-agent.php';
         }
         break;
-        case "campagnes":
-            LoginController::must_logged_in();
-            CampagneController::index();
-            break;
-        case "ajouter-campagne":
-            LoginController::must_logged_in();
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                CampagneController::create();
-            } else {
-                include '../app/views/forms/ajouter-campagne.php';
-            }
-            break;
-        case "editer-campagne":
-            LoginController::must_logged_in();
-            $id = check_id();
-            $campagne = CampagneServices::getCampagneById($id);
-            check_element($campagne);
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                CampagneController::update($campagne);
-            } else {
+    case "campagnes":
+        LoginController::must_logged_in();
+        CampagneController::index();
+        break;
+    case "ajouter-campagne":
+        LoginController::must_logged_in();
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            CampagneController::create();
+        } else {
+            include '../app/views/forms/ajouter-campagne.php';
+        }
+        break;
+    case "editer-campagne":
+        LoginController::must_logged_in();
+        $id = check_id();
+        $campagne = CampagneServices::getCampagneById($id);
+        check_element($campagne);
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            CampagneController::update($campagne);
+        } else {
 
-                include '../app/views/forms/modifier-campagne.php';
-            }
-            break;
+            include '../app/views/forms/modifier-campagne.php';
+        }
+        break;
+    case "objectifs":
+        LoginController::must_logged_in();
+        ObjectifController::index();
+        break;
+    case "ajouter-objectif":
+        LoginController::must_logged_in();
+        if (isset($_GET['idCampagne'])) {
+            $idCampagne = $_GET['idCampagne'];
+            $campagnes[] = CampagneServices::getCampagneById($idCampagne);
+        } else {
+            $campagnes = CampagneServices::getAllCampagnes();
+        }
+        if ($_SESSION["user_role"] == ROLE_ADMIN) {
+            $agences = AgenceServices::getAllAgences();
+        } else {
+            $agents = UtilisateurServices::getAllUtilisateurs($_SESSION["user_agence_id"], ROLE_AGENT);
+        }
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            ObjectifController::create();
+        } else {
+            include '../app/views/forms/ajouter-objectif.php';
+        }
+        break;
+    case "editer-objectif":
+        LoginController::must_logged_in();
+        $id = check_id();
+        $objectif = ObjectifServices::getObjectifById($id);
+        
+        check_element($objectif);
+        $campagnes = CampagneServices::getAllCampagnes();
+        if ($_SESSION["user_role"] == ROLE_ADMIN) {
+            $agences = AgenceServices::getAllAgences();
+        } else {
+            $agents = UtilisateurServices::getAllUtilisateurs($_SESSION["user_agence_id"], ROLE_AGENT);
+        }
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            ObjectifController::update($objectif);
+        } else {
+
+            include '../app/views/forms/modifier-objectif.php';
+        }
+        break;
     case "unittests":
         include '../test_firestore.php';
         break;

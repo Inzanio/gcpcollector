@@ -46,7 +46,7 @@ class CampagneServices
      * @param Campagne $campagne - l'objet campagne mis à jour
      * @return mixed - le résultat de la mise à jour
      */
-    public static function updatecampagne(Campagne $campagne)
+    public static function updateCampagne(Campagne $campagne)
     {
         // Appel de la méthode de mise à jour de document dans la classe Database
         return Database::updateDocument(self::$collectionName, $campagne->getDocId(), $campagne->toArray());

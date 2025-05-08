@@ -112,7 +112,8 @@ class ObjectifServices
         //var_dump($doc);
         $data = $doc->toArray();
         $id = Database::getDocumentIdFromName($doc->getName());
-        $objectif = (new Objectif($id))->fromArray($data);
+        $objectif = (new Objectif())->fromArray($data);
+        $objectif->setDocId($id);
         
         return $objectif;
     }
