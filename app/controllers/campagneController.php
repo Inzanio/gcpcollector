@@ -12,7 +12,7 @@ class CampagneController
     public static function index()
     {
         // il faut récupérer la liste des superviseurs et des agences
-        $campagnes = CampagneServices::getAllCampagnes($_SESSION["user_agence_id"]);
+        global $campagnes ;
         include '../app/views/liste-campagne.php';
     }
 

@@ -1,3 +1,15 @@
+<?php
+
+
+
+$currentUri = $_SERVER['REQUEST_URI'];
+$dashboardActivity = ($currentUri === '/') ? 'active' : 'collapsed';
+
+$isVisualisationActivity = !(strpos(strtolower($currentUri), "ajouter") || strpos(strtolower($currentUri), "editer"));
+
+
+?>
+
 <header id="header" class="header fixed-top d-flex align-items-center">
 
   <div class="d-flex align-items-center justify-content-between">
@@ -11,8 +23,12 @@
   <nav class="header-nav ms-auto">
     <ul class="d-flex align-items-center">
 
-      <?php require_once("filters.php"); ?>
-      
+      <?php
+      if ($isVisualisationActivity) {
+        require_once("filters.php");
+      }
+      ?>
+
       <li class="nav-item dropdown pe-3">
 
         <a class="nav-link nav-profile d-flex align-items-center pe-0" data-bs-toggle="dropdown">

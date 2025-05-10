@@ -1,3 +1,6 @@
+<?php
+    global $campagnes,$agences,$agents;
+?>
 <form method="POST" action="">
 
     <div class="form-floating">
@@ -17,7 +20,7 @@
 
     <div class="form-floating mb-3">
         <select name="<?php echo FILTER_PROFESSION; ?>" class="form-select" aria-label="Default select example">
-            <option selected="" <?php echo empty($_SESSION[FILTER_PROFESSION]) ? 'selected' : ''; ?>>Toutes les professions</option>
+            <option selected="" <?php echo empty($_SESSION[FILTER_PROFESSION]) ? 'selected' : ''; ?>>Toutes</option>
             <?php foreach (PROFESSIONS as $value) : ?>
                 <option value="<?php echo $value; ?>" <?php echo isset($_SESSION[FILTER_PROFESSION]) && $_SESSION[FILTER_PROFESSION] === $value ? 'selected' : ''; ?>><?php echo $value; ?></option>
             <?php endforeach; ?>
@@ -30,7 +33,7 @@
 
     <div class="form-floating mb-3">
         <select name="<?php echo FILTER_PRODUIT; ?>" class="form-select" aria-label="Default select example">
-            <option selected="" <?php echo empty($_SESSION[FILTER_PRODUIT]) ? 'selected' : ''; ?>>Tous les Produits</option>
+            <option selected="" <?php echo empty($_SESSION[FILTER_PRODUIT]) ? 'selected' : ''; ?>>Tout</option>
             <?php foreach (PRODUITS_BANQUES as $value) : ?>
                 <option value="<?php echo $value; ?>" <?php echo isset($_SESSION[FILTER_PRODUIT]) && $_SESSION[FILTER_PRODUIT] === $value ? 'selected' : ''; ?>><?php echo $value; ?></option>
             <?php endforeach; ?>
@@ -39,12 +42,24 @@
     </div>
 </form>
 
+    <form method="POST" action="">
+        <div class="form-floating mb-3">
+            <select name="<?php echo FILTER_ID_CAMPAGNE; ?>" class="form-select" id="agence">
+                <option value="">Toutes</option>
+                <?php foreach ($campagnes as $campagne) : ?>
+                    <option value="<?php echo $campagne->getDocId(); ?>" <?php echo isset($_SESSION[FILTER_ID_CAMPAGNE]) && $_SESSION[FILTER_ID_CAMPAGNE] === $campagne->getDocId() ? 'selected' : ''; ?>><?php echo $campagne->getLibelle(); ?></option>
+                <?php endforeach; ?>
+            </select>
+            <label for="agence">Campagne</label>
+        </div>
+    </form>
+
 <?php if ($_SESSION["user_role"] == ROLE_ADMIN): ?>
     <form method="POST" action="">
 
         <div class="form-floating mb-3">
             <select name="<?php echo FILTER_ID_AGENCE; ?>" class="form-select" id="agence">
-                <option value="">Toutes les agences</option>
+                <option value="">Toutes</option>
                 <?php foreach ($agences as $agence) : ?>
                     <option value="<?php echo $agence->getCode(); ?>" <?php echo isset($_SESSION[FILTER_ID_AGENCE]) && $_SESSION[FILTER_ID_AGENCE] === $agence->getCode() ? 'selected' : ''; ?>><?php echo $agence->getNom(); ?></option>
                 <?php endforeach; ?>
@@ -60,7 +75,7 @@
         <div class="form-floating mb-3">
 
             <select name="<?php echo FILTER_ID_AGENT; ?>" class="form-select" id="agent">
-                <option value="">Tous les agents</option>
+                <option value="">Tous</option>
                 <?php foreach ($agents as $agent) : ?>
                     <option value="<?php echo $agent->getDocId(); ?>" <?php echo isset($_SESSION[FILTER_ID_AGENT]) && $_SESSION[FILTER_ID_AGENT] === $agent->getDocId() ? 'selected' : ''; ?>><?php echo $agent->getNom(); ?></option>
                 <?php endforeach; ?>

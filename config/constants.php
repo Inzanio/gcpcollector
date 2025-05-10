@@ -37,3 +37,4 @@ define('FILTER_DATE_FIN', 'filter_dateFin');
 define('FILTER_PROFESSION', 'filter_profession');
 define('FILTER_ID_AGENCE', 'filter_idAgence');
 define('FILTER_ID_AGENT', 'filter_idAgent');
+define('FILTER_ID_CAMPAGNE', 'filter_idCampagne');

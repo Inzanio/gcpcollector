@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Prospect;
 use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 
+use DateTime;
+
 /**
  * Classe de service pour gérer les prospects
  */
@@ -138,8 +140,8 @@ class ProspectServices extends BaseServices
      * Récupère tous les prospects
      * @param string|null $idAgentProspecteur - l'ID de l'agent prospecteur (optionnel)
      * @param string|null $idAgence - l'ID de l'agence (optionnel)
-     * @param FireStoreTimestamp|null $dateDebut - la date de début (optionnel)
-     * @param FireStoreTimestamp|null $dateFin - la date de fin (optionnel)
+     * @param DateTime|null $dateDebut - la date de début (optionnel)
+     * @param DateTime|null $dateFin - la date de fin (optionnel)
      * @param bool $excludeProspects - exclure les prospects (par défaut false)
      * @param bool $excludeClients - exclure les clients (par défaut false)
      * @return Prospect[] - la liste des prospects
@@ -161,6 +163,12 @@ class ProspectServices extends BaseServices
         if ($idAgence != null) {
             $queryBuilder->where('idAgence', 'EQUAL', $idAgence);
         }
+        if ($dateDebut != null) {
+            $queryBuilder->where('dateCreation', 'GREATER_THAN_OR_EQUAL', $dateDebut->format(FIRESTORE_DATE_FORMAT));
+        }
+        if ($dateFin != null) {
+            $queryBuilder->where('dateCreation', 'LESS_THAN', $dateFin->format(FIRESTORE_DATE_FORMAT));
+        }
 
         $query = $queryBuilder->build();
         $result = Database::query($query);
@@ -168,21 +176,6 @@ class ProspectServices extends BaseServices
         $prospects = array_map(function ($doc) {
             return self::fromFirestoreDocument($doc);
         }, $result);
-
-        // Filtrage des prospects en fonction des dates
-        if ($dateDebut !== null && $dateFin !== null) {
-            $prospects = array_filter($prospects, function ($prospect) use ($dateDebut, $dateFin) {
-                return $prospect->getDateCreation() >= $dateDebut && $prospect->getDateCreation() <= $dateFin;
-            });
-        } elseif ($dateDebut !== null) {
-            $prospects = array_filter($prospects, function ($prospect) use ($dateDebut) {
-                return $prospect->getDateCreation() >= $dateDebut;
-            });
-        } elseif ($dateFin !== null) {
-            $prospects = array_filter($prospects, function ($prospect) use ($dateFin) {
-                return $prospect->getDateCreation() <= $dateFin;
-            });
-        }
 
         return $prospects;
     }

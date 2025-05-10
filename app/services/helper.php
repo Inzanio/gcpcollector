@@ -31,4 +31,24 @@ class Helper
             $_SESSION[FILTER_ID_AGENT] = $_POST[FILTER_ID_AGENT];
         }
     }
+    public static function initGlobalVariables()
+    {
+        global $agences;
+
+        if ($_SESSION["user_role"] === ROLE_ADMIN) {
+            $agences = AgenceServices::getAllAgences();
+        }
+        global $agents;
+        if ($_SESSION["user_role"] !== ROLE_AGENT) {
+            $agents = UtilisateurServices::getAllUtilisateurs($_SESSION["user_agence_id"], ROLE_AGENT);
+        }
+        global $campagnes;
+        if (isset($_GET['idCampagne'])) {
+            $idCampagne = $_GET['idCampagne'];
+            $campagnes[] = CampagneServices::getCampagneById($idCampagne);
+        } else {
+            $campagnes = CampagneServices::getAllCampagnes($_SESSION["user_agence_id"]);
+        }
+        self::updateFilters();
+    }
 }

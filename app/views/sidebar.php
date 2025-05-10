@@ -1,7 +1,5 @@
 <?php
 
-
-
 $currentUri = $_SERVER['REQUEST_URI'];
 $dashboardActivity = ($currentUri === '/') ? 'active' : 'collapsed';
 
@@ -102,8 +100,8 @@ $listCampaignActivity = (strpos(strtolower($currentUri), "campagnes")) ? 'active
                 <a class="nav-link <?php echo $validerCompteActivity; ?>" href="/comptes">
                     <i class="bi bi-shield-check"></i>
                     <span>Ouverture de Compte</span>
-                    <?php if (isset($totalProspectEnAttenteOuvertureCompte) && $totalProspectEnAttenteOuvertureCompte > 0): ?>
-                        <span class="badge bg-primary ms-2"><?php echo $totalProspectEnAttenteOuvertureCompte ?></span>
+                    <?php if (isset($_SESSION["total_compte_en_attente_ouverture"]) && $_SESSION["total_compte_en_attente_ouverture"] > 0): ?>
+                        <span class="badge bg-primary ms-2"><?php echo $_SESSION["total_compte_en_attente_ouverture"] ?></span>
                     <?php endif; ?>
                     
                 </a>

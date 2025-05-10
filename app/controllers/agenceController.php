@@ -8,9 +8,10 @@ use App\Models\Agence;
 class AgenceController
 {
     public static function index()
-    {
+    {   
+        global $agences;
         // il faut récupérer la liste des agences
-        $agences = AgenceServices::getAllAgences();
+        //$agences = AgenceServices::getAllAgences();
         include '../app/views/liste-agence.php';
     }
 

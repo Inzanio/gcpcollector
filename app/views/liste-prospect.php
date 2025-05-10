@@ -53,13 +53,13 @@ require_once("head.php");
                                                         <td><?= htmlspecialchars($prospect->getProfession()) ?></td>
                                                         <td><?= htmlspecialchars($prospect->getTelephone()[0]) ?></td>
                                                         <td>
-                                                            <?php if ($_SESSION["user_role"] === ROLE_AGENT): ?>
+                                                            <?php if ($_SESSION["user_role"] !== ROLE_AGENT): ?>
                                                                 <div class="btn-group" role="group">
                                                                     <a href="/editer-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
                                                                         class="btn btn-outline-warning me-2">
                                                                         <i class="bi bi-pencil"></i> Modifier
                                                                     </a>
-                                                                    <a href="/valider-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
+                                                                    <a href="/editer-prospect?id=<?= urlencode($prospect->getDocId() ?? '') ?>"
                                                                         class="btn btn-outline-success">
                                                                         <i class="bi bi-check-circle"></i> Valider
                                                                     </a>

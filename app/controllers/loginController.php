@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Services\AgenceServices;
+use App\Services\CampagneServices;
 use App\Services\Helper;
 use App\Services\UtilisateurServices;
+
 
 use DateTime;
 
@@ -38,6 +40,7 @@ class LoginController
 
             $_SESSION[FILTER_PROFESSION] = "";
             $_SESSION[FILTER_PRODUIT] = "";
+            $_SESSION[FILTER_ID_CAMPAGNE] = null;
             if ($_SESSION['user_role'] !== ROLE_AGENT) {
                 $_SESSION[FILTER_ID_AGENT] = "";
             }
@@ -79,8 +82,7 @@ class LoginController
             header('Location: /login');
             exit;
         }
-        Helper::updateFilters();
-
+        Helper::initGlobalVariables();
     }
     public static function is_logged_in()
     {

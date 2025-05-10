@@ -12,13 +12,19 @@ class ProspectBI
     public $totalProspects;
     public $totalClients;
 
-
-    public function __construct($idAgent = null, $idAgence = null, $idCampagne = null,$dateDebut = null, $dateFin = null,)
+    /**
+     * @param Propsect[] $prospects
+     * @param Prospect[] $clients
+     */
+    public function buildFromExistingData(array $prospects, array $clients){
+        $this->totalProspects = count($prospects);
+        $this->totalClients = count($clients);
+    }
+    public function buildRequest($idAgent = null, $idAgence = null, $idCampagne = null, $dateDebut = null, $dateFin = null)
     {
         $this->totalProspects = self::getTotalProspects($idAgent, $idAgence, $idCampagne, $dateDebut, $dateFin);
         $this->totalClients = self::getTotalClients($idAgent, $idAgence, $idCampagne, $dateDebut, $dateFin);
     }
-
     public function totalProspect()
     {
         return $this->totalProspects;
@@ -42,6 +48,7 @@ class ProspectBI
         if ($idAgence != null) {
             $aggregateQuery->where('idAgence', 'EQUAL', $idAgence);
         }
+        
         if ($idCampagne != null) {
             $aggregateQuery->where('idCampagne', 'EQUAL', $idCampagne);
         }
@@ -52,6 +59,8 @@ class ProspectBI
             $aggregateQuery->where('dateCreation', 'LESS_THAN', $dateFin->format(FIRESTORE_DATE_FORMAT));
         }
         $result = Database::runAggregationQuery($aggregateQuery->count());
+        // var_dump(json_encode($result));
+        // exit();
         return Database::readAggregationResponse($result, 'count');
     }
 

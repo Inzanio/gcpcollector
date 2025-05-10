@@ -12,7 +12,7 @@ class AgentController
     public static function index()
     {
         // il faut récupérer la liste des superviseurs et des agences
-        $agents = UtilisateurServices::getAllUtilisateurs($_SESSION["user_agence_id"], ROLE_AGENT);
+        global $agents;
         include '../app/views/liste-agent.php';
     }
 

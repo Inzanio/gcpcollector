@@ -15,14 +15,18 @@ class ProspectController
     public static function index()
     {
         if ($_SESSION['user_role'] == ROLE_AGENT) {
-            $prospects = ProspectServices::getAll($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
+            $prospects = ProspectServices::getAll($_SESSION['user_id'],$_SESSION['user_agence_id']);
         }
         if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
-            $prospects = ProspectServices::getAll($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
+            $prospects = ProspectServices::getAll(null,$_SESSION['user_agence_id']);
         }
         if ($_SESSION['user_role'] == ROLE_ADMIN) {
-            $prospects = ProspectServices::getAll($idAgentProspecteur = null, $idAgence = null);
+            $prospects = ProspectServices::getAll(null,null);
         }
+        if ($_SESSION['user_role'] !== ROLE_AGENT){
+            $_SESSION["total_compte_en_attente_ouverture"] = count($prospects);
+        }
+
         include '../app/views/liste-prospect.php';
     }
 
@@ -64,6 +68,7 @@ class ProspectController
 
         // Configuration des propriétés supplémentaires du prospect
         $prospect->setIdAgentProspecteur($_SESSION['user_id']);
+        $prospect->setIdAgence($_SESSION['user_agence_id']);
         $prospect->setCommentaire($commentaire);
         $prospect->setEmail($email);
         $prospect->setGenre($genre);

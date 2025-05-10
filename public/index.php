@@ -69,6 +69,12 @@ function showEditableDateValue(FireStoreTimestamp $dateFirestore)
 $uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($uri, PHP_URL_PATH);
 $parts = explode('/', trim($path, '/'));
+
+# variables globales
+$agents;
+$agences;
+$campagnes;
+
 //echo($parts[0]);
 switch ($parts[0]) {
     case '':
@@ -122,7 +128,7 @@ switch ($parts[0]) {
         break;
     case "ajouter-superviseur":
         LoginController::must_logged_in();
-        $agences = AgenceServices::getAllAgences();
+        
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             SuperviseurController::create();
         } else {
@@ -222,17 +228,7 @@ switch ($parts[0]) {
         break;
     case "ajouter-objectif":
         LoginController::must_logged_in();
-        if (isset($_GET['idCampagne'])) {
-            $idCampagne = $_GET['idCampagne'];
-            $campagnes[] = CampagneServices::getCampagneById($idCampagne);
-        } else {
-            $campagnes = CampagneServices::getAllCampagnes();
-        }
-        if ($_SESSION["user_role"] == ROLE_ADMIN) {
-            $agences = AgenceServices::getAllAgences();
-        } else {
-            $agents = UtilisateurServices::getAllUtilisateurs($_SESSION["user_agence_id"], ROLE_AGENT);
-        }
+        
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ObjectifController::create();
         } else {
@@ -245,12 +241,7 @@ switch ($parts[0]) {
         $objectif = ObjectifServices::getObjectifById($id);
 
         check_element($objectif);
-        $campagnes = CampagneServices::getAllCampagnes();
-        if ($_SESSION["user_role"] == ROLE_ADMIN) {
-            $agences = AgenceServices::getAllAgences();
-        } else {
-            $agents = UtilisateurServices::getAllUtilisateurs($_SESSION["user_agence_id"], ROLE_AGENT);
-        }
+        //$campagnes = CampagneServices::getAllCampagnes();
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ObjectifController::update($objectif);
         } else {

@@ -217,11 +217,24 @@
 </section>
 
 <!-- Script pour le graphique -->
+
+<?php
+$prospectsData = array();
+foreach ($prospects as $prospect) {
+  $date = (new DateTime($prospect->getDateCreation()->parseValue()))->format(DATE_FORMAT_SIMPLE_DISPLAY);
+  if (!isset($prospectsData[$date])) {
+    $prospectsData[$date] = 0;
+  }
+  $prospectsData[$date]++;
+}
+
+// // Générer les données pour le graphique
+// $dates = array_keys($prospectsData);
+// $counts = array_values($prospectsData);
+?>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const prospectsData = <?php echo json_encode(array_count_values(array_map(function ($prospect) {
-                            return (new DateTime($prospect->getDateCreation()->parseValue()))->format(DATE_FORMAT_SIMPLE_DISPLAY);
-                          }, $prospects))); ?>;
+    const prospectsData = <?php echo json_encode($prospectsData); ?>;
 
     const categories = Object.keys(prospectsData);
     const data = Object.values(prospectsData);

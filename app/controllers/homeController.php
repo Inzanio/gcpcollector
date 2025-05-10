@@ -39,23 +39,28 @@ class HomeController
             }
         }
         $dateCemois = new DateTime('first day of this month');
-        $prospectBICemois = new ProspectBI(
-            $_SESSION['user_id'],
+        $prospectBICemois = new ProspectBI();
+        $prospectBICemois->buildRequest(
+            ($_SESSION['user_role']===ROLE_AGENT )?$_SESSION['user_id'] : null ,
             $_SESSION['user_agence_id'],
             null,
             $dateCemois,
             null
         );
         $dateMoisPasse = new DateTime('first day of last month');
-        $prospectBIMoisPasse = new ProspectBI(
-            $_SESSION['user_id'],
+        $prospectBIMoisPasse = new ProspectBI();
+        $prospectBIMoisPasse->buildRequest(
+            ($_SESSION['user_role']===ROLE_AGENT )?$_SESSION['user_id'] : null ,
             $_SESSION['user_agence_id'],
             null,
             $dateMoisPasse,
             $dateCemois
         );
         $totalProspectsCeMois = $prospectBICemois->totalProspect();
-        $totalProspectEnAttenteOuvertureCompte = $totalProspectsCeMois;
+        if ($_SESSION["user_role"] !== ROLE_AGENT){
+            $_SESSION["total_compte_en_attente_ouverture"] = $totalProspectsCeMois;
+        }
+        
         $totalClientsCeMois = $prospectBICemois->totalClient();
         $tauxConversionCeMois = $prospectBICemois->tauxDeConversion();
 

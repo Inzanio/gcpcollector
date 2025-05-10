@@ -243,6 +243,11 @@ class Database
     public static function isSuccessfullRequest($response)
     {
         $error = json_decode($response, true);
+        if (is_array($error)) {
+            if (isset($error[0]["error"])) {
+              $error = $error[0];
+            }
+          }
         if (isset($error["error"])) {
             var_dump($error["error"]);
             return false;
