@@ -71,12 +71,32 @@ require_once("../app/views/head.php");
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <select name="profession" class="form-select" aria-label="Default select example" <?php echo ($_SESSION['user_role'] !== ROLE_AGENT) ? 'disabled' : ''; ?>>
-                                <option selected="">Open this select menu</option>
+                                <option selected="" disabled>Open this select menu</option>
                                 <?php foreach (PROFESSIONS as $value) : ?>
                                     <option value="<?php echo $value; ?>" <?php echo $prospect->getProfession() === $value ? 'selected' : ''; ?>><?php echo $value; ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <label for="profession">Profession</label>
+                        </div>
+
+                        <!-- Saisie libre si 'Autre' -->
+                        <!-- <div class="form-floating mb-3 d-none" id="autreProfessionDiv">
+                            <input type="text" name="autreProfession" id="autreProfession" class="form-control" placeholder="Votre profession">
+                            <label for="autreProfession">Précisez la profession</label>
+                        </div> -->
+                    </div>
+                    <?php
+                    global $campagnes;
+                    ?>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select name="idCampagne" class="form-select" id="profession" <?php echo ($_SESSION['user_role'] !== ROLE_AGENT) ? 'disabled' : ''; ?> required>
+                                <option value="" selected>Aucune campagne</option>
+                                <?php foreach ($campagnes as $camapagne) : ?>
+                                    <option value="<?php echo $camapagne->getDocId(); ?>" <?php echo isset($camapagne_encours) && $camapagne_encours->getDocId() === $campagne->getDocId() ? 'selected' : ''; ?>><?php echo $camapagne->getLibelle(); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <label for="profession">Campagne</label>
                         </div>
 
                         <!-- Saisie libre si 'Autre' -->
@@ -122,10 +142,10 @@ require_once("../app/views/head.php");
                 </form>
                 <!-- End floating Labels Form -->
                 <?php
-                    if (isset($error_message)) {
-                        check_error_message($error_message);
-                    }
-                    ?>
+                if (isset($error_message)) {
+                    check_error_message($error_message);
+                }
+                ?>
             </div>
         </div>
     </main>

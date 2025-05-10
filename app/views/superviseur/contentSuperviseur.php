@@ -4,18 +4,13 @@
         <div class="col-xxl-4 col-md-4">
             <div class="card info-card customers-card">
                 <div class="card-body">
-                    <h5 class="card-title">Prospects Totaux <span>| Ce Mois</span></h5>
+                    <h5 class="card-title">Prospects Totaux <!--<span>| Ce mois</span>--></h5>
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-primary">
                             <i class="bi bi-people"></i>
                         </div>
                         <div class="ps-3">
-                            <h6><?php echo $totalProspectsCeMois; ?></h6>
-                            <span class="text-success small pt-1 fw-bold">
-                                <?php echo ($totalProspectsCeMois - $totalProspectsMoisPasse) >= 0 ? '+' : ''; ?>
-                                <?php echo $totalProspectsCeMois - $totalProspectsMoisPasse; ?>%
-                            </span>
-                            <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
+                            <h6><?php echo $totalProspects; ?></h6>
                         </div>
                     </div>
                 </div>
@@ -25,18 +20,13 @@
         <div class="col-xxl-4 col-md-4">
             <div class="card info-card conversion-card"> <!-- Ajout de h-100 -->
                 <div class="card-body d-flex flex-column"> <!-- Ajout de d-flex flex-column -->
-                    <h5 class="card-title">Taux de conversion <span>| Ce mois</span></h5>
+                    <h5 class="card-title">Taux de conversion</h5>
                     <div class="d-flex align-items-center flex-grow-1"> <!-- Ajout de flex-grow-1 -->
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                             <i class="bi bi-graph-up"></i>
                         </div>
                         <div class="ps-3">
-                            <h6><?php echo number_format($tauxConversionCeMois, 1); ?>%</h6>
-                            <span class="text-success small pt-1 fw-bold">
-                                <?php echo ($tauxConversionCeMois - $tauxConversionMoisPasse) >= 0 ? '+' : ''; ?>
-                                <?php echo number_format($tauxConversionCeMois - $tauxConversionMoisPasse, 1); ?>%
-                            </span>
-                            <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
+                            <h6><?php echo number_format($tauxConversion, 1); ?>%</h6>
                         </div>
                     </div>
                 </div>
@@ -48,7 +38,7 @@
         <div class="col-xxl-4 col-md-6">
             <div class="card info-card sales-card">
                 <div class="card-body">
-                    <h5 class="card-title">Campagnes Actives <span>| 30 jours</span></h5>
+                    <h5 class="card-title">Campagnes Actives <!--<span>| Ce mois</span>--></h5>
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-warning">
                             <i class="bi bi-megaphone"></i>
@@ -83,7 +73,7 @@
     </div>
 
     <!-- Graphiques Campagnes -->
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
@@ -105,10 +95,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Analyse Détails -->
-    <div class="row mt-4">
+    <!-- <div class="row mt-4">
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
@@ -131,10 +121,10 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- ChartJS Script -->
-<script>
+<!-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Performance des campagnes
         new Chart(document.getElementById('campaignPerformanceChart'), {
@@ -247,4 +237,4 @@
             }
         });
     });
-</script>
+</script> -->

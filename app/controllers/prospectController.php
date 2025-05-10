@@ -15,15 +15,15 @@ class ProspectController
     public static function index()
     {
         if ($_SESSION['user_role'] == ROLE_AGENT) {
-            $prospects = ProspectServices::getAll($_SESSION['user_id'],$_SESSION['user_agence_id']);
+            $prospects = ProspectServices::getAll($_SESSION['user_id'], $_SESSION['user_agence_id']);
         }
         if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
-            $prospects = ProspectServices::getAll(null,$_SESSION['user_agence_id']);
+            $prospects = ProspectServices::getAllProspectsWaitingForAccountOpening(null, $_SESSION['user_agence_id']);
         }
         if ($_SESSION['user_role'] == ROLE_ADMIN) {
-            $prospects = ProspectServices::getAll(null,null);
+            $prospects = ProspectServices::getAllProspectsWaitingForAccountOpening(null, null);
         }
-        if ($_SESSION['user_role'] !== ROLE_AGENT){
+        if ($_SESSION['user_role'] !== ROLE_AGENT) {
             $_SESSION["total_compte_en_attente_ouverture"] = count($prospects);
         }
 
@@ -53,7 +53,7 @@ class ProspectController
         $email = trim(htmlspecialchars($_POST['email'] ?? ''));
         $commentaire = trim(htmlspecialchars($_POST['commentaire'] ?? ''));
         $genre = trim(htmlspecialchars($_POST['genre'] ?? ''));
-
+        $idCampagne = trim(htmlspecialchars($_POST['idCampagne'] ?? ''));
 
         $prospect = new Prospect(
             $nom,
@@ -69,6 +69,8 @@ class ProspectController
         // Configuration des propriétés supplémentaires du prospect
         $prospect->setIdAgentProspecteur($_SESSION['user_id']);
         $prospect->setIdAgence($_SESSION['user_agence_id']);
+
+        $prospect->setIdCampagne($idCampagne);
         $prospect->setCommentaire($commentaire);
         $prospect->setEmail($email);
         $prospect->setGenre($genre);
@@ -94,39 +96,46 @@ class ProspectController
      * Met à jour un prospect existant
      * param Prospect $prospect L'objet Prospect à mettre à jour
      */
-    public static function update($prospect)
+    public static function update(Prospect $prospect)
     {
-        // Récupération des données du formulaire
-        $nom = trim(htmlspecialchars($_POST['nom'] ?? ''));
-        $prenom = trim(htmlspecialchars($_POST['prenom'] ?? ''));
-        $dateNaissance = !empty($_POST['dateNaissance']) ? new DateTime($_POST['dateNaissance']) : null;
-        $telephone = trim(htmlspecialchars($_POST['telephone'] ?? ''));
-        $profession = trim(htmlspecialchars($_POST['profession'] ?? ''));
-        $connaissanceBanque = isset($_POST['connaissanceBanque']) ? true : false;
-        $produitsInteresse = $_POST['produitsInteresse'] ?? [];
-        $email = trim(htmlspecialchars($_POST['email'] ?? ''));
-        $commentaire = trim(htmlspecialchars($_POST['commentaire'] ?? ''));
-        $genre = trim(htmlspecialchars($_POST['genre'] ?? ''));
-
-        if(isset($_POST['numeroCompte'])){
-            $prospect->setNumeroCompte(trim(htmlspecialchars($_POST['genre'] ?? '')));
+        if (isset($_POST['nom'])) {
+            $prospect->setNom(trim(htmlspecialchars($_POST['nom'])));
+        }
+        if (isset($_POST['prenom'])) {
+            $prospect->setPrenom(trim(htmlspecialchars($_POST['prenom'])));
+        }
+        if (isset($_POST['dateNaissance']) && !empty($_POST['dateNaissance'])) {
+            $prospect->setDateNaissance(new DateTime($_POST['dateNaissance']));
+        }
+        if (isset($_POST['telephone'])) {
+            $prospect->removeTelephone($prospect->getTelephone()[0]); // Remove the old telephone number    
+            $prospect->addTelephone(trim(htmlspecialchars($_POST['telephone'])));
+        }
+        if (isset($_POST['profession'])) {
+            $prospect->setProfession(trim(htmlspecialchars($_POST['profession'])));
+        }
+        if (isset($_POST['connaissanceBanque'])) {
+            $prospect->setConnaissanceBanque(true);
+        } else {
+            $prospect->setConnaissanceBanque(false);
+        }
+        if (isset($_POST['produitsInteresse'])) {
+            $prospect->setProduitsInteresse($_POST['produitsInteresse']);
+        }
+        if (isset($_POST['email'])) {
+            $prospect->setEmail(trim(htmlspecialchars($_POST['email'])));
+        }
+        if (isset($_POST['commentaire'])) {
+            $prospect->setCommentaire(trim(htmlspecialchars($_POST['commentaire'])));
+        }
+        if (isset($_POST['genre'])) {
+            $prospect->setGenre(trim(htmlspecialchars($_POST['genre'])));
+        }
+        if (isset($_POST['numeroCompte'])) {
+            $prospect->setNumeroCompte(trim(htmlspecialchars($_POST['numeroCompte'])));
+            $prospect->setIdAccountValidator($_SESSION["user_id"]);
         }
 
-        $prospect->setNom($nom);
-        $prospect->setPrenom($prenom);
-        $prospect->setDateNaissance($dateNaissance);
-        $prospect->removeTelephone($prospect->getTelephone()[0]); // Remove the old telephone number    
-        $prospect->addTelephone($telephone);
-        $prospect->setProfession($profession);
-        $prospect->setProduitsInteresse($produitsInteresse);
-        $prospect->setConnaissanceBanque($connaissanceBanque);
-
-        // Configuration des propriétés supplémentaires du prospect
-        //$prospect->setIdAgentProspecteur($_SESSION['user_id']);
-        $prospect->setCommentaire($commentaire);
-        $prospect->setEmail($email);
-        $prospect->setGenre($genre);
-        
 
         // Enregistrement du prospect
         //var_dump($prospect);
@@ -147,8 +156,9 @@ class ProspectController
         }
     }
 
-    public static function showPropspectAccountWaitingForOpening($idAgent, $idAgence, $dateDebut, $dateFin){
-        $prospects = ProspectServices::getAllProspectsWaitingForAccountOpening($idAgent,$idAgence,$dateDebut,$dateFin);
+    public static function showPropspectAccountWaitingForOpening($idAgent, $idAgence, $dateDebut, $dateFin)
+    {
+        $prospects = ProspectServices::getAllProspectsWaitingForAccountOpening($idAgent, $idAgence, $dateDebut, $dateFin);
         include '../app/views/liste-prospect.php';
     }
 }

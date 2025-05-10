@@ -56,39 +56,42 @@ class ObjectifController
 
     public static function update(Objectif $objectif)
     {
-        $libelle = trim(htmlspecialchars($_POST['libelle'] ?? ''));
-        $cible = trim(htmlspecialchars($_POST['cible'] ?? ''));
-        $valeur = trim(htmlspecialchars($_POST['valeur'] ?? ''));
-
-        $dateDebut = !empty($_POST['dateDebut']) ? new Datetime($_POST['dateDebut']) : null;
-        $dateFin = !empty($_POST['dateFin']) ? new Datetime($_POST['dateFin']) : null;
-
-
-        $idCampagne = trim(htmlspecialchars($_POST['idCampagne'] ?? null));
-        $idAgent = trim(htmlspecialchars($_POST['idAgent'] ?? null));
-        if ($_SESSION["user_role"] == ROLE_SUPERVISEUR) {
-            $idAgence = $_SESSION["user_agence_id"];
-        } else {
-            $idAgence = trim(htmlspecialchars($_POST['idAgence'] ?? null));
+        if (isset($_POST['libelle'])) {
+            $objectif->setLibelle(trim(htmlspecialchars($_POST['libelle'])));
         }
-        //$objectif = new Objectif();
-        $objectif->setLibelle($libelle);
-        $objectif->setCible($cible);
-        $objectif->setValeur($valeur);
+        if (isset($_POST['cible'])) {
+            $objectif->setCible(trim(htmlspecialchars($_POST['cible'])));
+        }
+        if (isset($_POST['valeur'])) {
+            $objectif->setValeur(trim(htmlspecialchars($_POST['valeur'])));
+        }
 
-        $objectif->setDateDebut(new FireStoreTimestamp($dateDebut));
-        $objectif->setDateFin(new FireStoreTimestamp($dateFin));
+        if (isset($_POST['dateDebut']) && !empty($_POST['dateDebut'])) {
+            $objectif->setDateDebut(new FireStoreTimestamp(new Datetime($_POST['dateDebut'])));
+        }
+        if (isset($_POST['dateFin']) && !empty($_POST['dateFin'])) {
+            $objectif->setDateFin(new FireStoreTimestamp(new Datetime($_POST['dateFin'])));
+        }
 
-        $objectif->setIdAgent($idAgent);
-        $objectif->setIdAgence($idAgence);
-        $objectif->setIdCampagne($idCampagne);
+        if (isset($_POST['idCampagne'])) {
+            $objectif->setIdCampagne(trim(htmlspecialchars($_POST['idCampagne'])));
+        }
+        if (isset($_POST['idAgent'])) {
+            $objectif->setIdAgent(trim(htmlspecialchars($_POST['idAgent'])));
+        }
+        if ($_SESSION["user_role"] == ROLE_SUPERVISEUR) {
+            $objectif->setIdAgence($_SESSION["user_agence_id"]);
+        } else {
+            if (isset($_POST['idAgence'])) {
+                $objectif->setIdAgence(trim(htmlspecialchars($_POST['idAgence'])));
+            }
+        }
 
-        //$objectif->setIdCreator($_SESSION["user_id"]);
         $result = ObjectifServices::updateObjectif($objectif);
         if ($result) {
             header('Location: /objectifs');
         } else {
-            $error_message = "Une ereur est survennue lors de la modification de la objectif";
+            $error_message = "Une erreur est survenue lors de la modification de l'objectif";
             include '../app/views/forms/modifier-objectif.php';
         }
     }

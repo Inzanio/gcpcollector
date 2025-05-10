@@ -18,18 +18,13 @@
         <div class="col-md-6">
           <div class="card info-card prospects-card h-100"> <!-- Ajout de h-100 -->
             <div class="card-body d-flex flex-column"> <!-- Ajout de d-flex flex-column -->
-              <h5 class="card-title">Prospects enregistrés <span>| Ce mois</span></h5>
+              <h5 class="card-title">Prospects enregistrés <!--<span>| Ce mois</span>--></h5>
               <div class="d-flex align-items-center flex-grow-1"> <!-- Ajout de flex-grow-1 -->
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-people"></i>
                 </div>
                 <div class="ps-3">
-                  <h6><?php echo $totalProspectsCeMois; ?></h6>
-                  <span class="text-success small pt-1 fw-bold">
-                    <?php echo ($totalProspectsCeMois - $totalProspectsMoisPasse) >= 0 ? '+' : ''; ?>
-                    <?php echo $totalProspectsCeMois - $totalProspectsMoisPasse; ?>%
-                  </span>
-                  <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
+                  <h6><?php echo $totalProspects; ?></h6>
                 </div>
               </div>
             </div>
@@ -40,18 +35,13 @@
         <div class="col-md-6">
           <div class="card info-card conversion-card h-100"> <!-- Ajout de h-100 -->
             <div class="card-body d-flex flex-column"> <!-- Ajout de d-flex flex-column -->
-              <h5 class="card-title">Taux de conversion <span>| Ce mois</span></h5>
+              <h5 class="card-title">Taux de conversion</h5>
               <div class="d-flex align-items-center flex-grow-1"> <!-- Ajout de flex-grow-1 -->
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-graph-up"></i>
                 </div>
                 <div class="ps-3">
-                  <h6><?php echo number_format($tauxConversionCeMois, 1); ?>%</h6>
-                  <span class="text-success small pt-1 fw-bold">
-                    <?php echo ($tauxConversionCeMois - $tauxConversionMoisPasse) >= 0 ? '+' : ''; ?>
-                    <?php echo number_format($tauxConversionCeMois - $tauxConversionMoisPasse, 1); ?>%
-                  </span>
-                  <span class="text-muted small pt-2 ps-1">vs mois dernier</span>
+                  <h6><?php echo number_format($tauxConversion, 1); ?>%</h6>
                 </div>
               </div>
             </div>
@@ -64,7 +54,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Activité récente <span>| 30 derniers jours</span></h5>
+              <h5 class="card-title">Activité récente <!--<span>| 30 derniers jours</span> !--></h5>
               <div id="activityChart" style="min-height: 300px;"></div>
             </div>
           </div>
@@ -117,15 +107,15 @@
 
           <h6 class="card-subtitle mb-2 text-muted">Prospection</h6>
           <div class="progress mb-3">
-            <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo ($totalProspectsCeMois / 100) * 100; ?>%" aria-valuenow="<?php echo $totalProspectsCeMois; ?>" aria-valuemin="0" aria-valuemax="100">
-              <?php echo $totalProspectsCeMois; ?> (<?php echo $totalProspectsCeMois; ?>/100 prospects)
+            <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo ($totalProspects / 100) * 100; ?>%" aria-valuenow="<?php echo $totalProspects; ?>" aria-valuemin="0" aria-valuemax="100">
+              <?php echo $totalProspects; ?> (<?php echo $totalProspects; ?>/100 prospects)
             </div>
           </div>
 
           <h6 class="card-subtitle mb-2 text-muted">Taux de conversion</h6>
           <div class="progress mb-3">
-            <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $tauxConversionCeMois; ?>%" aria-valuenow="<?php echo $tauxConversionCeMois; ?>" aria-valuemin="0" aria-valuemax="100">
-              <?php echo number_format($tauxConversionCeMois, 1); ?>% (<?php echo number_format($tauxConversionCeMois, 1); ?>% sur objectif 10%)
+            <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $tauxConversion; ?>%" aria-valuenow="<?php echo $tauxConversion; ?>" aria-valuemin="0" aria-valuemax="100">
+              <?php echo number_format($tauxConversion, 1); ?>% (<?php echo number_format($tauxConversion, 1); ?>% sur objectif 10%)
             </div>
           </div>
 

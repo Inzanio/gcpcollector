@@ -47,26 +47,17 @@ class HomeController
             $dateCemois,
             null
         );
-        $dateMoisPasse = new DateTime('first day of last month');
-        $prospectBIMoisPasse = new ProspectBI();
-        $prospectBIMoisPasse->buildRequest(
-            ($_SESSION['user_role']===ROLE_AGENT )?$_SESSION['user_id'] : null ,
-            $_SESSION['user_agence_id'],
-            null,
-            $dateMoisPasse,
-            $dateCemois
-        );
-        $totalProspectsCeMois = $prospectBICemois->totalProspect();
+        $totalProspects = $prospectBICemois->totalProspect();
         if ($_SESSION["user_role"] !== ROLE_AGENT){
-            $_SESSION["total_compte_en_attente_ouverture"] = $totalProspectsCeMois;
+            $_SESSION["total_compte_en_attente_ouverture"] = ProspectBI::getTotalProspectsWaitingForAccountOpening(
+                ($_SESSION['user_role']===ROLE_AGENT )?$_SESSION['user_id'] : null,
+                $_SESSION['user_agence_id'],
+            );
         }
         
-        $totalClientsCeMois = $prospectBICemois->totalClient();
-        $tauxConversionCeMois = $prospectBICemois->tauxDeConversion();
+        $totalClients = $prospectBICemois->totalClient();
+        $tauxConversion = $prospectBICemois->tauxDeConversion();
 
-        $totalProspectsMoisPasse = $prospectBIMoisPasse->totalProspect();
-        $totalClientsMoisPasse = $prospectBIMoisPasse->totalClient();
-        $tauxConversionMoisPasse = $prospectBIMoisPasse->tauxDeConversion();
 
         //header("Location: /dashboard");
         // Incluez la vue de la page d'accueil

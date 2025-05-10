@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use App\Models\Traits\DbDataTrait;
 use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 use Datetime;
@@ -61,6 +62,48 @@ class Prospect extends Personne
     private string $numeroCompte = "";
 
     /**
+     * 
+     */
+    private string $idCampagne;
+
+    private string $idAccountValidator;
+
+    /**
+     * Récupère l'ID du validateur de compte
+     * @return string
+     */
+    public function getIdAccountValidator(): string
+    {
+        return $this->idAccountValidator;
+    }
+
+    /**
+     * Modifie l'ID du validateur de compte
+     * @param string $idAccountValidator Nouvel ID du validateur de compte
+     */
+    public function setIdAccountValidator(string $idAccountValidator): void
+    {
+        $this->idAccountValidator = $idAccountValidator;
+    }
+    /**
+     * Récupère l'ID de la campagne
+     * @return string
+     */
+    public function getIdCampagne(): string
+    {
+        return $this->idCampagne;
+    }
+
+    /**
+     * Modifie l'ID de la campagne
+     * @param string $idCampagne Nouvel ID de la campagne
+     */
+    public function setIdCampagne(string $idCampagne): void
+    {
+        $this->idCampagne = $idCampagne;
+    }
+
+    /**
      * Date d'ouverture du compte
      * @var ?FireStoreTimestamp
      */
@@ -97,10 +140,10 @@ class Prospect extends Personne
         $this->commentaire = "";
         $this->docId = "";
         $this->idAgence = "";
-        $this->email = ""; 
+        $this->email = "";
         $this->setDateNaissance($dateNaissance);
-       
-
+        $this->idAccountValidator = "";
+        $this->idCampagne = "";
     }
 
     /**
@@ -279,10 +322,8 @@ class Prospect extends Personne
         $this->dateOuvertureCompte = $dateOuvertureCompte;
     }
 
-    public function isClient() : bool
+    public function isClient(): bool
     {
         return $this->getNumeroCompte() != "" && $this->getDateOuvertureCompte() != null;
-        
     }
-
 }

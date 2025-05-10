@@ -146,17 +146,16 @@ class ProspectServices extends BaseServices
      * @param bool $excludeClients - exclure les clients (par défaut false)
      * @return Prospect[] - la liste des prospects
      */
-    public static function getAll($idAgentProspecteur = null, $idAgence = null, $dateDebut = null, $dateFin = null, $excludeProspects = false, $excludeClients = false)
+    public static function getAll($idAgentProspecteur = null, $idAgence = null, $dateDebut = null, $dateFin = null, $clientOnly = false, $idCampagne = null)
     {
         // Appel de la méthode de récupération de tous les documents dans la classe Database
         $queryBuilder = Database::queryBuilder(self::$collectionName);
-        if ($excludeProspects && !$excludeClients) {
+        if ($clientOnly) {
             $queryBuilder->where('numeroCompte', 'NOT_EQUAL', "");
         }
-        if ($excludeClients && !$excludeProspects) {
-            $queryBuilder->where('numeroCompte', 'EQUAL', "");
+        if ($idCampagne != null) {
+            $queryBuilder->where('idCampagne', 'EQUAL', $idCampagne);
         }
-
         if ($idAgentProspecteur != null) {
             $queryBuilder->where('idAgentProspecteur', 'EQUAL', $idAgentProspecteur);
         }
@@ -229,7 +228,7 @@ class ProspectServices extends BaseServices
      */
     public static function getAllProspectsByAgent($idAgentProspecteur, $dateDebut = null, $dateFin = null)
     {
-        return self::getAll($idAgentProspecteur, null, $dateDebut, $dateFin, false, true);
+        return self::getAll($idAgentProspecteur, null, $dateDebut, $dateFin, false);
     }
 
     /**
@@ -242,7 +241,7 @@ class ProspectServices extends BaseServices
      */
     public static function getAllClientsByAgent($idAgentProspecteur, $dateDebut = null, $dateFin = null)
     {
-        return self::getAll($idAgentProspecteur, null, $dateDebut, $dateFin, true, false);
+        return self::getAll($idAgentProspecteur, null, $dateDebut, $dateFin, true);
     }
 
     /**
@@ -255,7 +254,7 @@ class ProspectServices extends BaseServices
      */
     public static function getAllProspectsByAgence($idAgence, $dateDebut = null, $dateFin = null)
     {
-        return self::getAll(null, $idAgence, $dateDebut, $dateFin, false, true);
+        return self::getAll(null, $idAgence, $dateDebut, $dateFin, false);
     }
 
     /**
@@ -268,7 +267,7 @@ class ProspectServices extends BaseServices
      */
     public static function getAllClientsByAgence($idAgence, $dateDebut = null, $dateFin = null)
     {
-        return self::getAll(null, $idAgence, $dateDebut, $dateFin, true, false);
+        return self::getAll(null, $idAgence, $dateDebut, $dateFin, true);
     }
 
     /**
@@ -277,13 +276,37 @@ class ProspectServices extends BaseServices
      *
      * @param int|null $idAgentProspecteur L'ID de l'agent prospecteur (facultatif)
      * @param int|null $idAgence L'ID de l'agence (facultatif)
-     * @param FireStoreTimestamp|null $dateDebut La date de début (optionnel)
-     * @param FireStoreTimestamp|null $dateFin La date de fin (optionnel)
+     * @param DateTime|null $dateDebut La date de début (optionnel)
+     * @param DateTime|null $dateFin La date de fin (optionnel)
      * @return Prospect[] La liste des prospects en attente d'ouverture de compte
      */
     public static function getAllProspectsWaitingForAccountOpening($idAgentProspecteur = null, $idAgence = null, $dateDebut = null, $dateFin = null)
     {
-        return self::getAll($idAgentProspecteur, $idAgence, $dateDebut, $dateFin, false, true);
-    }
+        // Appel de la méthode de récupération de tous les documents dans la classe Database
+        $queryBuilder = Database::queryBuilder(self::$collectionName);
 
+        $queryBuilder->where('numeroCompte', 'EQUAL', "");
+
+        if ($idAgentProspecteur != null) {
+            $queryBuilder->where('idAgentProspecteur', 'EQUAL', $idAgentProspecteur);
+        }
+        if ($idAgence != null) {
+            $queryBuilder->where('idAgence', 'EQUAL', $idAgence);
+        }
+        if ($dateDebut != null) {
+            $queryBuilder->where('dateCreation', 'GREATER_THAN_OR_EQUAL', $dateDebut->format(FIRESTORE_DATE_FORMAT));
+        }
+        if ($dateFin != null) {
+            $queryBuilder->where('dateCreation', 'LESS_THAN', $dateFin->format(FIRESTORE_DATE_FORMAT));
+        }
+
+        $query = $queryBuilder->build();
+        $result = Database::query($query);
+        // Transformation des documents Firestore en objets Prospect
+        $prospects = array_map(function ($doc) {
+            return self::fromFirestoreDocument($doc);
+        }, $result);
+
+        return $prospects;
+    }
 }

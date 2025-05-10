@@ -96,6 +96,26 @@ require_once("../app/views/head.php");
                             <label for="autreProfession">Précisez la profession</label>
                         </div> -->
                     </div>
+                    <?php
+                        global $campagnes;
+                    ?>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select name="idCampagne" class="form-select" id="profession">
+                                <option value="" selected>Aucune campagne</option>
+                                <?php foreach ($campagnes as $camapagne) : ?>
+                                    <option value="<?php echo $camapagne->getDocId(); ?>" <?php echo isset($camapagne_encours) && $camapagne_encours->getDocId() === $campagne->getDocId() ? 'selected' : ''; ?> ><?php echo $camapagne->getLibelle(); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <label for="profession">Campagne</label>
+                        </div>
+
+                        <!-- Saisie libre si 'Autre' -->
+                        <!-- <div class="form-floating mb-3 d-none" id="autreProfessionDiv">
+                            <input type="text" name="autreProfession" id="autreProfession" class="form-control" placeholder="Votre profession">
+                            <label for="autreProfession">Précisez la profession</label>
+                        </div> -->
+                    </div>
 
                     <div class="col-md-12">
                         <input name="connaissanceBanque" class="form-check-input" type="checkbox" id="connaissanceBanque">
@@ -103,21 +123,12 @@ require_once("../app/views/head.php");
 
                     </div>
 
-                    <?php
-                    $produits = [
-                        "Épargne" => "Épargne",
-                        "Investissement" => "Investissement",
-                        "Crédit" => "Crédit",
-                        "Assurance" => "Assurance",
-                        "Gestion de patrimoine" => "Gestion de patrimoine"
-                    ];
-                    ?>
                     <div class="col-md-12">
                         <label>Produits intéressés</label>
-                        <?php foreach ($produits as $value => $text) : ?>
+                        <?php foreach (PRODUITS_BANQUES as $value) : ?>
                             <div class="form-check">
                                 <input name="produitsInteresse[]" class="form-check-input" type="checkbox" id="<?php echo $value; ?>" name="produitsInteresse[]" value="<?php echo $value; ?>">
-                                <label class="form-check-label" for="<?php echo $value; ?>"><?php echo $text; ?></label>
+                                <label class="form-check-label" for="<?php echo $value; ?>"><?php echo $value; ?></label>
                             </div>
                         <?php endforeach; ?>
                     </div>
