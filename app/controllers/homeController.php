@@ -18,45 +18,42 @@ class HomeController
     public static function index()
     {
 
-
         if ($_SESSION['user_role'] == ROLE_AGENT) {
-            $data_prospects = ProspectServices::getAll($_SESSION['user_id'], $_SESSION['user_agence_id']);
+            $prospects = ProspectServices::getAll(false,$_SESSION['user_id'], $_SESSION['user_agence_id'],$_SESSION[FILTER_DATE_DEBUT],$_SESSION[FILTER_DATE_FIN],$_SESSION[FILTER_ID_CAMPAGNE],$_SESSION[FILTER_PROFESSION]);
         }
         if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
-            $data_prospects = ProspectServices::getAll(null,$_SESSION['user_agence_id']);
+            $prospects = ProspectServices::getAll(false,$_SESSION[FILTER_ID_AGENT],$_SESSION['user_agence_id'],$_SESSION[FILTER_DATE_DEBUT],$_SESSION[FILTER_DATE_FIN],$_SESSION[FILTER_ID_CAMPAGNE],$_SESSION[FILTER_PROFESSION]);
         }
         if ($_SESSION['user_role'] == ROLE_ADMIN) {
-            $data_prospects = ProspectServices::getAll(null, null);
+            $prospects = ProspectServices::getAll(false,$_SESSION[FILTER_ID_AGENT], $_SESSION[FILTER_ID_AGENCE],$_SESSION[FILTER_DATE_DEBUT],$_SESSION[FILTER_DATE_FIN],$_SESSION[FILTER_ID_CAMPAGNE],$_SESSION[FILTER_PROFESSION]);
         }
-        $prospects = [];
         $clients = [];
 
-        foreach ($data_prospects as $prospect) {
+        foreach ($prospects as $prospect) {
             if ($prospect->isClient()) {
                 $clients[] = $prospect;
-            } else {
-                $prospects[] = $prospect;
             }
         }
-        $dateCemois = new DateTime('first day of this month');
-        $prospectBICemois = new ProspectBI();
-        $prospectBICemois->buildRequest(
-            ($_SESSION['user_role']===ROLE_AGENT )?$_SESSION['user_id'] : null ,
-            $_SESSION['user_agence_id'],
-            null,
-            $dateCemois,
-            null
+        $prospectBI = new ProspectBI();
+        $prospectBI->buildRequest(
+            ($_SESSION['user_role']===ROLE_AGENT )?$_SESSION['user_id'] : $_SESSION[FILTER_ID_AGENT] ,
+            ($_SESSION['user_role']!==ROLE_ADMIN )?$_SESSION['user_agence_id'] : $_SESSION[FILTER_ID_AGENCE] ,
+            $_SESSION[FILTER_ID_CAMPAGNE],
+            $_SESSION[FILTER_DATE_DEBUT],
+            $_SESSION[FILTER_DATE_FIN],
+            $_SESSION[FILTER_PROFESSION]
         );
-        $totalProspects = $prospectBICemois->totalProspect();
+       
         if ($_SESSION["user_role"] !== ROLE_AGENT){
             $_SESSION["total_compte_en_attente_ouverture"] = ProspectBI::getTotalProspectsWaitingForAccountOpening(
                 ($_SESSION['user_role']===ROLE_AGENT )?$_SESSION['user_id'] : null,
-                $_SESSION['user_agence_id'],
+                $_SESSION['user_agence_id'],$_SESSION[FILTER_ID_CAMPAGNE],$_SESSION[FILTER_DATE_DEBUT],$_SESSION[FILTER_DATE_FIN],$_SESSION[FILTER_PROFESSION]
+
             );
         }
-        
-        $totalClients = $prospectBICemois->totalClient();
-        $tauxConversion = $prospectBICemois->tauxDeConversion();
+        $totalProspects = $prospectBI->totalProspect();
+        $totalClients = $prospectBI->totalClient();
+        $tauxConversion = $prospectBI->tauxDeConversion();
 
 
         //header("Location: /dashboard");

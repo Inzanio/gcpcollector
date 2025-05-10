@@ -12,7 +12,7 @@ class SuperviseurController
     public static function index()
     {
         // il faut récupérer la liste des superviseurs et des agences
-        $superviseurs = UtilisateurServices::getAllUtilisateurs(null, ROLE_SUPERVISEUR);
+        $superviseurs = UtilisateurServices::getAllUtilisateurs($_SESSION[FILTER_ID_AGENCE], ROLE_SUPERVISEUR);
         include '../app/views/liste-superviseur.php';
     }
 

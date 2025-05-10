@@ -28,10 +28,11 @@ require_once("head.php");
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">LISTE DES PROSPECTS</h5>
-                            <a href="/ajouter-prospect" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter </a>
-                            <p></p>
-
+                            <h5 class="card-title"><?php echo ($_SESSION["user_role"] !== ROLE_AGENT)? "PROSPECTS EN ATTENTE D'OUVERTURE":"PROSPECTS ENREGISTRES"?></h5>
+                            <?php if ($_SESSION["user_role"] === ROLE_AGENT): ?>
+                                <a href="/ajouter-prospect" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter </a>
+                                <p></p>
+                            <?php endif ?>
                             <!-- Table with stripped rows -->
 
                             <div class="col-12">

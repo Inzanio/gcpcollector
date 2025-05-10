@@ -38,19 +38,21 @@ class LoginController
             $_SESSION[FILTER_DATE_DEBUT] = new DateTime('first day of this month');
             $_SESSION[FILTER_DATE_FIN] = new DateTime('last day of this month');
 
-            $_SESSION[FILTER_PROFESSION] = "";
-            $_SESSION[FILTER_PRODUIT] = "";
+            $_SESSION[FILTER_PROFESSION] = null;
+            $_SESSION[FILTER_PRODUIT] = null;
             $_SESSION[FILTER_ID_CAMPAGNE] = null;
+
             if ($_SESSION['user_role'] !== ROLE_AGENT) {
-                $_SESSION[FILTER_ID_AGENT] = "";
+                $_SESSION[FILTER_ID_AGENT] = null;
             }
             if ($_SESSION['user_role'] !== ROLE_ADMIN) {
-                $_SESSION[FILTER_ID_AGENCE] = "";
+                $_SESSION[FILTER_ID_AGENCE] = null;
                 $_SESSION['user_agence_id'] = $login_result->getIdAgence();
                 $agence = AgenceServices::getAgenceById($login_result->getIdAgence());
                 $_SESSION['user_agence_name'] = $agence->getNom();
             } else {
                 $_SESSION['user_agence_id'] = null;
+                $_SESSION[FILTER_ID_AGENCE] = null;
             }
 
 

@@ -209,6 +209,7 @@
 <!-- Script pour le graphique -->
 
 <?php
+
 $prospectsData = array();
 foreach ($prospects as $prospect) {
   $date = (new DateTime($prospect->getDateCreation()->parseValue()))->format(DATE_FORMAT_SIMPLE_DISPLAY);

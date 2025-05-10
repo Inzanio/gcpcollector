@@ -14,7 +14,7 @@ $gestSuperviseursActivity = (strpos(strtolower($currentUri), "superviseur")) ? '
 
 $gestAgencesActivity = (strpos(strtolower($currentUri), "agence")) ? 'active' : 'collapsed';
 
-$validerCompteActivity = (strpos(strtolower($currentUri), "compte")) ? 'active' : 'collapsed';
+$validerCompteActivity = (strpos(strtolower($currentUri), "prospect")) ? 'active' : 'collapsed';
 
 $campaignsActivity = (strpos(strtolower($currentUri), "campagne")) ? 'active' : 'collapsed';
 $newCampaignActivity = (strpos(strtolower($currentUri), "ajouter-campagne")) ? 'active' : 'collapsed';
@@ -97,7 +97,7 @@ $listCampaignActivity = (strpos(strtolower($currentUri), "campagnes")) ? 'active
         <?php if ($_SESSION['user_role'] !== ROLE_AGENT): ?>
             <!-- Validation ouverture compte -->
             <li class="nav-item">
-                <a class="nav-link <?php echo $validerCompteActivity; ?>" href="/comptes">
+                <a class="nav-link <?php echo $validerCompteActivity; ?>" href="/prospects">
                     <i class="bi bi-shield-check"></i>
                     <span>Ouverture de Compte</span>
                     <?php if (isset($_SESSION["total_compte_en_attente_ouverture"]) && $_SESSION["total_compte_en_attente_ouverture"] > 0): ?>

@@ -131,8 +131,10 @@ class Database
         }
         return json_decode($response, true);
     }
+
     public static function query($query)
     {
+
         $url = 'https://firestore.googleapis.com/v1/projects/' . self::$credentials["project_id"] . '/databases/(default)/documents:runQuery';
         $body = json_encode(['structuredQuery' => $query]);
         $headers = [
@@ -145,7 +147,7 @@ class Database
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
+        
         $response = curl_exec($ch);
         curl_close($ch);
         if (!self::isSuccessfullRequest($response)) {
@@ -267,6 +269,18 @@ class Database
             return 0; // ou vous pouvez lever une exception
         }
         return 0;
+    }
+    public static function getFirestoreValueType($value)
+    {
+        if (is_string($value) && preg_match(REGEXP_FIRESTORE_TIMESTAMP, $value)) {
+            return 'timestampValue';
+        } elseif (is_int($value)) {
+            return 'integerValue';
+        } elseif (is_bool($value)) {
+            return 'booleanValue';
+        } else {
+            return 'stringValue';
+        }
     }
 }
 /**
@@ -406,6 +420,8 @@ class FirestoreQueryBuilder
         if (isset($this->where)) {
             $filters = [];
             foreach ($this->where as $filter) {
+                $value = $filter['value'];
+                $valueType = Database::getFirestoreValueType($value);
                 $filters[] = [
                     'fieldFilter' => [
                         'field' => [
@@ -413,7 +429,7 @@ class FirestoreQueryBuilder
                         ],
                         'op' => strtoupper($filter['op']),
                         'value' => [
-                            'stringValue' => $filter['value'],
+                            $valueType => $filter['value'],
                         ],
                     ],
                 ];

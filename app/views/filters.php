@@ -20,7 +20,7 @@
 
     <div class="form-floating mb-3">
         <select name="<?php echo FILTER_PROFESSION; ?>" class="form-select" aria-label="Default select example">
-            <option selected="" <?php echo empty($_SESSION[FILTER_PROFESSION]) ? 'selected' : ''; ?>>Toutes</option>
+            <option value="" <?php echo empty($_SESSION[FILTER_PROFESSION]) ? 'selected' : ''; ?>>Toutes</option>
             <?php foreach (PROFESSIONS as $value) : ?>
                 <option value="<?php echo $value; ?>" <?php echo isset($_SESSION[FILTER_PROFESSION]) && $_SESSION[FILTER_PROFESSION] === $value ? 'selected' : ''; ?>><?php echo $value; ?></option>
             <?php endforeach; ?>
@@ -33,7 +33,7 @@
 
     <div class="form-floating mb-3">
         <select name="<?php echo FILTER_PRODUIT; ?>" class="form-select" aria-label="Default select example">
-            <option selected="" <?php echo empty($_SESSION[FILTER_PRODUIT]) ? 'selected' : ''; ?>>Tout</option>
+            <option value="" <?php echo empty($_SESSION[FILTER_PRODUIT]) ? 'selected' : ''; ?>>Tout</option>
             <?php foreach (PRODUITS_BANQUES as $value) : ?>
                 <option value="<?php echo $value; ?>" <?php echo isset($_SESSION[FILTER_PRODUIT]) && $_SESSION[FILTER_PRODUIT] === $value ? 'selected' : ''; ?>><?php echo $value; ?></option>
             <?php endforeach; ?>

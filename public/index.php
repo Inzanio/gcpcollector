@@ -165,16 +165,6 @@ switch ($parts[0]) {
             include '../app/views/forms/modifier-agence.php';
         }
         break;
-
-    case "comptes":
-        LoginController::must_logged_in();
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            ProspectController::create();
-        } else {
-            ProspectController::showPropspectAccountWaitingForOpening(null, null, null, null);
-            //include '../app/views/forms/valider-compte.php';
-        }
-        break;
     case "agents":
         LoginController::must_logged_in();
         AgentController::index();

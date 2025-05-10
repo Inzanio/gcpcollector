@@ -20,10 +20,10 @@ class ProspectBI
         $this->totalProspects = count($prospects);
         $this->totalClients = count($clients);
     }
-    public function buildRequest($idAgent = null, $idAgence = null, $idCampagne = null, $dateDebut = null, $dateFin = null)
+    public function buildRequest($idAgent = null, $idAgence = null, $idCampagne = null, $dateDebut = null, $dateFin = null,$profession=null)
     {
-        $this->totalProspects = self::getTotalProspects($idAgent, $idAgence, $idCampagne, $dateDebut, $dateFin);
-        $this->totalClients = self::getTotalClients($idAgent, $idAgence, $idCampagne, $dateDebut, $dateFin);
+        $this->totalProspects = self::getTotalProspects($idAgent, $idAgence, $idCampagne, $dateDebut, $dateFin,$profession);
+        $this->totalClients = self::getTotalClients($idAgent, $idAgence, $idCampagne, $dateDebut, $dateFin,$profession);
     }
     public function totalProspect()
     {
@@ -38,7 +38,7 @@ class ProspectBI
         return CalculsBI::tauxConversion($this->totalProspects, $this->totalClients);
     }
 
-    public static function getTotalProspects($idAgent = null, $idAgence = null, $idCampagne = null, $dateDebut = null, $dateFin = null)
+    public static function getTotalProspects($idAgent = null, $idAgence = null, $idCampagne = null, $dateDebut = null, $dateFin = null, $profession = null)
     {
         $aggregateQuery = new FirestoreAggregationQueryBuilder('prospects');
         if ($idAgent != null) {
@@ -47,7 +47,9 @@ class ProspectBI
         if ($idAgence != null) {
             $aggregateQuery->where('idAgence', 'EQUAL', $idAgence);
         }
-        
+        if ($profession != null) {
+            $aggregateQuery->where('profession', 'EQUAL', $profession);
+        }
         if ($idCampagne != null) {
             $aggregateQuery->where('idCampagne', 'EQUAL', $idCampagne);
         }
@@ -63,7 +65,7 @@ class ProspectBI
         return Database::readAggregationResponse($result, 'count');
     }
 
-    public static function getTotalClients($idAgent = null, $idAgence = null, $idCampagne = null, $dateDebut = null, $dateFin = null)
+    public static function getTotalClients($idAgent = null, $idAgence = null, $idCampagne = null, $dateDebut = null, $dateFin = null,$profession=null)
     {
         $aggregateQuery = new FirestoreAggregationQueryBuilder('prospects');
         $aggregateQuery->where('numeroCompte', 'NOT_EQUAL', '');
@@ -72,6 +74,9 @@ class ProspectBI
         }
         if ($idAgence != null) {
             $aggregateQuery->where('idAgence', 'EQUAL', $idAgence);
+        }
+        if ($profession != null) {
+            $aggregateQuery->where('profession', 'EQUAL', $profession);
         }
         if ($idCampagne != null) {
             $aggregateQuery->where('idCampagne', 'EQUAL', $idCampagne);
@@ -85,7 +90,7 @@ class ProspectBI
         $result = Database::runAggregationQuery($aggregateQuery->count());
         return Database::readAggregationResponse($result, 'count');
     }
-    public static function getTotalProspectsWaitingForAccountOpening($idAgent = null, $idAgence = null, $idCampagne = null, $dateDebut = null, $dateFin = null)
+    public static function getTotalProspectsWaitingForAccountOpening($idAgent = null, $idAgence = null, $idCampagne = null, $dateDebut = null, $dateFin = null,$profession =null)
     {
         $aggregateQuery = new FirestoreAggregationQueryBuilder('prospects');
         $aggregateQuery->where('numeroCompte', 'EQUAL', '');
@@ -95,7 +100,9 @@ class ProspectBI
         if ($idAgence != null) {
             $aggregateQuery->where('idAgence', 'EQUAL', $idAgence);
         }
-        
+        if ($profession != null) {
+            $aggregateQuery->where('profession', 'EQUAL', $profession);
+        }
         if ($idCampagne != null) {
             $aggregateQuery->where('idCampagne', 'EQUAL', $idCampagne);
         }

@@ -15,13 +15,16 @@ class ProspectController
     public static function index()
     {
         if ($_SESSION['user_role'] == ROLE_AGENT) {
-            $prospects = ProspectServices::getAll($_SESSION['user_id'], $_SESSION['user_agence_id']);
+            // var_dump($_SESSION[FILTER_DATE_DEBUT]);
+            // exit();
+            $prospects = ProspectServices::getAll(false,$_SESSION['user_id'], $_SESSION['user_agence_id'],$_SESSION[FILTER_DATE_DEBUT],$_SESSION[FILTER_DATE_FIN],$_SESSION[FILTER_ID_CAMPAGNE],$_SESSION[FILTER_PROFESSION]);
         }
         if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
-            $prospects = ProspectServices::getAllProspectsWaitingForAccountOpening(null, $_SESSION['user_agence_id']);
+            $prospects = ProspectServices::getAllProspectsWaitingForAccountOpening($_SESSION[FILTER_ID_AGENT], $_SESSION['user_agence_id'],$_SESSION[FILTER_DATE_DEBUT],$_SESSION[FILTER_DATE_FIN],$_SESSION[FILTER_ID_CAMPAGNE],$_SESSION[FILTER_PROFESSION]);
         }
         if ($_SESSION['user_role'] == ROLE_ADMIN) {
-            $prospects = ProspectServices::getAllProspectsWaitingForAccountOpening(null, null);
+            
+            $prospects = ProspectServices::getAllProspectsWaitingForAccountOpening($_SESSION[FILTER_ID_AGENT], $_SESSION[FILTER_ID_AGENCE],$_SESSION[FILTER_DATE_DEBUT],$_SESSION[FILTER_DATE_FIN],$_SESSION[FILTER_ID_CAMPAGNE],$_SESSION[FILTER_PROFESSION]);
         }
         if ($_SESSION['user_role'] !== ROLE_AGENT) {
             $_SESSION["total_compte_en_attente_ouverture"] = count($prospects);
@@ -133,6 +136,7 @@ class ProspectController
         }
         if (isset($_POST['numeroCompte'])) {
             $prospect->setNumeroCompte(trim(htmlspecialchars($_POST['numeroCompte'])));
+            $prospect->setDateOuvertureCompte(new FireStoreTimestamp(new Datetime()));
             $prospect->setIdAccountValidator($_SESSION["user_id"]);
         }
 
@@ -156,9 +160,5 @@ class ProspectController
         }
     }
 
-    public static function showPropspectAccountWaitingForOpening($idAgent, $idAgence, $dateDebut, $dateFin)
-    {
-        $prospects = ProspectServices::getAllProspectsWaitingForAccountOpening($idAgent, $idAgence, $dateDebut, $dateFin);
-        include '../app/views/liste-prospect.php';
-    }
+
 }

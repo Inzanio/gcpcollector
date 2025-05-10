@@ -70,6 +70,7 @@ class CampagneServices extends BaseServices
      */
     public static function getAllCampagnes($idAgence=null)
     {
+        
         // Appel de la méthode de récupération de tous les documents dans la classe
         $queryBuilder = Database::queryBuilder(self::$collectionName);
         // if($idAgence !== null){

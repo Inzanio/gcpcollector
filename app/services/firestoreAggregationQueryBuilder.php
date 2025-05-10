@@ -42,18 +42,6 @@ class FirestoreAggregationQueryBuilder
         $this->collectionName = $collectionName;
     }
 
-    private function getValueType($value)
-    {
-        if (is_string($value) && preg_match(REGEXP_FIRESTORE_TIMESTAMP, $value)) {
-            return 'timestampValue';
-        } elseif (is_int($value)) {
-            return 'integerValue';
-        } elseif (is_bool($value)) {
-            return 'booleanValue';
-        } else {
-            return 'stringValue';
-        }
-    }
     /**
      * Ajoute une condition de filtrage à la requête.
      *
@@ -109,7 +97,7 @@ class FirestoreAggregationQueryBuilder
             $filters = [];
             foreach ($this->where as $filter) {
                 $value = $filter['value'];
-                $valueType = $this->getValueType($value);
+                $valueType = Database::getFirestoreValueType($value);
         
                 $filters[] = [
                     'fieldFilter' => [
