@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Objectif;
 
-class ObjectifServices
+class ObjectifServices extends BaseServices
 {
     /**
      * Nom de la collection Firestore pour les objectifs

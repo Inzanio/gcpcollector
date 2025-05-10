@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Campagne;
 use App\Models\Objectif;
 
-class CampagneServices
+class CampagneServices extends BaseServices
 {
     /**
      * Nom de la collection Firestore pour les campagnes

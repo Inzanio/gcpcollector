@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Utilisateur;
 use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 
-class UtilisateurServices
+class UtilisateurServices extends BaseServices
 {
     public static string $collectionName = "utilisateurs";
 

@@ -11,3 +11,20 @@ define("REGEXP_FIRESTORE_TIMESTAMP", '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{
 
 
 define("CIBLES_OBJECTIFS",["Client","Prospect","Taux de Conversion"]);
+define("PROFESSIONS",[
+    "Commerçant",
+    "Entrepreneur",
+    "Cadre",
+    "Employé",
+    "Étudiant",
+    "Retraité",
+    "Autre"
+]);
+
+define("PRODUITS_BANQUES",[
+    "Épargne",
+    "Investissement",
+    "Crédit",
+    "Assurance",
+    "Gestion de patrimoine"
+]);

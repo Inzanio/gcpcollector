@@ -38,11 +38,6 @@ class Utilisateur extends Personne
      */
     private string $role;
 
-    /**
-     * Nom de la collection ou de la table des utilisateurs
-     */
-    private static string $collection_name = "utilisateurs";
-
     private ?string $idAgence = "";
 
 

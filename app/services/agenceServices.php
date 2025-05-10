@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Agence;
 
-class AgenceServices
+class AgenceServices extends BaseServices
 {
     /**
      * Nom de la collection Firestore pour les agences

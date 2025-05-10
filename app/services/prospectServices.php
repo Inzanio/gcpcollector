@@ -8,7 +8,7 @@ use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 /**
  * Classe de service pour gérer les prospects
  */
-class ProspectServices
+class ProspectServices extends BaseServices
 {
     /**
      * Nom de la collection Firestore pour les prospects

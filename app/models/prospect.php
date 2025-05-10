@@ -9,29 +9,6 @@ use InvalidArgumentException;
 class Prospect extends Personne
 {
     use DbDataTrait;
-    /**
-     * Liste des professions prédéfinies
-     */
-    public const PROFESSIONS = [
-        "Commerçant",
-        "Entrepreneur",
-        "Cadre",
-        "Employé",
-        "Étudiant",
-        "Retraité",
-        "Autre"
-    ];
-
-    /**
-     * Liste des besoins objectifs financiers prédéfinis
-     */
-    public const PRODUITS_BANQUES = [
-        "Épargne",
-        "Investissement",
-        "Crédit",
-        "Assurance",
-        "Gestion de patrimoine"
-    ];
 
     /**
      * Profession du prospect
@@ -159,7 +136,7 @@ class Prospect extends Personne
      */
     public function setProfession(string $profession): void
     {
-        if (!in_array($profession, self::PROFESSIONS)) {
+        if (!in_array($profession, PROFESSIONS)) {
             throw new InvalidArgumentException("Profession invalide");
         }
         $this->profession = $profession;
@@ -181,7 +158,7 @@ class Prospect extends Personne
     public function setproduitsInteresse(array $produitsInteresse): void
     {
         foreach ($produitsInteresse as $besoin) {
-            if (!in_array($besoin, self::PRODUITS_BANQUES)) {
+            if (!in_array($besoin, PRODUITS_BANQUES)) {
                 throw new InvalidArgumentException("Besoin objectif financier invalide");
             }
         }
