@@ -20,13 +20,13 @@ class HomeController
 
 
         if ($_SESSION['user_role'] == ROLE_AGENT) {
-            $data_prospects = ProspectServices::getAll($idAgentProspecteur = $_SESSION['user_id'], $idAgence = $_SESSION['user_agence_id']);
+            $data_prospects = ProspectServices::getAll($_SESSION['user_id'], $_SESSION['user_agence_id']);
         }
         if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
-            $data_prospects = ProspectServices::getAll($idAgentProspecteur = null, $idAgence = $_SESSION['user_agence_id']);
+            $data_prospects = ProspectServices::getAll(null,$_SESSION['user_agence_id']);
         }
         if ($_SESSION['user_role'] == ROLE_ADMIN) {
-            $data_prospects = ProspectServices::getAll($idAgentProspecteur = null, $idAgence = null);
+            $data_prospects = ProspectServices::getAll(null, null);
         }
         $prospects = [];
         $clients = [];
@@ -55,6 +55,7 @@ class HomeController
             $dateCemois
         );
         $totalProspectsCeMois = $prospectBICemois->totalProspect();
+        $totalProspectEnAttenteOuvertureCompte = $totalProspectsCeMois;
         $totalClientsCeMois = $prospectBICemois->totalClient();
         $tauxConversionCeMois = $prospectBICemois->tauxDeConversion();
 

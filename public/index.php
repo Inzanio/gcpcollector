@@ -12,6 +12,7 @@ use App\Controllers\CampagneController;
 use App\Controllers\ObjectifController;
 use App\Services\AgenceServices;
 use App\Services\CampagneServices;
+use App\Services\Helper;
 use App\Services\ObjectifServices;
 use App\Services\ProspectServices;
 use App\Services\UtilisateurServices;
@@ -64,7 +65,6 @@ function showEditableDateValue(FireStoreTimestamp $dateFirestore)
     $value = (new Datetime(($dateFirestore->parseValue())))->format('Y-m-d');
     echo 'value="' . $value . '"';
 }
-
 
 $uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($uri, PHP_URL_PATH);
@@ -243,7 +243,7 @@ switch ($parts[0]) {
         LoginController::must_logged_in();
         $id = check_id();
         $objectif = ObjectifServices::getObjectifById($id);
-        
+
         check_element($objectif);
         $campagnes = CampagneServices::getAllCampagnes();
         if ($_SESSION["user_role"] == ROLE_ADMIN) {

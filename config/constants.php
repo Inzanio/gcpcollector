@@ -10,8 +10,10 @@ define("FIRESTORE_DATE_FORMAT", "Y-m-d\TH:i:s.u\Z");
 define("REGEXP_FIRESTORE_TIMESTAMP", '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z$/');
 
 
-define("CIBLES_OBJECTIFS",["Client","Prospect","Taux de Conversion"]);
-define("PROFESSIONS",[
+define("CIBLES_OBJECTIFS", ["Client", "Prospect", "Taux de Conversion"]);
+define("APP_NAME", "GCPCollector");
+
+define("PROFESSIONS", [
     "Commerçant",
     "Entrepreneur",
     "Cadre",
@@ -21,10 +23,17 @@ define("PROFESSIONS",[
     "Autre"
 ]);
 
-define("PRODUITS_BANQUES",[
+define("PRODUITS_BANQUES", [
     "Épargne",
     "Investissement",
     "Crédit",
     "Assurance",
     "Gestion de patrimoine"
 ]);
+
+define('FILTER_PRODUIT', 'filter_produit');
+define('FILTER_DATE_DEBUT', 'filter_dateDebut');
+define('FILTER_DATE_FIN', 'filter_dateFin');
+define('FILTER_PROFESSION', 'filter_profession');
+define('FILTER_ID_AGENCE', 'filter_idAgence');
+define('FILTER_ID_AGENT', 'filter_idAgent');

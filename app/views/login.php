@@ -19,7 +19,7 @@ require_once("head.php");
               <div class="d-flex justify-content-center py-4">
                 <a href="index.html" class="logo d-flex align-items-center w-auto">
                   <img src="<?php echo $static_files_uri; ?>/img/logo.png" alt="">
-                  <span class="d-none d-lg-block">GCPCollector</span>
+                  <span class="d-none d-lg-block"><?php echo APP_NAME?></span>
                 </a>
               </div><!-- End Logo -->
 

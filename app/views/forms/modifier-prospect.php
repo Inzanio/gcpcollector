@@ -68,23 +68,12 @@ require_once("../app/views/head.php");
                             <label for="floatingGenre">Genre</label>
                         </div>
                     </div>
-                    <?php
-                    $options = [
-                        "Commerçant" => "Commerçant",
-                        "Entrepreneur" => "Entrepreneur",
-                        "Cadre" => "Cadre",
-                        "Employé" => "Employé",
-                        "Étudiant" => "Étudiant",
-                        "Retraité" => "Retraité",
-                        "Autre" => "Autre"
-                    ];
-                    ?>
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <select name="profession" class="form-select" aria-label="Default select example" <?php echo ($_SESSION['user_role'] !== ROLE_AGENT) ? 'disabled' : ''; ?>>
                                 <option selected="">Open this select menu</option>
-                                <?php foreach ($options as $value => $text) : ?>
-                                    <option value="<?php echo $value; ?>" <?php echo $prospect->getProfession() === $value ? 'selected' : ''; ?>><?php echo $text; ?></option>
+                                <?php foreach (PROFESSIONS as $value) : ?>
+                                    <option value="<?php echo $value; ?>" <?php echo $prospect->getProfession() === $value ? 'selected' : ''; ?>><?php echo $value; ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <label for="profession">Profession</label>
@@ -101,22 +90,12 @@ require_once("../app/views/head.php");
                         <input name="connaissanceBanque" class="form-check-input" type="checkbox" id="connaissanceBanque" <?php echo $prospect->getConnaissanceBanque() ? 'checked' : ''; ?> <?php echo ($_SESSION['user_role'] !== ROLE_AGENT) ? 'disabled' : ''; ?>>
                         <label class="form-check-label" for="connaissanceBanque">Connaissance de la banque</label>
                     </div>
-
-                    <?php
-                    $produits = [
-                        "Épargne" => "Épargne",
-                        "Investissement" => "Investissement",
-                        "Crédit" => "Crédit",
-                        "Assurance" => "Assurance",
-                        "Gestion de patrimoine" => "Gestion de patrimoine"
-                    ];
-                    ?>
                     <div class="col-md-12">
                         <label>Produits intéressés</label>
-                        <?php foreach ($produits as $value => $text) : ?>
+                        <?php foreach (PRODUITS_BANQUES as $value) : ?>
                             <div class="form-check">
                                 <input name="produitsInteresse[]" class="form-check-input" type="checkbox" id="<?php echo $value; ?>" value="<?php echo $value; ?>" <?php echo in_array($value, $prospect->getProduitsInteresse()) ? 'checked' : ''; ?> <?php echo ($_SESSION['user_role'] !== ROLE_AGENT) ? 'disabled' : ''; ?>>
-                                <label class="form-check-label" for="<?php echo $value; ?>"><?php echo $text; ?></label>
+                                <label class="form-check-label" for="<?php echo $value; ?>"><?php echo $value; ?></label>
                             </div>
                         <?php endforeach; ?>
                     </div>

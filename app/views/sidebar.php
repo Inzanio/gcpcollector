@@ -1,5 +1,7 @@
 <?php
 
+
+
 $currentUri = $_SERVER['REQUEST_URI'];
 $dashboardActivity = ($currentUri === '/') ? 'active' : 'collapsed';
 
@@ -100,6 +102,10 @@ $listCampaignActivity = (strpos(strtolower($currentUri), "campagnes")) ? 'active
                 <a class="nav-link <?php echo $validerCompteActivity; ?>" href="/comptes">
                     <i class="bi bi-shield-check"></i>
                     <span>Ouverture de Compte</span>
+                    <?php if (isset($totalProspectEnAttenteOuvertureCompte) && $totalProspectEnAttenteOuvertureCompte > 0): ?>
+                        <span class="badge bg-primary ms-2"><?php echo $totalProspectEnAttenteOuvertureCompte ?></span>
+                    <?php endif; ?>
+                    
                 </a>
             </li>
 
@@ -148,3 +154,8 @@ $listCampaignActivity = (strpos(strtolower($currentUri), "campagnes")) ? 'active
 
     </ul>
 </aside>
+
+<?php
+    require_once("filter-sidebar.php");
+
+?>

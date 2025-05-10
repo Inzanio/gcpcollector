@@ -3,7 +3,10 @@
 namespace App\Controllers;
 
 use App\Services\AgenceServices;
+use App\Services\Helper;
 use App\Services\UtilisateurServices;
+
+use DateTime;
 
 class LoginController
 {
@@ -18,7 +21,7 @@ class LoginController
         $login = htmlspecialchars($_POST["login"]);
         $password = htmlspecialchars($_POST["password"]);
         //$password = password_hash($password, PASSWORD_DEFAULT);
-        
+
         $login_result = UtilisateurServices::login($login, $password);
 
         if ($login_result != false) {
@@ -29,15 +32,26 @@ class LoginController
             $_SESSION['user_id'] = $login_result->getDocId();
             $_SESSION['user_nom'] = $login_result->getNom();
             $_SESSION['user_prenom'] = $login_result->getPrenom();
-            if ($_SESSION['user_role'] !== ROLE_ADMIN ){
-                var_dump($login_result->getIdAgence());
+
+            $_SESSION[FILTER_DATE_DEBUT] = new DateTime('first day of this month');
+            $_SESSION[FILTER_DATE_FIN] = new DateTime('last day of this month');
+
+            $_SESSION[FILTER_PROFESSION] = "";
+            $_SESSION[FILTER_PRODUIT] = "";
+            if ($_SESSION['user_role'] !== ROLE_AGENT) {
+                $_SESSION[FILTER_ID_AGENT] = "";
+            }
+            if ($_SESSION['user_role'] !== ROLE_ADMIN) {
+                $_SESSION[FILTER_ID_AGENCE] = "";
                 $_SESSION['user_agence_id'] = $login_result->getIdAgence();
                 $agence = AgenceServices::getAgenceById($login_result->getIdAgence());
                 $_SESSION['user_agence_name'] = $agence->getNom();
-            }else {
+            } else {
                 $_SESSION['user_agence_id'] = null;
             }
-            
+
+
+
 
             header('Location: /');
         } else {
@@ -65,6 +79,8 @@ class LoginController
             header('Location: /login');
             exit;
         }
+        Helper::updateFilters();
+
     }
     public static function is_logged_in()
     {

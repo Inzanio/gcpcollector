@@ -259,9 +259,9 @@ class Database
         if (isset($response[0]['result']['aggregateFields'][$aggregationType]['integerValue'])) {
             return $response[0]['result']['aggregateFields'][$aggregationType]['integerValue'];
         } elseif (isset($response[0]['result']['aggregateFields'][$aggregationType]['readTime'])) {
-            return null; // ou vous pouvez lever une exception
+            return 0; // ou vous pouvez lever une exception
         }
-        return null;
+        return 0;
     }
 }
 /**
