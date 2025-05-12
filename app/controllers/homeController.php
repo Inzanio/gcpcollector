@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\ProspectServices;
 use App\Bi\ProspectBI;
+use App\Services\ObjectifServices;
 use Datetime;
 
 class HomeController
@@ -19,13 +20,14 @@ class HomeController
     {
 
         if ($_SESSION['user_role'] == ROLE_AGENT) {
-            $prospects = ProspectServices::getAll(false,$_SESSION['user_id'], $_SESSION['user_agence_id'],$_SESSION[FILTER_DATE_DEBUT],$_SESSION[FILTER_DATE_FIN],$_SESSION[FILTER_ID_CAMPAGNE],$_SESSION[FILTER_PROFESSION]);
-        }
-        if ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
-            $prospects = ProspectServices::getAll(false,$_SESSION[FILTER_ID_AGENT],$_SESSION['user_agence_id'],$_SESSION[FILTER_DATE_DEBUT],$_SESSION[FILTER_DATE_FIN],$_SESSION[FILTER_ID_CAMPAGNE],$_SESSION[FILTER_PROFESSION]);
-        }
-        if ($_SESSION['user_role'] == ROLE_ADMIN) {
-            $prospects = ProspectServices::getAll(false,$_SESSION[FILTER_ID_AGENT], $_SESSION[FILTER_ID_AGENCE],$_SESSION[FILTER_DATE_DEBUT],$_SESSION[FILTER_DATE_FIN],$_SESSION[FILTER_ID_CAMPAGNE],$_SESSION[FILTER_PROFESSION]);
+            $prospects = ProspectServices::getAll(false, $_SESSION['user_id'], $_SESSION['user_agence_id'], $_SESSION[FILTER_DATE_DEBUT], $_SESSION[FILTER_DATE_FIN], $_SESSION[FILTER_ID_CAMPAGNE], $_SESSION[FILTER_PROFESSION]);
+            $objectifs = ObjectifServices::getAllObjectifs($_SESSION['user_id'], $_SESSION['user_agence_id'], $_SESSION[FILTER_ID_CAMPAGNE]);
+        } elseif ($_SESSION['user_role'] == ROLE_SUPERVISEUR) {
+            $prospects = ProspectServices::getAll(false, $_SESSION[FILTER_ID_AGENT], $_SESSION['user_agence_id'], $_SESSION[FILTER_DATE_DEBUT], $_SESSION[FILTER_DATE_FIN], $_SESSION[FILTER_ID_CAMPAGNE], $_SESSION[FILTER_PROFESSION]);
+            $objectifs = ObjectifServices::getAllObjectifs(null, $_SESSION['user_agence_id'], $_SESSION[FILTER_ID_CAMPAGNE]);
+        } elseif ($_SESSION['user_role'] == ROLE_ADMIN) {
+            $prospects = ProspectServices::getAll(false, $_SESSION[FILTER_ID_AGENT], $_SESSION[FILTER_ID_AGENCE], $_SESSION[FILTER_DATE_DEBUT], $_SESSION[FILTER_DATE_FIN], $_SESSION[FILTER_ID_CAMPAGNE], $_SESSION[FILTER_PROFESSION]);
+            $objectifs = ObjectifServices::getAllObjectifs(null, null, $_SESSION[FILTER_ID_CAMPAGNE]);
         }
         $clients = [];
 
@@ -36,18 +38,22 @@ class HomeController
         }
         $prospectBI = new ProspectBI();
         $prospectBI->buildRequest(
-            ($_SESSION['user_role']===ROLE_AGENT )?$_SESSION['user_id'] : $_SESSION[FILTER_ID_AGENT] ,
-            ($_SESSION['user_role']!==ROLE_ADMIN )?$_SESSION['user_agence_id'] : $_SESSION[FILTER_ID_AGENCE] ,
+            ($_SESSION['user_role'] === ROLE_AGENT) ? $_SESSION['user_id'] : $_SESSION[FILTER_ID_AGENT],
+            ($_SESSION['user_role'] !== ROLE_ADMIN) ? $_SESSION['user_agence_id'] : $_SESSION[FILTER_ID_AGENCE],
             $_SESSION[FILTER_ID_CAMPAGNE],
             $_SESSION[FILTER_DATE_DEBUT],
             $_SESSION[FILTER_DATE_FIN],
             $_SESSION[FILTER_PROFESSION]
         );
-       
-        if ($_SESSION["user_role"] !== ROLE_AGENT){
+
+        if ($_SESSION["user_role"] !== ROLE_AGENT) {
             $_SESSION["total_compte_en_attente_ouverture"] = ProspectBI::getTotalProspectsWaitingForAccountOpening(
-                ($_SESSION['user_role']===ROLE_AGENT )?$_SESSION['user_id'] : null,
-                $_SESSION['user_agence_id'],$_SESSION[FILTER_ID_CAMPAGNE],$_SESSION[FILTER_DATE_DEBUT],$_SESSION[FILTER_DATE_FIN],$_SESSION[FILTER_PROFESSION]
+                ($_SESSION['user_role'] === ROLE_AGENT) ? $_SESSION['user_id'] : null,
+                $_SESSION['user_agence_id'],
+                $_SESSION[FILTER_ID_CAMPAGNE],
+                $_SESSION[FILTER_DATE_DEBUT],
+                $_SESSION[FILTER_DATE_FIN],
+                $_SESSION[FILTER_PROFESSION]
 
             );
         }

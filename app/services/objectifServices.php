@@ -45,7 +45,7 @@ class ObjectifServices extends BaseServices
      * @param Objectif $objectif - l'objet objectif mis à jour
      * @return mixed - le résultat de la mise à jour
      */
-    public static function updateobjectif(Objectif $objectif)
+    public static function updateObjectif(Objectif $objectif)
     {
         // Appel de la méthode de mise à jour de document dans la classe Database
         return Database::updateDocument(self::$collectionName, $objectif->getDocId(), $objectif->toArray());
@@ -67,11 +67,13 @@ class ObjectifServices extends BaseServices
      * Récupère toutes les objectifs
      * @return Objectif[] - le résultat de la requête
      */
-    public static function getAllObjectifs($idAgent,$idAgence,$idCampagne)
+    public static function getAllObjectifs($idAgent,$idAgence,$idCampagne,$actif=true)
     {
         // Appel de la méthode de récupération de tous les documents dans la classe
         $queryBuilder = Database::queryBuilder(self::$collectionName);
-
+        if($actif !==null){
+            $queryBuilder->where("actif","EQUAL",$actif);
+        }
         if($idAgent !== null){
             $queryBuilder->where("idAgent","EQUAL",$idAgent);
         }

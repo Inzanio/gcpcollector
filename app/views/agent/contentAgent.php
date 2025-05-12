@@ -104,32 +104,26 @@
       <div class="card" style="z-index: 2;">
         <div class="card-body">
           <h5 class="card-title">Mes objectifs</h5>
+          <?php if (isset($objectifs) && !empty($objectifs)): ?>
 
-          <h6 class="card-subtitle mb-2 text-muted">Prospection</h6>
-          <div class="progress mb-3">
-            <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo ($totalProspects / 100) * 100; ?>%" aria-valuenow="<?php echo $totalProspects; ?>" aria-valuemin="0" aria-valuemax="100">
-              <?php echo $totalProspects; ?> (<?php echo $totalProspects; ?>/100 prospects)
-            </div>
-          </div>
+            <?php foreach ($objectifs as $objectif) : ?>
+              <h6 class="card-subtitle mb-2 text-muted"><?php echo $objectif->getCible(); ?> : <?php echo ($objectif->getValeurFaite() / $objectif->getValeur()) * 100; ?> % (<?php echo $objectif->getValeurFaite(); ?>/<?php echo $objectif->getValeur(); ?> <?php echo $objectif->getCible(); ?>)</h6>
+              <div class="progress mb-3">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo ($objectif->getValeurFaite() / $objectif->getValeur()) * 100; ?>%" aria-valuenow="<?php echo $objectif->getValeurFaite(); ?>" aria-valuemin="0" aria-valuemax="100">
+                </div>
+              </div>
+            <?php endforeach ?>
 
-          <h6 class="card-subtitle mb-2 text-muted">Taux de conversion</h6>
-          <div class="progress mb-3">
-            <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $tauxConversion; ?>%" aria-valuenow="<?php echo $tauxConversion; ?>" aria-valuemin="0" aria-valuemax="100">
-              <?php echo number_format($tauxConversion, 1); ?>% (<?php echo number_format($tauxConversion, 1); ?>% sur objectif 10%)
-            </div>
-          </div>
-
-          <h6 class="card-subtitle mb-2 text-muted">Objectif agence</h6>
-          <div class="progress">
-            <div class="progress-bar bg-info" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-              75% (6.8% sur objectif 9%)
-            </div>
-          </div>
         </div>
       </div><!-- End Goals -->
+    <?php else : ?>
+      <h6 class="card-subtitle mb-2 text-muted">Aucun Objectif pour le moment...</h6>
 
-      <!-- Agenda -->
-      <!-- <div class="card" style="z-index: 2;">
+    <?php endif; ?>
+
+
+    <!-- Agenda -->
+    <!-- <div class="card" style="z-index: 2;">
         <div class="card-body">
           <h5 class="card-title">Mon agenda <span>| Aujourd'hui</span></h5>
           <div class="activity">
@@ -154,52 +148,52 @@
           </div>
         </div>
       </div> -->
-      <!-- End Agenda -->
+    <!-- End Agenda -->
 
-      <!-- Classement -->
-      <div class="card" style="z-index: 2;">
-        <div class="card-body">
-          <h5 class="card-title">Classement agence <span>| Ce mois</span></h5>
-          <div class="ranking-list">
-            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-              <div class="d-flex align-items-center">
-                <span class="badge bg-primary me-2">1</span>
-                <span>Marie Durand</span>
-              </div>
-              <span class="text-success fw-bold">8.2%</span>
+    <!-- Classement -->
+    <div class="card" style="z-index: 2;">
+      <div class="card-body">
+        <h5 class="card-title">Classement agence <span>| Ce mois</span></h5>
+        <div class="ranking-list">
+          <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+            <div class="d-flex align-items-center">
+              <span class="badge bg-primary me-2">1</span>
+              <span>Marie Durand</span>
             </div>
-            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-              <div class="d-flex align-items-center">
-                <span class="badge bg-secondary me-2">2</span>
-                <span>Jean Petit</span>
-              </div>
-              <span class="text-success fw-bold">7.5%</span>
+            <span class="text-success fw-bold">8.2%</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+            <div class="d-flex align-items-center">
+              <span class="badge bg-secondary me-2">2</span>
+              <span>Jean Petit</span>
             </div>
-            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-              <div class="d-flex align-items-center">
-                <span class="badge bg-warning me-2">3</span>
-                <span>Vous</span>
-              </div>
-              <span class="text-success fw-bold">5.2%</span>
+            <span class="text-success fw-bold">7.5%</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+            <div class="d-flex align-items-center">
+              <span class="badge bg-warning me-2">3</span>
+              <span>Vous</span>
             </div>
-            <div class="d-flex justify-content-between align-items-center py-2">
-              <div class="d-flex align-items-center">
-                <span class="badge bg-light text-dark me-2">4</span>
-                <span>Luc Martin</span>
-              </div>
-              <span class="text-muted">4.8%</span>
+            <span class="text-success fw-bold">5.2%</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center py-2">
+            <div class="d-flex align-items-center">
+              <span class="badge bg-light text-dark me-2">4</span>
+              <span>Luc Martin</span>
             </div>
+            <span class="text-muted">4.8%</span>
           </div>
         </div>
-      </div><!-- End Ranking -->
-
-      <div id="btn-ajouter-prospect" class="position-fixed" style="bottom: 100px; right: 50px; z-index: 3;">
-        <a href="/ajouter-prospect" class="btn btn-primary  btn-lg d-flex align-items-center justify-content-center gap-2 shadow"
-          style="border-radius: 15px; padding: 15px 25px; background-color: #4154f1; border-color: #4154f1; color: white;">
-          <i class="bi bi-plus"></i>
-          Ajouter Prospect
-        </a>
       </div>
+    </div><!-- End Ranking -->
+
+    <div id="btn-ajouter-prospect" class="position-fixed" style="bottom: 100px; right: 50px; z-index: 3;">
+      <a href="/ajouter-prospect" class="btn btn-primary  btn-lg d-flex align-items-center justify-content-center gap-2 shadow"
+        style="border-radius: 15px; padding: 15px 25px; background-color: #4154f1; border-color: #4154f1; color: white;">
+        <i class="bi bi-plus"></i>
+        Ajouter Prospect
+      </a>
+    </div>
 
     </div><!-- End Right column -->
 

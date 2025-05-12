@@ -26,7 +26,7 @@ class LoginController
 
         $login_result = UtilisateurServices::login($login, $password);
 
-        if ($login_result != false) {
+        if ( $login_result !== null && $login_result != false) {
             session_start();
             $_SESSION['user_role'] = $login_result->getRole();
             $_SESSION['user_matricule'] = $login_result->getMatricule();

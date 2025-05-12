@@ -2,8 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Models\Objectif;
 use App\Services\ProspectServices;
 use App\Models\Prospect;
+use App\Services\ObjectifServices;
 use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 use Datetime;
 
@@ -90,6 +92,14 @@ class ProspectController
         } else {
 
             $error_message = "Prospect enregistré avec succès.";
+            $objectifs = ObjectifServices::getAllObjectifs($_SESSION['user_id'],$_SESSION['user_agence_id'],($idCampagne === "")? null :$idCampagne );
+            foreach ($objectifs as $objectif){
+                if ($objectif->getCible()== CIBLES_OBJECTIFS[1]){
+                    $objectif->setValeurFaite($objectif->getValeurFaite()+1);
+                    ObjectifServices::updateObjectif($objectif);
+                    break;
+                }
+            }
             // Redirection ou autre action après l'enregistrement réussi
             header("Location: /prospects"); // redirection vers la liste des prospects
         }

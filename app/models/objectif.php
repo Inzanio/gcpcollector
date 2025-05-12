@@ -20,6 +20,9 @@ class Objectif
     private string $libelle;
     private string $cible; // clients, prospect, taux de conversion
     private bool $atteint;
+    private bool $actif;
+
+
     private int $valeur;
     private int $valeurFaite;
 
@@ -37,6 +40,7 @@ class Objectif
         $this->setIdAgence($idAgence);
         $this->setAtteint(False);
         $this->setValeurFaite(0);
+        $this->setActif(True);
     }
     public function getIdCampagne(): ?string
     {
@@ -123,6 +127,16 @@ class Objectif
     public function setValeurFaite(int $valeurFaite): self
     {
         $this->valeurFaite = $valeurFaite;
+        return $this;
+    }
+    public function getActif(): bool
+    {
+        return $this->actif;
+    }
+
+    public function setActif(bool $actif): self
+    {
+        $this->actif = $actif;
         return $this;
     }
 }
