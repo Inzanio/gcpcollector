@@ -112,10 +112,10 @@ require_once("../app/views/head.php");
                     </div>
                     <div class="col-md-12">
                         <label>Produits intéressés</label>
-                        <?php foreach (PRODUITS_BANQUES as $value) : ?>
+                        <?php foreach ($produitsBanque as $produitB) : ?>
                             <div class="form-check">
-                                <input name="produitsInteresse[]" class="form-check-input" type="checkbox" id="<?php echo $value; ?>" value="<?php echo $value; ?>" <?php echo in_array($value, $prospect->getProduitsInteresse()) ? 'checked' : ''; ?> <?php echo ($_SESSION['user_role'] !== ROLE_AGENT) ? 'disabled' : ''; ?>>
-                                <label class="form-check-label" for="<?php echo $value; ?>"><?php echo $value; ?></label>
+                                <input name="produitsInteresse[]" class="form-check-input" type="checkbox" id="<?php echo $produitB->getDocId(); ?>" value="<?php echo $produitB->getDocId(); ?>" <?php echo in_array($produitB->getDocId(), $prospect->getProduitsInteresse()) ? 'checked' : ''; ?> <?php echo ($_SESSION['user_role'] !== ROLE_AGENT) ? 'disabled' : ''; ?>>
+                                <label class="form-check-label" for="<?php echo $produitB->getDocId(); ?>"><?php echo $produitB->getNom(); ?></label>
                             </div>
                         <?php endforeach; ?>
                     </div>

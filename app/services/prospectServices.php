@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ProduitBanqueChoisi;
 use App\Models\Prospect;
 use MrShan0\PHPFirestore\Fields\FireStoreTimestamp;
 
@@ -35,7 +36,13 @@ class ProspectServices extends BaseServices
 
             // Appel de la méthode de création de document dans la classe Database
             $response = Database::createDocument(self::$collectionName, $documentId, $prospect->toArray());
-            return Database::isSuccessfullRequest($response) ? $response : false;
+            if (Database::isSuccessfullRequest($response)) {
+                $idProspect = Database::getDocumentIdFromName(json_decode($response)->name );
+                foreach ($prospect->getproduitsInteresse() as $idProduit) {
+                    ProduitBanqueChoisiServices::create(new ProduitBanqueChoisi($idProspect, $idProduit, $_SESSION["user_id"]));
+                }
+                return $response;
+            }
         }
         return false; // Si l'envoi de la demande échoue, retourner false
 

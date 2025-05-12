@@ -74,6 +74,7 @@ $parts = explode('/', trim($path, '/'));
 $agents;
 $agences;
 $campagnes;
+$produitsBanque;
 
 //echo($parts[0]);
 switch ($parts[0]) {
@@ -240,6 +241,7 @@ switch ($parts[0]) {
         }
         break;
     case "unittests":
+        LoginController::must_logged_in();
         include '../test_firestore.php';
         break;
     default:

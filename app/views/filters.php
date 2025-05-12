@@ -1,5 +1,5 @@
 <?php
-    global $campagnes,$agences,$agents;
+    global $campagnes,$agences,$agents, $produitsBanque;
 ?>
 <form method="POST" action="">
 
@@ -34,8 +34,8 @@
     <div class="form-floating mb-3">
         <select name="<?php echo FILTER_PRODUIT; ?>" class="form-select" aria-label="Default select example">
             <option value="" <?php echo empty($_SESSION[FILTER_PRODUIT]) ? 'selected' : ''; ?>>Tout</option>
-            <?php foreach (PRODUITS_BANQUES as $value) : ?>
-                <option value="<?php echo $value; ?>" <?php echo isset($_SESSION[FILTER_PRODUIT]) && $_SESSION[FILTER_PRODUIT] === $value ? 'selected' : ''; ?>><?php echo $value; ?></option>
+            <?php foreach ($produitsBanque as $produitB) : ?>
+                <option value="<?php echo $produitB->getDocId(); ?>" <?php echo isset($_SESSION[FILTER_PRODUIT]) && $_SESSION[FILTER_PRODUIT] === $produitB->getDocId() ? 'selected' : ''; ?>><?php echo $produitB->getNom(); ?></option>
             <?php endforeach; ?>
         </select>
         <label for="<?php echo FILTER_PRODUIT; ?>">Produits Banque</label>

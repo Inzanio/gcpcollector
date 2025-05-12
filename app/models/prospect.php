@@ -200,11 +200,6 @@ class Prospect extends Personne
      */
     public function setproduitsInteresse(array $produitsInteresse): void
     {
-        foreach ($produitsInteresse as $besoin) {
-            if (!in_array($besoin, PRODUITS_BANQUES)) {
-                throw new InvalidArgumentException("Besoin objectif financier invalide");
-            }
-        }
         $this->produitsInteresse = $produitsInteresse;
     }
 

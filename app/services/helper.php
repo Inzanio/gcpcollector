@@ -40,7 +40,10 @@ class Helper
         }
     }
     public static function initGlobalVariables()
-    {
+    {   
+        global $produitsBanque;
+
+        $produitsBanque = ProduitBanqueServices::getAll();
         global $agences;
 
         if ($_SESSION["user_role"] === ROLE_ADMIN) {

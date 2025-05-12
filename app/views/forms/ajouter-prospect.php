@@ -125,10 +125,10 @@ require_once("../app/views/head.php");
 
                     <div class="col-md-12">
                         <label>Produits intéressés</label>
-                        <?php foreach (PRODUITS_BANQUES as $value) : ?>
+                        <?php foreach ($produitsBanque as $produitB) : ?>
                             <div class="form-check">
-                                <input name="produitsInteresse[]" class="form-check-input" type="checkbox" id="<?php echo $value; ?>" name="produitsInteresse[]" value="<?php echo $value; ?>">
-                                <label class="form-check-label" for="<?php echo $value; ?>"><?php echo $value; ?></label>
+                                <input name="produitsInteresse[]" class="form-check-input" type="checkbox" id="<?php echo $produitB->getDocId(); ?>" name="produitsInteresse[]" value="<?php echo $produitB->getDocId(); ?>">
+                                <label class="form-check-label" for="<?php echo $produitB->getDocId(); ?>"><?php echo $produitB->getNom(); ?></label>
                             </div>
                         <?php endforeach; ?>
                     </div>

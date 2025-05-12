@@ -98,7 +98,7 @@ class CampagneServices extends BaseServices
     }
 
     /**
-     * Transforme un document Firestore en un objet Utilisateur
+     * Transforme un document Firestore en un objet Campagne
      * @param \MrShan0\PHPFirestore\FireStoreDocument $doc - le document Firestore à transformer
      * @return Campagne
      */
