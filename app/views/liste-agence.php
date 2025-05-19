@@ -28,12 +28,12 @@ require_once("head.php");
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">LISTE DES AGENCES</h5>      
-                            <a href="/ajouter-agence" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter </a>                                   
-                            <p></p> 
+                            <h5 class="card-title">LISTE DES AGENCES</h5>
+                            <a href="/ajouter-agence" type="button" class="btn btn-primary"><i class="bi bi-plus"></i> Ajouter </a>
+                            <p></p>
                             <!-- Table with stripped rows -->
-    
-                             <div class="col-12">       
+
+                            <div class="col-12">
                                 <div class="card recent-agences">
                                     <div class="card-body">
                                         <table class="table table-hover">
@@ -41,7 +41,6 @@ require_once("head.php");
                                                 <tr>
                                                     <th>Code</th>
                                                     <th>Nom</th>
-                                                    <th>Lieu</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -50,33 +49,41 @@ require_once("head.php");
                                                     <tr>
                                                         <td><?= htmlspecialchars($agence->getCode()) ?></td>
                                                         <td><?= htmlspecialchars($agence->getNom()) ?></td>
-                                                        <td><?= htmlspecialchars($agence->getLieu()) ?></td>
+
                                                         <td>
-                                                            <a href="editer-agence?id=<?= urlencode($agence->getDocId() ?? '') ?>" 
-                                                            class="btn btn-outline-warning">
-                                                                <i class="bi bi-pencil me-2"></i>Modifier
-                                                            </a>
-                                                        </td> 
-                                                    </tr> 
-                                                <?php endforeach; ?> 
-                                            </tbody> 
-                                        </table> 
-                                    </div> 
+                                                            <?php if (empty($agence->getSource())) : ?>
+                                                                <?php var_dump($agence)   ?>
+                                                                <a href="editer-agence?id=<?= urlencode($agence->getDocId() ?? '') ?>"
+                                                                    class="btn btn-outline-warning">
+                                                                    <i class="bi bi-pencil me-2"></i>Modifier
+                                                                </a>
+                                                            <?php else : ?>
+                                                                <a href="#"
+                                                                    class="btn btn-outline-secondary disabled"
+                                                                    aria-disabled="true">
+                                                                    <i class="bi bi-pencil me-2"></i>Modifier
+                                                                </a>
+                                                            <?php endif ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>      
-                        </div>          
-                    </div>  
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main><!-- End #main -->
 
 
-    <!-- ======= Footer ======= -->     
+    <!-- ======= Footer ======= -->
     <?php
-    require_once("footer.php");         
-    ?>          
-    <!-- End Footer --> 
+    require_once("footer.php");
+    ?>
+    <!-- End Footer -->
 
-</html>                                                                                                     
-
+</html>

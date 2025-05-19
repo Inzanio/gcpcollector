@@ -16,6 +16,31 @@ trait DbDataTrait
      */
     protected ?FireStoreTimestamp $dateModification = null;
 
+    /**
+     * @var string|null La source de la données
+     */
+    protected ?string $source = "";
+
+    /**
+     * Obtient la source de la donnée
+     * 
+     * @return string|null
+     */
+    public function getSource(): ?string
+    {
+        return $this->source;
+    }
+
+    /**
+     * Définit la source de la donnée
+     * 
+     * @param string|null $source
+     * @return void
+     */
+    public function setSource(?string $source): void
+    {
+        $this->source = $source;
+    }
 
 
     /**

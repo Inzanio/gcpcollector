@@ -89,13 +89,13 @@ class AgenceServices extends BaseServices
         //var_dump($doc);
         $data = $doc->toArray();
         $id = Database::getDocumentIdFromName($doc->getName());
-        $agence = new Agence(
+        $agence = (new Agence(
             $data['code'] ?? "",
             $data['nom'] ?? "",
             $data['lieu'] ?? "",
             $data['idAdmin'] ?? "",
 
-        );
+        ))->fromArray($data);
         $agence->setCode($id);
         $agence->setDocId($id);
         return $agence;
